@@ -4,12 +4,12 @@ export function loadInfo(){
     $("#loadInfo").click(function(){
         let option = {};
         option.url = Const.domain + "api/auth/info";
-        option.type = "GET",
+        option.type = "POST",
         option.dataType = "json";
         option.success = function (data){
             console.log(data);
         }
-
+        
         $.ajax(option);
     })
 }

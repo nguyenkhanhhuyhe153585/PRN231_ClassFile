@@ -25,11 +25,11 @@ export function addAuthHeader(event, xhr, settings) {
   if (token) {
     $.ajaxSetup({
       headers: {
-        Authorization: `Bearer ${token}`,
-        AccessControlAllowOrigin: "*",
+        Authorization: `bearer ${token}`
       },
     });
   }
+  console.log(token);
 }
 
 export function getPath() {

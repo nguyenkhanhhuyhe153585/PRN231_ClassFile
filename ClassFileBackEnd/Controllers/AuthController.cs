@@ -10,11 +10,11 @@ namespace ClassFileBackEnd.Controllers
     [Authorize]
     public class AuthController : Controller
     {
-        private readonly JWTManagerRepository jwtRepo;
+        private readonly IConfiguration config;
         private readonly ClassfileContext db;
-        public AuthController(JWTManagerRepository jwtRepo, ClassfileContext db)
+        public AuthController(IConfiguration config, ClassfileContext db)
         {
-            this.jwtRepo = jwtRepo;
+            this.config = config;
             this.db = db;
         }
 
@@ -22,15 +22,19 @@ namespace ClassFileBackEnd.Controllers
         [AllowAnonymous]
         public IActionResult Login([FromBody] AccountDTO accountDTO)
         {
-            try {
-            TokenResponseDTO<Object> token = jwtRepo.Authenticate(accountDTO.Username, accountDTO.Password);
-            if(token == null)
+            try
             {
-                var responeMessage = new ResponseMessageDTO<Object>("Wrong Username or Password");
-                return Unauthorized(responeMessage);
+                var jwtRepo = new JWTManagerRepository(config, db);
+                var token = jwtRepo.Authenticate(accountDTO.Username, accountDTO.Password);
+                if (token == null)
+                {
+                    var responeMessage = new ResponseMessageDTO<Object>("Wrong Username or Password");
+                    return Unauthorized(responeMessage);
+                }
+
+                return Ok(new TokenResponseDTO<Object>(token));
             }
-            return Ok(token);
-            }catch (Exception ex)
+            catch (Exception ex)
             {
                 var responeMessage = new ResponseMessageDTO<string>(ex.Message);
                 responeMessage.Data = ex.StackTrace;
@@ -38,10 +42,10 @@ namespace ClassFileBackEnd.Controllers
             }
         }
 
-        [HttpGet("info")]
-        [Authorize(Policy = "TeacherRequired")]
+        [HttpPost("info")]
+        [Authorize(Roles = "TC")]
         public IActionResult Info()
-        {      
+        {
             return Ok(db.Accounts.ToList());
         }
     }
