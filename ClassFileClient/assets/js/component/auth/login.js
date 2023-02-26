@@ -1,6 +1,6 @@
-import { setCookie } from "../common/cookies.js";
-import * as CONST from "../common/const.js";
-import * as Route from "../common/routing.js"
+import { setCookie } from "../../common/cookies.js";
+import * as CONST from "../../common/const.js";
+import * as Route from "../../common/routing.js"
 
 export function login() {
   $("#formLogin").submit(function (event) {

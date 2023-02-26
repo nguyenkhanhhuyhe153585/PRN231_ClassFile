@@ -1,4 +1,4 @@
-import * as Const from "../js/common/const.js";
+import * as Const from "../common/const.js";
 
 export function loadClass(){
     
