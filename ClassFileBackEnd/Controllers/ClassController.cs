@@ -30,7 +30,8 @@ namespace ClassFileBackEnd.Controllers
             {
                 var currentUserId = JWTManagerRepository.GetClaim(JwtRegisteredClaimNames.Name, HttpContext);
                 int currentId = int.Parse(currentUserId);
-                Account currentUser = db.Accounts.Where(e=>e.Id == currentId).Include(a=>a.Classes).SingleOrDefault();
+                Account currentUser = db.Accounts.Where(e=>e.Id == currentId).Include(a=>a.Classes)
+                    .ThenInclude(c => c.TeacherAccount).SingleOrDefault();
                 List<Class>? clasese = currentUser.Classes.ToList();
                 List<ClassDTO> classDTOs = mapper.Map<List<ClassDTO>>(clasese);
                 return Ok(classDTOs);

@@ -20,15 +20,19 @@ function main() {
 
 // Đăng ký sự kiện Ajax
 $(document).ajaxSend(function (event, xhr, settings) {
-  Swal.fire({
-    title: Const.Message.Process,
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    timer: 2000,
-    didOpen: () => {
-      Swal.showLoading();
-    },
-  });
+  if (
+    settings.type === Const.HttpMethod.POST ||
+    settings.type === Const.HttpMethod.PUT
+  )
+    Swal.fire({
+      title: Const.Message.Process,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      timer: 2000,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 });
 $(document).ajaxError(function (event, xhr, settings) {
   let message = xhr.responseJSON?.message;
@@ -42,13 +46,19 @@ $(document).ajaxError(function (event, xhr, settings) {
 $(document).ajaxComplete(function (event, xhr, settings) {
   if (xhr.status === Const.HttpCode.UnAuthorized) {
     Route.redirect(Const.Path.Login);
-  } else if (xhr.status === Const.HttpCode.Ok) {
-    Swal.fire({
-      icon: "success", 
-      title: Const.Message.Success,
-      showConfirmButton: false,
-      timer: 1500,
-    });
+  }
+  if (
+    settings.type === Const.HttpMethod.POST ||
+    settings.type === Const.HttpMethod.PUT
+  ) {
+    if (xhr.status === Const.HttpCode.Ok) {
+      Swal.fire({
+        icon: "success",
+        title: Const.Message.Success,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   }
 });
 $(document).ready(main);
