@@ -23,9 +23,9 @@ public partial class ClassfileContext : DbContext
 
     public virtual DbSet<Post> Posts { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("server=(local); database=classfile; uid=sa; pwd=sa; TrustServerCertificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("server=(local); database=classfile; uid=sa; pwd=sa; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -61,23 +61,27 @@ public partial class ClassfileContext : DbContext
                 .HasColumnName("class_name");
             entity.Property(e => e.TeacherAccountId).HasColumnName("teacher_account_id");
 
-            entity.HasMany(d => d.StudentAccounts).WithMany(p => p.Classes)
+            entity.HasOne(d => d.TeacherAccount).WithMany(p => p.ClassesNavigation)
+                .HasForeignKey(d => d.TeacherAccountId)
+                .HasConstraintName("FK_class_account");
+
+            entity.HasMany(d => d.Accounts).WithMany(p => p.Classes)
                 .UsingEntity<Dictionary<string, object>>(
-                    "StudentClass",
+                    "AccountClass",
                     r => r.HasOne<Account>().WithMany()
-                        .HasForeignKey("StudentAccountId")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_student_class_account"),
+                        .HasConstraintName("FK_account_class_account"),
                     l => l.HasOne<Class>().WithMany()
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_student_class_class"),
+                        .HasConstraintName("FK_account_class_class"),
                     j =>
                     {
-                        j.HasKey("ClassId", "StudentAccountId");
-                        j.ToTable("student_class");
+                        j.HasKey("ClassId", "AccountId").HasName("PK_student_class");
+                        j.ToTable("account_class");
                         j.IndexerProperty<int>("ClassId").HasColumnName("class_id");
-                        j.IndexerProperty<int>("StudentAccountId").HasColumnName("student_account_id");
+                        j.IndexerProperty<int>("AccountId").HasColumnName("account_id");
                     });
         });
 

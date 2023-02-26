@@ -29,7 +29,6 @@ export function addAuthHeader(event, xhr, settings) {
       },
     });
   }
-  console.log(token);
 }
 
 export function getPath() {
@@ -65,4 +64,5 @@ export function verifyAuth() {
 
   // Show document after excute scripts
   $("body").show();
+  return true;
 }

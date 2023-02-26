@@ -1,5 +1,4 @@
-﻿using ClassFileBackEnd.Mapper;
-using ClassFileBackEnd.Models;
+﻿using ClassFileBackEnd.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -28,10 +27,10 @@ namespace ClassFileBackEnd.Authen
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                            new Claim(ClaimTypes.Role, user.AccountType.ToString()),
-                            new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                new Claim(ClaimTypes.Role, user.AccountType.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name, user.Id.ToString())
             };
             var tokenKey = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
             var securityKey = new SymmetricSecurityKey(tokenKey);
@@ -39,14 +38,26 @@ namespace ClassFileBackEnd.Authen
 
             var token = new JwtSecurityToken(
                 issuer: configuration["Jwt:Issuer"],
-                audience: configuration["Jwt:Audience"],      
+                audience: configuration["Jwt:Audience"],
                 claims,
                 expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: credentials      
+                signingCredentials: credentials
                 );
             var encodeToken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return encodeToken;
+        }
+
+
+        public static string? GetClaim(string claimName, HttpContext context)
+        {
+            string? value = null;
+            var identity = context.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                value = identity.FindFirst(claimName)?.Value;
+            }
+            return value;
         }
     }
 }

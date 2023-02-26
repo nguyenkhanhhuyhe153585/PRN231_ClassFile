@@ -15,5 +15,7 @@ public partial class Account
 
     public string? AccountType { get; set; }
 
+    public virtual ICollection<Class> ClassesNavigation { get; } = new List<Class>();
+
     public virtual ICollection<Class> Classes { get; } = new List<Class>();
 }

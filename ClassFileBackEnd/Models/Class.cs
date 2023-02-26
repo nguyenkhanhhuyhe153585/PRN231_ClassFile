@@ -13,5 +13,7 @@ public partial class Class
 
     public virtual ICollection<Post> Posts { get; } = new List<Post>();
 
-    public virtual ICollection<Account> StudentAccounts { get; } = new List<Account>();
+    public virtual Account? TeacherAccount { get; set; }
+
+    public virtual ICollection<Account> Accounts { get; } = new List<Account>();
 }

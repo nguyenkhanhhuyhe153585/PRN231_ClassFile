@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <script src="assets/libs/bootstrap-5.2.3-dist/js/bootstrap.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="assets/libs/jquery/jquery-3.6.3.js" async></script>
+    <script src="assets/libs/jquery/jquery-3.6.3.js"></script>
     <script type="module" src="assets/js/site.js"></script>
 </head>
 
@@ -20,8 +20,65 @@
     </div>
     <div class="container">
         <main>
-            <h1>Trang Index</h1>
-            <button id="loadInfo">Load Info</button>
+            <div class="row mt-1 mb-3">
+                <h1 class="display-3">Your class</h3>
+            </div>
+            <div id="classesList" class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in
+                                to additional content. This content is a little bit longer.</p>
+                            <a class="stretched-link" href="Go to class"></a>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a short card.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in
+                                to additional content.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                        <div class="card-img-overlay">
+                            <img class="rounded-circle border img-avatar d-inline-block" src="https://via.placeholder.com/300x150" />                        
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Teacher Name</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </body>
