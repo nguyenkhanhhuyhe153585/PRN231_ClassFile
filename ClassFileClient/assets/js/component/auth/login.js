@@ -1,6 +1,6 @@
-import { setCookie } from "../common/cookies.js";
-import * as CONST from "../common/const.js";
-import * as Route from "../common/routing.js"
+import { setCookie } from "../../common/cookies.js";
+import * as CONST from "../../common/const.js";
+import * as Route from "../../common/routing.js"
 
 export function login() {
   $("#formLogin").submit(function (event) {
@@ -13,10 +13,10 @@ export function login() {
     let password = $("#inputPassword").val();
 
     let option = {};
-    option.url = CONST.domain + "api/auth/login";
-    option.method = "POST";
-    option.contentType = "application/json";
-    option.dataType = "json";
+    option.url = CONST.BackEndApi.Login;
+    option.method = CONST.HttpMethod.POST;
+    option.contentType = CONST.HttpDataType.ApplicationJSON;
+    option.dataType = CONST.HttpDataType.JSON;
     option.data = JSON.stringify({
       username: userName,
       password: password,

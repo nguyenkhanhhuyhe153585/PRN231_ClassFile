@@ -25,8 +25,7 @@ export function addAuthHeader(event, xhr, settings) {
   if (token) {
     $.ajaxSetup({
       headers: {
-        Authorization: `Bearer ${token}`,
-        AccessControlAllowOrigin: "*",
+        Authorization: `bearer ${token}`
       },
     });
   }
@@ -65,4 +64,5 @@ export function verifyAuth() {
 
   // Show document after excute scripts
   $("body").show();
+  return true;
 }
