@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Sign Up</title>
 
     <link rel="stylesheet" href="../assets/libs/bootstrap-5.2.3-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -22,23 +22,35 @@
         <main>
             <div class="row justify-content-center">    
                 <div class="col-md-4 shadow-lg p-3 my-5 bg-body rounded">
-                    <h4 class="mb-3">Login</h4>
-                    <form id="formLogin">
+                    <h4 class="mb-3">Sign Up</h4>
+                    <form id="formSignup">
+                        <div class="mb-3">
+                            <label for="inputFullname" class="form-label">Full name</label>
+                            <input type="text" class="form-control" id="inputFullname"/>
+                        </div>
                         <div class="mb-4">
-                            <label for="inputEmail" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="inputEmail"/>
+                            <label for="inputUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="inputUsername"/>
                         </div>
                         <div class="mb-3">
                             <label for="inputPassword" class="form-label">Password</label>
                             <input type="password" class="form-control" id="inputPassword"/>
                         </div>
                         <div class="mb-3">
+                            <label for="inputPassword2" class="form-label">Confirm password</label>
+                            <input type="password" class="form-control" id="inputPassword2"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputPassword2" class="form-label">Confirm password</label>
+                            <input type="password" class="form-control" id="inputPassword2"/>
+                        </div>
+                        <div class="mb-3">
                             <small id="textLoginError" class="form-text text-danger"></small>
                         </div>
-                        <button type="submit" class="btn btn-primary my-3">Login</button>     
+                        <button type="submit" class="btn btn-primary my-3">Save</button>     
                     </form>
                     <div><p>
-                        You don't have account? <a href="/auth/signup.html">Resister here.</a>
+                        Already have an account? <a href="/auth/login.html">Login here.</a>
                       </p></div>
                 </div>
             </div>
