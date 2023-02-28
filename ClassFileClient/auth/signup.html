@@ -41,13 +41,16 @@
                             <input type="password" class="form-control" id="inputPassword2"/>
                         </div>
                         <div class="mb-3">
-                            <label for="inputPassword2" class="form-label">Confirm password</label>
-                            <input type="password" class="form-control" id="inputPassword2"/>
+                            <label for="selectAccType" class="form-label">You are</label>
+                            <select id="selectAccType" class="form-control">
+                                <option value="TC" selected>Teacher</option>
+                                <option value="STD">Student</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <small id="textLoginError" class="form-text text-danger"></small>
                         </div>
-                        <button type="submit" class="btn btn-primary my-3">Save</button>     
+                        <button type="submit" class="btn btn-primary my-3">Sign up</button>     
                     </form>
                     <div><p>
                         Already have an account? <a href="/auth/login.html">Login here.</a>

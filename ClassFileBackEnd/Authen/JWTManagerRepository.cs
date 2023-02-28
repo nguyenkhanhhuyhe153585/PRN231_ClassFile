@@ -48,6 +48,19 @@ namespace ClassFileBackEnd.Authen
             return encodeToken;
         }
 
+        public string? SignUpAccount(string username, string password, string password2)
+        {
+            Account? user = db.Accounts.FirstOrDefault(x => x.Username == username);
+            if (user != null)
+            {
+                return "This username is used";
+            }
+            if (password2 != password)
+            {
+                return "Confirm password is not match";
+            }
+            return null;
+        }
 
         public static string? GetClaim(string claimName, HttpContext context)
         {

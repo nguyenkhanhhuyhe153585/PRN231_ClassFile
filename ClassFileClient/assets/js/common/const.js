@@ -14,6 +14,7 @@ export let PathRight = {
 
 export let BackEndApi = {
     Login : domain + "api/auth/login",
+    Signup : domain + "api/auth/signup",
     ClassesHome : domain + "api/class",
 }
 
