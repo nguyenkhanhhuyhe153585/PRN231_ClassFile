@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ClassFileBackEnd.Controllers
 {
-    public class PostController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
+    public class PostController : ControllerBase
     {
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult GetPostOfClass()
         {
-            return View();
+            return BadRequest();
         }
     }
 }

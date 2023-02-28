@@ -43,5 +43,27 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responseMsg);
             }
         }
+
+        [HttpGet("{id:int}")]
+        public IActionResult GetClass(int id)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account currentUser = db.Accounts.Where(a => a.Id== currentUserId).Include(a=>a.Classes).SingleOrDefault();
+                Class classGet = currentUser.Classes.SingleOrDefault(c => c.Id == id);
+                if(classGet == null)
+                {
+                    return NotFound();
+                }
+                ClassDTO classDTO = mapper.Map<ClassDTO>(classGet);
+                return Ok(classDTO);
+            }catch(Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
     }
 }
