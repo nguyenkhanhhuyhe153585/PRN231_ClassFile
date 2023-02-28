@@ -3,6 +3,7 @@ import * as Const from "./common/const.js";
 import { ajaxEvent }  from "./common/config.js";
 import { login } from "./component/auth/login.js";
 import { loadClass } from "./component/index.js";
+import { signup } from "./component/auth/signup.js";
 
 function main() {
   Route.includeHTML();
@@ -18,6 +19,8 @@ function main() {
     login();
   } else if (Route.checkPath(Const.Path.Index)) {
     loadClass();
+  } else if (Route.checkPath(Const.Path.Signup)) {
+    signup();
   }
 }
 

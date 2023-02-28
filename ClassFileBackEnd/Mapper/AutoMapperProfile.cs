@@ -10,6 +10,7 @@ namespace ClassFileBackEnd.Mapper
             CreateMap<Class, ClassDTO>();
             CreateMap<Account, AccountDTO>();
             CreateMap<Account, AccountProfileDTO>();
+            CreateMap<AccountSignupDTO, Account>();
         }
     }
 }
