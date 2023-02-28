@@ -25,7 +25,7 @@ export function addAuthHeader(event, xhr, settings) {
   if (token) {
     $.ajaxSetup({
       headers: {
-        Authorization: `bearer ${token}`
+        Authorization: `bearer ${token}`,
       },
     });
   }
@@ -49,6 +49,12 @@ export function redirect(path) {
 
 export function goToPage(path) {
   window.location.href = path;
+}
+
+export function getUrlParam(key) {
+  const queryString = location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get(key);
 }
 
 export function verifyAuth() {
