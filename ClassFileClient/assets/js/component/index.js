@@ -27,7 +27,7 @@ export function loadClass(){
                     <div class="card-body">
                         <h5 class="card-title">${c.className}</h5>
                         <p class="card-text">${c.teacherAccount.fullName}</p>
-                        <a class="stretched-link" href="Go to class"></a>
+                        <a class="stretched-link" href="${Const.Path.Class}?id=${c.id}"></a>
                     </div>
                     <div class="card-footer">
                         <small class="text-muted">Last updated 3 mins ago</small>

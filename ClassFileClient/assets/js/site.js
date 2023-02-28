@@ -4,6 +4,7 @@ import { ajaxEvent }  from "./common/config.js";
 import { login } from "./component/auth/login.js";
 import { loadClass } from "./component/index.js";
 import { signup } from "./component/auth/signup.js";
+import { initClassInfo, loadPostInClass } from "./component/class/class.js";
 
 function main() {
   Route.includeHTML();
@@ -21,6 +22,9 @@ function main() {
     loadClass();
   } else if (Route.checkPath(Const.Path.Signup)) {
     signup();
+  } else if(Route.checkPath(Const.Path.Class)){
+    initClassInfo();
+    loadPostInClass();
   }
 }
 

@@ -17,5 +17,7 @@ public partial class Account
 
     public virtual ICollection<Class> ClassesNavigation { get; } = new List<Class>();
 
+    public virtual ICollection<Post> Posts { get; } = new List<Post>();
+
     public virtual ICollection<Class> Classes { get; } = new List<Class>();
 }

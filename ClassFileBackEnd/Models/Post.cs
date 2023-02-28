@@ -18,4 +18,6 @@ public partial class Post
     public virtual Class? Class { get; set; }
 
     public virtual ICollection<File> Files { get; } = new List<File>();
+
+    public virtual Account? PostedAccount { get; set; }
 }

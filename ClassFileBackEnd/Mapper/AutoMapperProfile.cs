@@ -11,6 +11,8 @@ namespace ClassFileBackEnd.Mapper
             CreateMap<Account, AccountDTO>();
             CreateMap<Account, AccountProfileDTO>();
             CreateMap<AccountSignupDTO, Account>();
+            CreateMap<Post, PostInClassDTO>();
+            CreateMap<ClassFileBackEnd.Models.File, FileDTO>();
         }
     }
 }
