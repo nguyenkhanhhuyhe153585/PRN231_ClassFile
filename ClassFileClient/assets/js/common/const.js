@@ -2,17 +2,19 @@ export let domain = "http://localhost:47858/";
 
 export let Path = {
     Index : "/",
-    Login : "/auth/login.html"
+    Login : "/auth/login.html",
+    Signup: "/auth/signup.html"
 }
 
 export let PathRight = {
-    Anonymous : [Path.Login],
+    Anonymous : [Path.Login, Path.Signup],
     Student : [],
     Teacher : [],
 }
 
 export let BackEndApi = {
     Login : domain + "api/auth/login",
+    Signup : domain + "api/auth/signup",
     ClassesHome : domain + "api/class",
 }
 
