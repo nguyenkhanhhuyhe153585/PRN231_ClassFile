@@ -122,6 +122,10 @@ public partial class ClassfileContext : DbContext
             entity.HasOne(d => d.Class).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.ClassId)
                 .HasConstraintName("FK_post_class");
+
+            entity.HasOne(d => d.PostedAccount).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.PostedAccountId)
+                .HasConstraintName("FK_post_account");
         });
 
         OnModelCreatingPartial(modelBuilder);

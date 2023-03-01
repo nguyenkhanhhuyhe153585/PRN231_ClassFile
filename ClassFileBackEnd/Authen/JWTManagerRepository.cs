@@ -72,5 +72,15 @@ namespace ClassFileBackEnd.Authen
             }
             return value;
         }
+
+        public static int GetCurrentUserId(HttpContext context)
+        {
+            string userIdRaw = GetClaim(JwtRegisteredClaimNames.Name, context);
+            if (userIdRaw == null)
+            {
+                return 0;
+            }
+            return Convert.ToInt32(userIdRaw);
+        }
     }
 }

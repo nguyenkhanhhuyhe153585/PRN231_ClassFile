@@ -3,7 +3,8 @@ export let domain = "http://localhost:47858/";
 export let Path = {
     Index : "/",
     Login : "/auth/login.html",
-    Signup: "/auth/signup.html"
+    Signup: "/auth/signup.html",
+    Class: "/class/index.html",
 }
 
 export let PathRight = {
@@ -16,6 +17,7 @@ export let BackEndApi = {
     Login : domain + "api/auth/login",
     Signup : domain + "api/auth/signup",
     ClassesHome : domain + "api/class",
+    Post: domain + "api/post",
 }
 
 export let HttpCode = {
