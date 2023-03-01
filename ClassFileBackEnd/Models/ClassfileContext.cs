@@ -25,7 +25,7 @@ public partial class ClassfileContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=(local); database=classfile; uid=sa; pwd=sa; TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("server=(local); database=Classfile; uid=sa; pwd=sa; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -56,6 +56,10 @@ public partial class ClassfileContext : DbContext
             entity.ToTable("class");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ClassCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("class_code");
             entity.Property(e => e.ClassName)
                 .HasMaxLength(50)
                 .HasColumnName("class_name");
@@ -92,11 +96,11 @@ public partial class ClassfileContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.FileName)
                 .HasMaxLength(100)
-                .IsFixedLength()
+                .IsUnicode(false)
                 .HasColumnName("file_name");
             entity.Property(e => e.FileType)
                 .HasMaxLength(10)
-                .IsFixedLength()
+                .IsUnicode(false)
                 .HasColumnName("file_type");
             entity.Property(e => e.PostId).HasColumnName("post_id");
 
