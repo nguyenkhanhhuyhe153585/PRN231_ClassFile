@@ -27,8 +27,8 @@ namespace ClassFileBackEnd.Controllers
             try
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
-                var queryAccount = db.Accounts.Where(a => a.Id == currentUserId).Include(a => a.Classes)
-                    .ThenInclude(c => c.Posts).ThenInclude(p=>p.Files)
+                var queryAccount = db.Accounts.Where(a => a.Id == currentUserId)
+                    .Include(a => a.Classes).ThenInclude(c => c.Posts).ThenInclude(p=>p.Files)
                     .Include(a => a.Classes).ThenInclude(c=>c.Posts).ThenInclude(p=>p.PostedAccount);
                 Class? classGet = queryAccount.Single().Classes.Where(c => c.Id == classId).SingleOrDefault();
                 if(classGet == null)
