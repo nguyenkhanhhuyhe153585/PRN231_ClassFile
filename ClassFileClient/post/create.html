@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Up Post</title>
+
+    <link rel="stylesheet" href="../assets/libs/bootstrap-5.2.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <script src="../assets/libs/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/libs/jquery/jquery-3.6.3.js"></script>
+    <script type="module" src="../assets/js/site.js"></script>
+</head>
+
+<body style="display: none;">
+    <div include-html="../fragments/navbar.html" id="navbar">
+    </div>
+    <div class="container my-4">
+        <main>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class=" mb-4">
+                        <span class="h1">Up Post -  </span><span class="h3" id="classNameTitle">ClassName</span>
+                    </div>
+                    <div>
+                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+                            width="40" height="40" class="rounded-circle nav-item border me-1">
+                        <span class="h6">
+                            Nguyen Khanh Huy
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="formCreatePost">
+                        <div class="mb-3">
+                            <label for="contentPostTextArea" class="form-label">Content Post</label>
+                            <textarea class="form-control" id="contentPostTextArea" rows="5"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fileUploadChoose" class="form-label">Attach files</label>
+                            <input id="fileUploadChoose" class="form-control" type="file" multiple>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Post</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

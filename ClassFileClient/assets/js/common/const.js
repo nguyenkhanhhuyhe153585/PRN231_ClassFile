@@ -5,6 +5,9 @@ export let Path = {
     Login : "/auth/login.html",
     Signup: "/auth/signup.html",
     Class: "/class/index.html",
+    Post: {
+        Create:"/post/create.html"
+    }
 }
 
 export let PathRight = {
@@ -18,6 +21,7 @@ export let BackEndApi = {
     Signup : domain + "api/auth/signup",
     ClassesHome : domain + "api/class",
     Post: domain + "api/post",
+    File: domain + "api/file"
 }
 
 export let HttpCode = {
@@ -43,4 +47,7 @@ export let Message = {
     Error : "",
     Oops: "Oops...",
     Process: "Processing",
+    FileTooLarge : "File size can not over 20MB."
 }
+
+export let MaxFileSize = 20971520;

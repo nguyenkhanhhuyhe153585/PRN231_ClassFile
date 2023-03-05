@@ -11,6 +11,8 @@ public partial class Class
 
     public int? TeacherAccountId { get; set; }
 
+    public string? ClassCode { get; set; }
+
     public virtual ICollection<Post> Posts { get; } = new List<Post>();
 
     public virtual Account? TeacherAccount { get; set; }
