@@ -12,13 +12,13 @@ export function ajaxEvent() {
         title: Const.Message.Process,
         allowEscapeKey: false,
         allowOutsideClick: false,
-        timer: 2000,
         didOpen: () => {
           Swal.showLoading();
         },
       });
   });
   $(document).ajaxError(function (event, xhr, settings) {
+    console.log(xhr.responseJSON?.data);
     let message = xhr.responseJSON?.message;
     Swal.fire({
       icon: "error",

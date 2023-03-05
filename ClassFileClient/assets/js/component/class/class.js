@@ -15,6 +15,7 @@ export function initClassInfo() {
   $.ajax(option);
 
   function render(data) {
+    $("#createPostButton").attr("href", `${Const.Path.Post.Create}?classId=${data.id}`)
     $("#classNameCover").html(data.className);
     $("head title", window.parent.document).text(data.className);
   }
@@ -69,7 +70,11 @@ export function loadPostInClass() {
                       ${(function () {
                         let resultLinkFile = "";
                         for (let file of post.files) {
-                          resultLinkFile += `<a href="#" class="d-inline-block link-primary me-3" download>${file.fileName+file.fileType}</a>`;
+                          resultLinkFile += `
+                          <a href="${Const.BackEndApi.File}/${file.fileName}" 
+                          class="d-inline-block link-primary me-3" download="${file.fileNameRoot}">
+                          ${file.fileNameRoot}
+                          </a>`;
                         }
                         return resultLinkFile;
                       })()}                  

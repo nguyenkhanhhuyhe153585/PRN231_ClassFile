@@ -13,5 +13,7 @@ public partial class File
 
     public string? FileType { get; set; }
 
+    public string? FileNameRoot { get; set; }
+
     public virtual Post? Post { get; set; }
 }

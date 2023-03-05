@@ -98,8 +98,12 @@ public partial class ClassfileContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("file_name");
+            entity.Property(e => e.FileNameRoot)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("file_name_root");
             entity.Property(e => e.FileType)
-                .HasMaxLength(10)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("file_type");
             entity.Property(e => e.PostId).HasColumnName("post_id");

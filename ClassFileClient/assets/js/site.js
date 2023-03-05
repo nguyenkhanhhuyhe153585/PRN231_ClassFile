@@ -5,6 +5,7 @@ import { login } from "./component/auth/login.js";
 import { loadClass } from "./component/index.js";
 import { signup } from "./component/auth/signup.js";
 import { initClassInfo, loadPostInClass } from "./component/class/class.js";
+import { createPost, initCreatePost } from "./component/post/create.js";
 
 function main() {
   Route.includeHTML();
@@ -25,6 +26,9 @@ function main() {
   } else if(Route.checkPath(Const.Path.Class)){
     initClassInfo();
     loadPostInClass();
+  } else if (Route.checkPath(Const.Path.Post.Create)){
+    initCreatePost();
+    createPost();
   }
 }
 
