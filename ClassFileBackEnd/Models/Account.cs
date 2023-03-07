@@ -15,6 +15,8 @@ public partial class Account
 
     public string? AccountType { get; set; }
 
+    public string? ImageAvatar { get; set; }
+
     public virtual ICollection<Class> ClassesNavigation { get; } = new List<Class>();
 
     public virtual ICollection<Post> Posts { get; } = new List<Post>();

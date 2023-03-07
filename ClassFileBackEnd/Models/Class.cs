@@ -13,6 +13,8 @@ public partial class Class
 
     public string? ClassCode { get; set; }
 
+    public string? ImageCover { get; set; }
+
     public virtual ICollection<Post> Posts { get; } = new List<Post>();
 
     public virtual Account? TeacherAccount { get; set; }

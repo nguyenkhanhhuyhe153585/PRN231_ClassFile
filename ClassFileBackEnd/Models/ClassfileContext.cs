@@ -41,6 +41,10 @@ public partial class ClassfileContext : DbContext
             entity.Property(e => e.Fullname)
                 .HasMaxLength(200)
                 .HasColumnName("fullname");
+            entity.Property(e => e.ImageAvatar)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("imageAvatar");
             entity.Property(e => e.Password)
                 .HasMaxLength(200)
                 .IsUnicode(false)
@@ -63,6 +67,10 @@ public partial class ClassfileContext : DbContext
             entity.Property(e => e.ClassName)
                 .HasMaxLength(50)
                 .HasColumnName("class_name");
+            entity.Property(e => e.ImageCover)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("imageCover");
             entity.Property(e => e.TeacherAccountId).HasColumnName("teacher_account_id");
 
             entity.HasOne(d => d.TeacherAccount).WithMany(p => p.ClassesNavigation)
