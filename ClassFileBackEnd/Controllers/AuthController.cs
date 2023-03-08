@@ -69,12 +69,5 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responeMessage);
             }
         }
-
-        [HttpPost("info")]
-        [Authorize(Roles = "TC")]
-        public IActionResult Info()
-        {
-            return Ok(db.Accounts.ToList());
-        }
     }
 }

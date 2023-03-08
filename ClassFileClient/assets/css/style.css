@@ -2,9 +2,10 @@ body {
   display: none;
 }
 
-.rounded-circle.img-avatar {
-  width: 100px;
-  height: 100px;
+.rounded-circle.img-avatar-preview {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
 }
 
 .img-cover {
