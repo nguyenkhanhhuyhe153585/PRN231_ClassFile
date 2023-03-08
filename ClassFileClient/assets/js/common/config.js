@@ -18,7 +18,7 @@ export function ajaxEvent() {
       });
   });
   $(document).ajaxError(function (event, xhr, settings) {
-    console.log(xhr.responseJSON?.data);
+    console.log(xhr.responseJSON);
     let message = xhr.responseJSON?.message;
     Swal.fire({
       icon: "error",
@@ -41,7 +41,7 @@ export function ajaxEvent() {
           title: Const.Message.Success,
           showConfirmButton: false,
           timer: 1500,
-        });
+        }).then(Route.back);
       }
     }
   });

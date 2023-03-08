@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+
+    <link rel="stylesheet" href="../../assets/libs/bootstrap-5.2.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+
+    <script src="../../assets/libs/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../assets/libs/jquery/jquery-3.6.3.js"></script>
+    <script type="module" src="../../assets/js/site.js"></script>
+</head>
+
+<body style="display: none;">
+    <div include-html="../../fragments/navbar.html" id="navbar">
+    </div>
+    <div class="container my-4">
+        <main>
+            <div class="row">
+                <div class="col-md-12">
+                    <img id="imagePreviewAvatar" class="rounded-circle img-avatar-preview m-3 img-thumbnail"
+                        src="https://via.placeholder.com/300x150" alt="" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="h5 mb-3">
+                        Edit Profile
+                    </div>
+                    <form class="mb-5" id="formEditProfile">
+                        <div class="mb-3">
+                            <label for="avatarImgFile" class="form-label">Select Avatar</label>
+                            <div class="input-group">
+                                <input class="form-control" type="file" id="avatarImgFile"
+                                    accept="image/png, image/jpeg, image/gif">
+                                <button class="btn btn-outline-danger" type="button"
+                                    id="buttonRemoveAvatar"><i class="fa-solid fa-trash me-2"></i><span>Remove</span></button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputFullName" class="form-label">Full name</label>
+                            <input type="text" class="form-control" id="inputFullName" placeholder="Fullname">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+                <div class="col-lg-3 ms-lg-5">
+                    <div class="h5 mb-3">
+                        Change Password
+                    </div>
+                    <form id="formEditPassword">
+                        <div class="mb-3">
+                            <label for="inputOldPassword" class="form-label">Old Password</label>
+                            <input type="password" class="form-control" id="inputOldPassword" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputNewPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="inputNewPassword" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="inputConfirmPassword" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

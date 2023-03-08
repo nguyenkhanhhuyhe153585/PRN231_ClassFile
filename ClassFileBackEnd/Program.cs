@@ -44,7 +44,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // Config Cors, lưu ý phải add Cors cho cả services phía trên
-app.UseCors(opt => opt.AllowAnyHeader().AllowAnyOrigin());
+app.UseCors(opt => opt.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
 // Authen phải đứng trước autho
 app.UseAuthentication();

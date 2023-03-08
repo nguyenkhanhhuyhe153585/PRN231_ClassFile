@@ -51,6 +51,10 @@ export function goToPage(path) {
   window.location.href = path;
 }
 
+export function back(){
+  window.history.back();
+}
+
 export function getUrlParam(key) {
   const queryString = location.search;
   const urlParams = new URLSearchParams(queryString);

@@ -6,7 +6,7 @@ import { loadClass } from "./component/index.js";
 import { signup } from "./component/auth/signup.js";
 import { initClassInfo, loadPostInClass } from "./component/class/class.js";
 import { createPost, initCreatePost } from "./component/post/create.js";
-import { createClass } from "./component/class/create.js";
+import { editProfile } from "./component/user/editprofile.js";
 
 function main() {
   Route.includeHTML();
@@ -24,14 +24,14 @@ function main() {
     loadClass();
   } else if (Route.checkPath(Const.Path.Signup)) {
     signup();
-  } else if(Route.checkPath(Const.Path.Class.Index)){
+  } else if(Route.checkPath(Const.Path.Class)){
     initClassInfo();
     loadPostInClass();
   } else if (Route.checkPath(Const.Path.Post.Create)){
     initCreatePost();
     createPost();
-  } else if (Route.checkPath(Const.Path.Class.Create)) {
-    createClass();
+  } else if(Route.checkPath(Const.Path.User.Edit)){
+    editProfile();
   }
 }
 
