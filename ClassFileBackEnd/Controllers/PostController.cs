@@ -51,7 +51,6 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpPost]
-        [RequestSizeLimit(100_000_000_000_000)]
         public async Task<IActionResult> CreatePost(IFormCollection form)
         {
             var transaction = db.Database.BeginTransaction();
@@ -107,6 +106,30 @@ namespace ClassFileBackEnd.Controllers
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpGet("{postId}")]
+        public IActionResult GetPost(int postId)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                var queryPost = db.Posts.Where(p => p.Id == postId && p.PostedAccountId == currentUserId)
+                    .Include(p=>p.PostedAccount).Include(p=>p.Files).SingleOrDefault();
+                if (queryPost == null)
+                {
+                    return NotFound();
+                }
+
+                PostInClassDTO postDTO = mapper.Map<PostInClassDTO>(queryPost);
+                return Ok(postDTO);
+            }
+            catch (Exception ex)
+            {
                 ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
                 responseMsg.Data = ex.StackTrace;
                 return BadRequest(responseMsg);
