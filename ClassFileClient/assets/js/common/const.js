@@ -4,7 +4,10 @@ export let Path = {
     Index : "/",
     Login : "/auth/login.html",
     Signup: "/auth/signup.html",
-    Class: "/class/index.html",
+    Class: {
+        Create: "class/create.html",
+        Index: "/class/"
+    },
     Post: {
         Create:"/post/create.html"
     }
@@ -13,7 +16,7 @@ export let Path = {
 export let PathRight = {
     Anonymous : [Path.Login, Path.Signup],
     Student : [],
-    Teacher : [],
+    Teacher : [Path.Class.Index],
 }
 
 export let BackEndApi = {
