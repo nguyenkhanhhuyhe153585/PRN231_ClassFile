@@ -14,6 +14,7 @@ namespace ClassFileBackEnd.Mapper
             CreateMap<Post, PostInClassDTO>();
             CreateMap<ClassFileBackEnd.Models.File, FileDTO>();
             CreateMap<Class, ClassCreateDTO>();
+            CreateMap<ClassCreateDTO, Class>();
         }
     }
 }

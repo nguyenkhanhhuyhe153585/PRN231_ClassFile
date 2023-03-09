@@ -5,8 +5,8 @@ export const Path = {
     Login : "/auth/login.html",
     Signup: "/auth/signup.html",
     Class: {
-        Create: "class/create.html",
-        Index: "/class/"
+        Create: "/class/create.html",
+        Index: "/class/index.html"
     },
     Post: {
         Create:"/post/create.html"
@@ -25,7 +25,10 @@ export const PathRight = {
 export const BackEndApi = {
     Login : DOMAIN + "api/auth/login",
     Signup : DOMAIN + "api/auth/signup",
-    ClassesHome : DOMAIN + "api/class",
+    Classes : {
+        Home: DOMAIN + "api/class",
+        Create: DOMAIN + "api/class/create"
+    },
     Post: DOMAIN + "api/post",
     File: DOMAIN + "api/file",
     Account: {

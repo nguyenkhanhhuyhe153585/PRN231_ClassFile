@@ -5,7 +5,7 @@ import * as Utils from "../../common/utils.js";
 export function initCreatePost() {
   let classId = Route.getUrlParam("classId");
   let option = {};
-  option.url = Const.BackEndApi.ClassesHome + `/${classId}`;
+  option.url = Const.BackEndApi.Classes.Home + `/${classId}`;
   option.type = Const.HttpMethod.GET;
   option.dataType = Const.HttpDataType.JSON;
   option.success = function (data) {
