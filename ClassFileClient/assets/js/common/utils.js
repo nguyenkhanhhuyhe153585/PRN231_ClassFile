@@ -16,3 +16,7 @@ export function parseJwt(token) {
   }
   return null;
 }
+
+export function fileUpload(){
+  
+}

@@ -59,6 +59,7 @@ export const Message = {
     FileTooLarge : "File size can not over 20MB."
 }
 
+export const TOKEN = "token";
 export const ID_PARAM = "id";
 export const EMPTY_STRING = "";
 export const MaxFileSize = 20971520;

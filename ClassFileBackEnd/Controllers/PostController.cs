@@ -135,5 +135,65 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responseMsg);
             }
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePost(IFormCollection form)
+        {
+            var transaction = db.Database.BeginTransaction();
+            try
+            {
+                string? title = form["content"];
+                int accountId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                DateTime? created = DateTime.Now;
+
+                string? postIdRaw = form["id"];
+                int? postId = int.Parse(postIdRaw);
+
+                Post? postDb = db.Posts.Where(p => p.Id == postId).SingleOrDefault();
+                if(postDb == null) { return NotFound(); }
+
+                postDb.Title = title;
+
+                db.Posts.Update(postDb);
+                await db.SaveChangesAsync();
+
+                foreach (var file in form.Files)
+                {
+                    string fileName = file.FileName;
+                    string fileType = Utils.GetFileExtension(fileName);
+
+                    string fileNameWithoutExtension = fileName.Split("." + fileType)[0];
+                    string fileNameForSaving = $"{fileNameWithoutExtension}_{postDb.Id}_{DateTime.Now.ToString("HHmmssddMMyyyy")}.{fileType}";
+
+                    // Lưu file vào tệp của Server
+                    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imageFolder, fileNameForSaving);
+                    Stream fileStream = new FileStream(filePath, FileMode.Create);
+                    await file.CopyToAsync(fileStream);
+                    fileStream.Close();
+
+                    // Tạo đối tượng file gắn với Post
+                    ClassFileBackEnd.Models.File fileDb = new ClassFileBackEnd.Models.File();
+
+                    fileDb.FileType = Utils.GetMimeType(fileType);
+                    fileDb.FileName = fileNameForSaving;
+                    fileDb.FileNameRoot = fileName;
+                    fileDb.PostId = postDb.Id;
+
+                    db.Files.Add(fileDb);
+                }
+
+                await db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
     }
 }

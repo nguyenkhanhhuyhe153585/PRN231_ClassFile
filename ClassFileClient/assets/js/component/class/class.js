@@ -1,5 +1,7 @@
 import * as Const from "../../common/const.js";
 import * as Route from "../../common/routing.js";
+import * as Utils from "../../common/utils.js";
+import * as Cookies from "../../common/cookies.js";
 
 export function initClassInfo() {
   let classId = Route.getUrlParam("id");
@@ -32,6 +34,8 @@ export function loadPostInClass() {
     render(data);
   };
 
+  const currentUserId = Utils.parseJwt(Cookies.getCookie(Const.TOKEN)).name;
+
   $.ajax(option);
 
   function render(data) {
@@ -57,7 +61,13 @@ export function loadPostInClass() {
                               Option
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          ${(function(){
+                            if(post.postedAccount.id == currentUserId){
+                              return `
                               <li><a class="dropdown-item" href="${Const.Path.Post.Edit}?id=${post.id}">Edit</a></li>
+                              `;
+                            }
+                          })()}
                               <li><a class="dropdown-item" href="#">Another action</a></li>
                               <li><a class="dropdown-item" href="#">Something else here</a></li>
                           </ul>
