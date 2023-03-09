@@ -79,17 +79,9 @@ namespace ClassFileBackEnd.Controllers
         {
             try
             {
-                if (!classCreateDTO.ClassCode.Equals(null))
-                {
-                    Class @class = db.Classes.FirstOrDefault(c => c.ClassCode == classCreateDTO.ClassCode);
-                    if (@class != null)
-                    {
-                        ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>("Class code existed!");
-                        return BadRequest(responseMsg);
-                    }
-                }
                 Class newClass = mapper.Map<Class>(classCreateDTO);
                 int currentId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                newClass.ClassCode = Utils.RandomClassCode();
                 newClass.TeacherAccountId = currentId;
                 newClass.Accounts.Add(db.Accounts.Single(c => c.Id == currentId));
                 db.Classes.Add(newClass);

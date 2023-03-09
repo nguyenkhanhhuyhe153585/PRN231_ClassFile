@@ -4,12 +4,14 @@ import * as Utils from "../../common/utils.js";
 
 export function createClass() {
     $("#formCreateClass").submit(function(event) {
+        event.preventDefault();
+
         let token = Cookies.getCookie("token");
         let payloadData = Utils.parseJwt(token);
         let teacherId = payloadData['name'];
         let teacherType = payloadData['role'];
         let className = $("#inputClassName").val();
-        let classCode = $("#inputClassCode").val();
+        // let classCode = $("#inputClassCode").val();
     
         let opt = {};
         opt.url = Const.BackEndApi.Classes.Create;
@@ -18,15 +20,14 @@ export function createClass() {
         opt.dataType = Const.HttpDataType.JSON;
         opt.data = JSON.stringify({
             classname: className,
-            classcode: classCode,
             accountprofile: {
                 id: teacherId,
                 accounttype: teacherType
             }
         });
-        opt.success = function (response) {
-            history.back();
-          };
+        // opt.success = function (response) {
+        //     history.back();
+        // };
         
         $.ajax(opt);
     });
