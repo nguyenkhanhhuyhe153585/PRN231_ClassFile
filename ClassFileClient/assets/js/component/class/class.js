@@ -45,7 +45,7 @@ export function loadPostInClass() {
                       <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
                           width="40" height="40" class="rounded-circle nav-item border me-1">
                       <span class="h6">
-                          ${post.postedAccount.fullName}
+                          ${post.postedAccount.fullname}
                       </span>
                       <span>|</span>
                       <span class="">
@@ -57,7 +57,7 @@ export function loadPostInClass() {
                               Option
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="${Const.Path.Post.Edit}?id=${post.id}">Edit</a></li>
                               <li><a class="dropdown-item" href="#">Another action</a></li>
                               <li><a class="dropdown-item" href="#">Something else here</a></li>
                           </ul>

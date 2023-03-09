@@ -8,6 +8,7 @@ import { initClassInfo, loadPostInClass } from "./component/class/class.js";
 import { createPost, initCreatePost } from "./component/post/create.js";
 import { editProfile } from "./component/user/editprofile.js";
 import { createClass } from "./component/class/create.js";
+import { editPost } from "./component/post/edit.js";
 
 function main() {
   Route.includeHTML();
@@ -35,6 +36,8 @@ function main() {
     editProfile();
   } else if (Route.checkPath(Const.Path.Class.Create)) {
     createClass();
+  } else if (Route.checkPath(Const.Path.Post.Edit)){
+    editPost();
   }
 }
 

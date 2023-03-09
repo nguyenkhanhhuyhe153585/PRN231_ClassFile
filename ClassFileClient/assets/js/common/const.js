@@ -9,7 +9,8 @@ export const Path = {
         Index: "/class/index.html"
     },
     Post: {
-        Create:"/post/create.html"
+        Create:"/post/create.html",
+        Edit: "/post/edit.html",
     },
     User: {
         Edit: "/user/myprofile/edit.html"
@@ -64,6 +65,7 @@ export const Message = {
     FileTooLarge : "File size can not over 20MB."
 }
 
+export const ID_PARAM = "id";
 export const EMPTY_STRING = "";
 export const MaxFileSize = 20971520;
 export const imageHolder = "https://media.istockphoto.com/id/1226328537/vector/image-place-holder-with-a-gray-camera-icon.jpg?s=612x612&w=0&k=20&c=qRydgCNlE44OUSSoz5XadsH7WCkU59-l-dwrvZzhXsI=";
