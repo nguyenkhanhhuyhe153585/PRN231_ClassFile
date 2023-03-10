@@ -78,7 +78,7 @@ function doEditPost(){
 
     form_data.append("id", postId);
     form_data.append("content", contentText);
-
+    form_data.append("fileMode", Const.FileMode.POST);
 
     let totalFileSize = 0;
 

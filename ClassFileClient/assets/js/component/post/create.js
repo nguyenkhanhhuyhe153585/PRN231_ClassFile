@@ -30,7 +30,7 @@ export function createPost() {
 
     form_data.append("classId", classId);
     form_data.append("content", contentText);
-    form_data.append("fileMode", "post");
+    form_data.append("fileMode", Const.FileMode.POST);
 
     let totalFileSize = 0;
 

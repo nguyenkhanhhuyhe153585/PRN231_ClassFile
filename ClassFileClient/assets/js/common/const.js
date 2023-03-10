@@ -60,6 +60,12 @@ export const Message = {
     FileTooLarge : "File size can not over 20MB."
 }
 
+export const FileMode = {
+    POST: "post",
+    AVATAR: "avatar",
+    CLASS: "class",
+}
+
 export const TOKEN = "token";
 export const ID_PARAM = "id";
 export const EMPTY_STRING = "";
