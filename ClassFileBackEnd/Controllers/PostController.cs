@@ -104,7 +104,6 @@ namespace ClassFileBackEnd.Controllers
                         filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, subFolder, fileNameForSaving);
                     }
                     while (System.IO.File.Exists(filePath));
-
                     // Lưu file vào tệp của Server
                     Stream fileStream = new FileStream(filePath, FileMode.Create);
                     await file.CopyToAsync(fileStream);
@@ -132,7 +131,7 @@ namespace ClassFileBackEnd.Controllers
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                ResponseMessageDTO<string> responseMsg = new(ex.Message)
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message)
                 {
                     Data = ex.StackTrace
                 };
