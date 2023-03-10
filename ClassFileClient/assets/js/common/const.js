@@ -30,7 +30,8 @@ export const BackEndApi = {
         My: DOMAIN + "api/account/my",
         Edit: DOMAIN + "api/account/my/edit",
         EditPassword: DOMAIN + "api/account/my/edit/password"
-    }
+    },
+    File: DOMAIN + "api/file",
 }
 
 export const HttpCode = {

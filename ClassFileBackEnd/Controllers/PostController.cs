@@ -16,7 +16,6 @@ namespace ClassFileBackEnd.Controllers
     {
         private readonly ClassfileContext db;
         private readonly IMapper mapper;
-        private readonly string imageFolder = "Resources";
 
         public PostController(ClassfileContext db, IMapper mapper)
         {
@@ -73,41 +72,70 @@ namespace ClassFileBackEnd.Controllers
                 db.Posts.Add(post);             
                 await db.SaveChangesAsync();
 
+
+                # region Lưu Files
+
+                string folderName = Const.ROOT_FOLDER_NAME;
+                string filePath = "";
+                string fileNameForSaving = "";
+
+                string subFolder = Const.folederModeMapping[form["fileMode"]];
+                if (!Const.folederModeMapping.ContainsKey(form["fileMode"]))
+                {
+                    throw new Exception("Folder Mode Not Accepted");
+                };
+
                 foreach (var file in form.Files)
                 {
                     string fileName = file.FileName;
                     string fileType = Utils.GetFileExtension(fileName);
-
-                    string fileNameWithoutExtension = fileName.Split("." + fileType)[0];
-                    string fileNameForSaving = $"{fileNameWithoutExtension}_{post.Id}_{DateTime.Now.ToString("HHmmssddMMyyyy")}.{fileType}";
+                    string fileNameWithoutExtension = fileName.Split("." + fileType)[0];         
+                    
+                    // Triển khai khởi tạo tên file tới khi không có file nào trùng trong Dir
+                    int index = 0;
+                    string indexString = "";
+                    do
+                    {
+                        if (index != 0)
+                        {
+                            indexString = $"_({index})_";
+                        }
+                        fileNameForSaving = $"{fileNameWithoutExtension}{indexString}{DateTime.Now.ToString("HHmmssddMMyyyy")}.{fileType}";
+                        filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, subFolder, fileNameForSaving);
+                    }
+                    while (System.IO.File.Exists(filePath));
 
                     // Lưu file vào tệp của Server
-                    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imageFolder, fileNameForSaving);
                     Stream fileStream = new FileStream(filePath, FileMode.Create);
                     await file.CopyToAsync(fileStream);
                     fileStream.Close();
 
                     // Tạo đối tượng file gắn với Post
-                    ClassFileBackEnd.Models.File fileDb = new ClassFileBackEnd.Models.File();
-
-                    fileDb.FileType = Utils.GetMimeType(fileType);
-                    fileDb.FileName = fileNameForSaving;
-                    fileDb.FileNameRoot = fileName;
-                    fileDb.PostId = post.Id;
+                    ClassFileBackEnd.Models.File fileDb = new()
+                    {
+                        FileType = Utils.GetMimeType(fileType),
+                        FileName = fileNameForSaving,
+                        FileNameRoot = fileName,
+                        PostId = post.Id
+                    };
 
                     db.Files.Add(fileDb);
                 }
 
                 await db.SaveChangesAsync();
-                await transaction.CommitAsync();
 
+                #endregion
+
+                await transaction.CommitAsync();
                 return Ok();
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
-                responseMsg.Data = ex.StackTrace;
+                ResponseMessageDTO<string> responseMsg = new(ex.Message)
+                {
+                    Data = ex.StackTrace
+                };
                 return BadRequest(responseMsg);
             }
         }

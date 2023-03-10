@@ -2,6 +2,13 @@
 {
     public class Const
     {
+        public static IDictionary<string, string> folederModeMapping = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            { "avatar", "User" },
+            {"class", "cover" },
+            { "post", "attack"}
+        };
+        public static string ROOT_FOLDER_NAME = "Resources";
         public static class Role
         {
             public const string TEACHER = "TC";
