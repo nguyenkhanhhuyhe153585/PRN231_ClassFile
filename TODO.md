@@ -1,5 +1,5 @@
 # Các tính năng cần làm tiếp:
-- Phân trang cho classIndex
+- Phân trang cho classIndex --- 50% (pending: giơi han lai so trang hien thi)
 - Hiển thị ngày giờ của bài post mới nhất ở footer thẻ class bên ngoài Index
 - Hiển thị danh sách học viên của lớp học
 - Kích học viên của lớp học ra (TC)

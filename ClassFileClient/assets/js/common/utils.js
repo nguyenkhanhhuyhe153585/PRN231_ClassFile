@@ -1,4 +1,5 @@
-import * as Const from "../common/const.js";
+import * as Const from "./const.js";
+import * as Route from "./routing.js"
 
 export function parseJwt(token) {
   if (token) {
@@ -17,6 +18,21 @@ export function parseJwt(token) {
     return JSON.parse(jsonPayload);
   }
   return null;
+}
+
+export function pagination(pagingResponseData){
+  let pagingResult = "";
+    for (let i = 1; i <= pagingResponseData.totalPage; i++) {
+      pagingResult += `<li class="page-item">
+      <a class="page-link" href="${Route.setUrlParam(Const.PAGE, i)}">${i}</a>
+      </li>`;
+    }
+
+    $("#pagination").html(`<nav aria-label="...">
+    <ul class="pagination" id="pagingList">
+      ${pagingResult}
+    </ul>
+  </nav>`);
 }
 
 // Tạm thời chưa dùng được

@@ -24,22 +24,35 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPostOfClass(int classId)
+        public IActionResult GetPostOfClass(int classId, int page)
         {
             try
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
-                var queryAccount = db.Accounts.Where(a => a.Id == currentUserId)
-                    .Include(a => a.Classes).ThenInclude(c => c.Posts).ThenInclude(p => p.Files)
-                    .Include(a => a.Classes).ThenInclude(c => c.Posts).ThenInclude(p => p.PostedAccount);
-                Class? classGet = queryAccount.Single().Classes.Where(c => c.Id == classId).SingleOrDefault();
-                if (classGet == null)
+                var currentUser = db.Accounts.Find(currentUserId);
+                var queryClassCheckRight = db.Classes.Include(c => c.Accounts).Where(c => c.Id == classId && c.Accounts.Contains(currentUser));
+                if(queryClassCheckRight.Count() == 0)
                 {
-                    return NotFound();
+                    return Unauthorized();
                 }
-                List<Post> posts = classGet.Posts.OrderByDescending(p => p.DateCreated).ToList();
+              
+                var queryClass = queryClassCheckRight.First();
+                var queryPost = db.Posts.Include(p => p.PostedAccount).Include(p => p.Files).Where(p => p.ClassId == classId)
+                    .OrderByDescending(p => p.DateCreated);
+                (IQueryable<Post>, int) pagingResult = Utils.MyQuery<Post>.Paging(queryPost, page);
+                List<Post> posts = pagingResult.Item1.ToList();
+
                 List<PostInClassDTO> postDTO = mapper.Map<List<PostInClassDTO>>(posts);
-                return Ok(postDTO);
+
+                var respone = new PagingResponseDTO<List<PostInClassDTO>>
+                {
+                    Data = postDTO,
+                    PageIndex = page,
+                    TotalPage = pagingResult.Item2,
+                    PageSize = Const.NUMBER_RECORD_PAGE
+                };
+
+                return Ok(respone);
             }
             catch (Exception ex)
             {
@@ -62,14 +75,15 @@ namespace ClassFileBackEnd.Controllers
                 int accountId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 DateTime? created = DateTime.Now;
 
-                Post post = new Post() {
+                Post post = new Post()
+                {
                     ClassId = classId,
                     Title = title,
                     PostedAccountId = accountId,
-                    DateCreated = created 
+                    DateCreated = created
                 };
 
-                db.Posts.Add(post);             
+                db.Posts.Add(post);
                 await db.SaveChangesAsync();
 
 
@@ -100,7 +114,7 @@ namespace ClassFileBackEnd.Controllers
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 var queryPost = db.Posts.Where(p => p.Id == postId && p.PostedAccountId == currentUserId)
-                    .Include(p=>p.PostedAccount).Include(p=>p.Files).SingleOrDefault();
+                    .Include(p => p.PostedAccount).Include(p => p.Files).SingleOrDefault();
                 if (queryPost == null)
                 {
                     return NotFound();
@@ -131,7 +145,7 @@ namespace ClassFileBackEnd.Controllers
                 int? postId = int.Parse(postIdRaw);
 
                 Post? postDb = db.Posts.Where(p => p.Id == postId).SingleOrDefault();
-                if(postDb == null) { return NotFound(); }
+                if (postDb == null) { return NotFound(); }
 
                 postDb.Title = title;
 
@@ -142,8 +156,8 @@ namespace ClassFileBackEnd.Controllers
 
                 Utils utils = new Utils();
                 await utils.FileUpload(form, postDb, db);
-                # endregion
-                
+                #endregion
+
                 await transaction.CommitAsync();
 
                 return Ok();

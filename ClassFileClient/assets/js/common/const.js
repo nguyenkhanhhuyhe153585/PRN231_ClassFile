@@ -66,6 +66,7 @@ export const FileMode = {
     CLASS: "class",
 }
 
+export const PAGE = "page";
 export const TOKEN = "token";
 export const ID_PARAM = "id";
 export const EMPTY_STRING = "";

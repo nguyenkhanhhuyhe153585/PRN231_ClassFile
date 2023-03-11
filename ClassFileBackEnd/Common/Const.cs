@@ -2,6 +2,8 @@
 {
     public class Const
     {
+        public static readonly int NUMBER_RECORD_PAGE = 5; 
+
         public static IDictionary<string, string> folederModeMapping = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
             { "avatar", "User" },
