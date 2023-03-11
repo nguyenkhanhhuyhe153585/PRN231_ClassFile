@@ -37,6 +37,7 @@ function initClassInfo() {
 function loadPostInClass() {
   let classId = Route.getUrlParam("id");
   let page = Route.getUrlParam("page");
+  page = Number(page);
   let option = {};
   option.url = Const.BackEndApi.Post + `?classId=${classId}&page=${page}`;
   option.type = Const.HttpMethod.GET;

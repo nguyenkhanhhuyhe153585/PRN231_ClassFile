@@ -28,16 +28,19 @@ namespace ClassFileBackEnd.Controllers
         {
             try
             {
-                var currentUserId = JWTManagerRepository.GetClaim(JwtRegisteredClaimNames.Name, HttpContext);
-                int currentId = int.Parse(currentUserId);
-                Account? currentUser = db.Accounts.Where(e=>e.Id == currentId).Include(a=>a.Classes)
-                    .ThenInclude(c => c.TeacherAccount).SingleOrDefault();
-                if(currentUser == null)
-                {
-                    return NotFound();
-                }
-                List<Class>? clasese = currentUser.Classes.ToList();
-                List<ClassDTO> classDTOs = mapper.Map<List<ClassDTO>>(clasese);
+                int currentUserId = JWTManagerRepository.GetCurrentUserId (HttpContext);
+                Account currentUser = db.Accounts.Single (a => a.Id == currentUserId);             
+                var queryClassWithLastPost = db.Classes.Include(c => c.Accounts).Include(c => c.Posts).Include(c => c.TeacherAccount)
+                    .Where(c => c.Accounts.Contains(currentUser))
+                    .Select(c => new ClassDTO
+                    {
+                        Id = currentUserId,
+                        ClassName = c.ClassName,
+                        TeacherAccount = mapper.Map<AccountProfileDTO>(c.TeacherAccount),
+                        LastPost = c.Posts.OrderByDescending(p => p.DateCreated).First().DateCreated,
+                    });
+
+                List<ClassDTO> classDTOs = queryClassWithLastPost.ToList();
                 return Ok(classDTOs);
             }
             catch (Exception ex) 

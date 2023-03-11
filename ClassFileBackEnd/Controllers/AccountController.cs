@@ -47,6 +47,8 @@ namespace ClassFileBackEnd.Controllers
             {
                 string? inputUserName = form["username"];
                 string? inputFullName = form["fullname"];
+                var fileImageAvatar = form.Files.FirstOrDefault();
+
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account currentUser = db.Accounts.Single(c => c.Id == currentUserId);
                 if (inputUserName != null && inputUserName != currentUser.Username)

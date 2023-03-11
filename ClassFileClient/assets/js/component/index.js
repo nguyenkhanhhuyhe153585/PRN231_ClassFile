@@ -8,7 +8,7 @@ export function loadClass(){
         option.dataType = Const.HttpDataType.JSON;
         option.success = function (data){
             render(data);
-            // console.log(data);
+            console.log(data);
         }
         
         $.ajax(option);  
@@ -26,11 +26,11 @@ export function loadClass(){
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">${c.className}</h5>
-                        <p class="card-text">${c.teacherAccount.fullName}</p>
+                        <p class="card-text">${c.teacherAccount.fullname}</p>
                         <a class="stretched-link" href="${Const.Path.Class}?id=${c.id}"></a>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
+                        <small class="text-muted">Last updated ${c.lastPost}</small>
                     </div>
                 </div>
             </div>
