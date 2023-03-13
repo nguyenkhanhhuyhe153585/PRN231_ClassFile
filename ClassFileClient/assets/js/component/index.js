@@ -3,7 +3,7 @@ import * as Const from "../common/const.js";
 export function loadClass(){
     
         let option = {};
-        option.url = Const.BackEndApi.ClassesHome;
+        option.url = Const.BackEndApi.Classes.Home;
         option.type = Const.HttpMethod.GET,
         option.dataType = Const.HttpDataType.JSON;
         option.success = function (data){

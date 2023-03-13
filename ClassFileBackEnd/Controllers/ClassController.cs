@@ -73,5 +73,28 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responseMsg);
             }
         }
+
+        [HttpPost("create")]
+        public IActionResult CreateClass([FromBody] ClassCreateDTO classCreateDTO)
+        {
+            try
+            {
+                Class newClass = mapper.Map<Class>(classCreateDTO);
+                int currentId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                newClass.ClassCode = Utils.RandomClassCode();
+                newClass.TeacherAccountId = currentId;
+                newClass.Accounts.Add(db.Accounts.Single(c => c.Id == currentId));
+                db.Classes.Add(newClass);
+                db.SaveChanges();
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
     }
 }

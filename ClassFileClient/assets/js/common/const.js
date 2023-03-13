@@ -4,7 +4,10 @@ export const Path = {
     Index : "/",
     Login : "/auth/login.html",
     Signup: "/auth/signup.html",
-    Class: "/class/index.html",
+    Class: {
+        Create: "/class/create.html",
+        Index: "/class/index.html"
+    },
     Post: {
         Create:"/post/create.html",
         Edit: "/post/edit.html",
@@ -17,13 +20,16 @@ export const Path = {
 export const PathRight = {
     Anonymous : [Path.Login, Path.Signup],
     Student : [],
-    Teacher : [],
+    Teacher : [Path.Class.Index],
 }
 
 export const BackEndApi = {
     Login : DOMAIN + "api/auth/login",
     Signup : DOMAIN + "api/auth/signup",
-    ClassesHome : DOMAIN + "api/class",
+    Classes : {
+        Home: DOMAIN + "api/class",
+        Create: DOMAIN + "api/class/create"
+    },
     Post: DOMAIN + "api/post",
     File: DOMAIN + "api/file",
     Account: {
