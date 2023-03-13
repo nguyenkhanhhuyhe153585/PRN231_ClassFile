@@ -4,7 +4,10 @@ export const Path = {
   Index: "/",
   Login: "/auth/login.html",
   Signup: "/auth/signup.html",
-  Class: "/class/index.html",
+  Class: {
+        Create: "/class/create.html",
+        Index: "/class/index.html"
+    },
   Post: {
     Create: "/post/create.html",
     Edit: "/post/edit.html",
@@ -21,21 +24,17 @@ export const PathRight = {
 };
 
 export const BackEndApi = {
-  Login: DOMAIN + "api/auth/login",
-  Signup: DOMAIN + "api/auth/signup",
-  ClassesHome: DOMAIN + "api/class",
-  Post: DOMAIN + "api/post",
-  File: {
-    Common: DOMAIN + "api/file",
-    Attack: DOMAIN + "api/file",
-    AvatarImage: DOMAIN + "api/file/avatar",
-  },
-  Account: {
-    My: DOMAIN + "api/account/my",
-    Edit: DOMAIN + "api/account/my/edit",
-    EditPassword: DOMAIN + "api/account/my/edit/password",
-  },
-};
+    Login : DOMAIN + "api/auth/login",
+    Signup : DOMAIN + "api/auth/signup",
+    ClassesHome : DOMAIN + "api/class",
+    Post: DOMAIN + "api/post",
+    File: DOMAIN + "api/file",
+    Account: {
+        My: DOMAIN + "api/account/my",
+        Edit: DOMAIN + "api/account/my/edit",
+        EditPassword: DOMAIN + "api/account/my/edit/password"
+    }
+}
 
 export const HttpCode = {
   Ok: 200,
