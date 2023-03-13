@@ -5,9 +5,9 @@ export const Path = {
   Login: "/auth/login.html",
   Signup: "/auth/signup.html",
   Class: {
-        Create: "/class/create.html",
-        Index: "/class/index.html"
-    },
+    Create: "/class/create.html",
+    Index: "/class/index.html",
+  },
   Post: {
     Create: "/post/create.html",
     Edit: "/post/edit.html",
@@ -24,17 +24,23 @@ export const PathRight = {
 };
 
 export const BackEndApi = {
-    Login : DOMAIN + "api/auth/login",
-    Signup : DOMAIN + "api/auth/signup",
-    ClassesHome : DOMAIN + "api/class",
-    Post: DOMAIN + "api/post",
-    File: DOMAIN + "api/file",
-    Account: {
-        My: DOMAIN + "api/account/my",
-        Edit: DOMAIN + "api/account/my/edit",
-        EditPassword: DOMAIN + "api/account/my/edit/password"
-    }
-}
+  Login: DOMAIN + "api/auth/login",
+  Signup: DOMAIN + "api/auth/signup",
+  Classes: {
+    Home: DOMAIN + "api/class",
+    Create: DOMAIN + "api/class/create"
+  },
+  Post: DOMAIN + "api/post",
+  File: {
+    Index: DOMAIN + "api/file",
+    Attack: DOMAIN + "api/file"
+  },
+  Account: {
+    My: DOMAIN + "api/account/my",
+    Edit: DOMAIN + "api/account/my/edit",
+    EditPassword: DOMAIN + "api/account/my/edit/password",
+  },
+};
 
 export const HttpCode = {
   Ok: 200,
@@ -60,7 +66,7 @@ export const Message = {
   Oops: "Oops...",
   Process: "Processing",
   FileTooLarge: "File size can not over 20MB.",
-  NoFileSelect: "There is no file was selected!"
+  NoFileSelect: "There is no file was selected!",
 };
 
 export const FileMode = {

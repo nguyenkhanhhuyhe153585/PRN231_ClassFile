@@ -83,7 +83,7 @@ function initEditInfo() {
   $.ajax(option);
   function render(data) {
     console.log(data);
-    $("#imagePreviewAvatar").attr("src", Utils.getUrlImage(data.imageAvatar));
+    $("#imagePreviewAvatar").attr("src", Utils.getUrlImage(Const.FileMode.AVATAR, data.imageAvatar));
 
     $("#inputUsername").attr("placeholder", data.username);
     $("#inputFullName").attr("placeholder", data.fullname);

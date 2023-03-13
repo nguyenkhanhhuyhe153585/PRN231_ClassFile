@@ -57,7 +57,7 @@ function deleteFile(fileId) {
   const postId = Route.getUrlParam(Const.ID_PARAM);
 
   let option = {};
-  option.url = Const.BackEndApi.File + `/${postId}/${fileId}`;
+  option.url = Const.BackEndApi.File.Index + `/${postId}/${fileId}`;
   option.type = Const.HttpMethod.DELETE;
   option.success = function(){
     initEditPostData();

@@ -60,7 +60,7 @@ function loadPostInClass() {
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <img src="${Utils.getUrlImage(post.postedAccount.imageAvatar)}"
+                        <img src="${Utils.getUrlImage(Const.FileMode.AVATAR, post.postedAccount.imageAvatar)}"
                             width="40" height="40" class="rounded-circle nav-item border me-1">
                         <span class="h6">
                             ${post.postedAccount.fullname}
@@ -95,7 +95,7 @@ function loadPostInClass() {
                           let resultLinkFile = "";
                           for (let file of post.files) {
                             resultLinkFile += `
-                            <a href="${Const.BackEndApi.File.Attack}/${file.fileName}" 
+                            <a href="${Const.BackEndApi.File.Index}/${file.fileName}" 
                             class="d-inline-block link-primary me-3" download="${file.fileNameRoot}">
                             ${file.fileNameRoot}
                             </a>`;

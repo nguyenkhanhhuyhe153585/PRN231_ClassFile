@@ -26,7 +26,7 @@ function main() {
     loadClass();
   } else if (Route.checkPath(Const.Path.Signup)) {
     signup();
-  } else if (Route.checkPath(Const.Path.Class)) {
+  } else if (Route.checkPath(Const.Path.Class.Index)) {
     classAction();
   } else if (Route.checkPath(Const.Path.Post.Create)) {
     initCreatePost();

@@ -25,9 +25,14 @@ export function parseJwt(token) {
   return null;
 }
 
-
-export function getUrlImage(imageFileName){
-  let imageUrl = (Boolean(imageFileName))? `${Const.BackEndApi.File.AvatarImage}/${imageFileName}` : Const.IMAGE_HOLDER
+/**
+ * Dựa theo fileMode và fileName để lấy data image tương ứng
+ * @param {string} fileMode 
+ * @param {string} imageFileName 
+ * @returns {string} URL
+ */
+export function getUrlImage(fileMode, imageFileName){
+  let imageUrl = (Boolean(imageFileName))? `${Const.BackEndApi.File.Index}/${fileMode}/${imageFileName}` : Const.IMAGE_HOLDER
   return imageUrl;
 }
 
@@ -92,7 +97,7 @@ export function fileUpload(idFileInputElement, fileMode) {
     }
 
     let option = {};
-    option.url = Const.BackEndApi.File.Common;
+    option.url = Const.BackEndApi.File.Index;
     option.data = form_data;
     option.type = Const.HttpMethod.POST;
     option.processData = false;

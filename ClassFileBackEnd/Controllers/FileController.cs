@@ -52,13 +52,13 @@ namespace ClassFileBackEnd.Controllers
             }
         }
 
-        [HttpGet("avatar/{fileName}")]
+        [HttpGet("{folderMode}/{fileName}")]
         [AllowAnonymous]
-        public IActionResult GetAvatar(string fileName)
+        public IActionResult GetAvatar(string folderMode, string fileName)
         {
             try
             {
-                string subFolderName = Const.folederModeMapping["avatar"];
+                string subFolderName = Const.folederModeMapping[folderMode];
                 string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, subFolderName, fileName);
                 if (!System.IO.File.Exists(filePath))
                 {
