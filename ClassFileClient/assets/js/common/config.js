@@ -17,6 +17,7 @@ export function ajaxEvent() {
         },
       });
   });
+
   $(document).ajaxError(function (event, xhr, settings) {
     console.log(xhr.responseJSON);
     let message = xhr.responseJSON?.message;
@@ -25,12 +26,15 @@ export function ajaxEvent() {
       title: Const.Message.Oops,
       text: message,
       footer: xhr.status + " - " + xhr.statusText,
+    }).then(function(){
+      // Thực hiện các hành động sau khi báo lỗi
+      if (xhr.status === Const.HttpCode.UnAuthorized) {
+        Route.redirect(Const.Path.Login);
+      }
     });
   });
-  $(document).ajaxComplete(function (event, xhr, settings) {
-    if (xhr.status === Const.HttpCode.UnAuthorized) {
-      Route.redirect(Const.Path.Login);
-    }
+
+  $(document).ajaxComplete(function (event, xhr, settings) {   
     if (
       settings.type === Const.HttpMethod.POST ||
       settings.type === Const.HttpMethod.PUT

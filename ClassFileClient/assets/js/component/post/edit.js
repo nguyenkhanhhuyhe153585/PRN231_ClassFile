@@ -3,10 +3,13 @@ import * as Route from "../../common/routing.js";
 
 export function editPost() {
   initEditPostData();
+  doEditPost();
 }
 
 async function initEditPostData() {
   const postId = Route.getUrlParam(Const.ID_PARAM);
+  // Add postId as attribute for form element;
+  $("#formCreatePost").attr("data-postId", postId);
 
   let option = {};
   option.url = Const.BackEndApi.Post + `/${postId}`;
@@ -23,7 +26,7 @@ async function initEditPostData() {
     for (let f of data.files) {
       result += `
             <tr>
-                <td class="fileName"><a href="${Const.BackEndApi.File}/${f.fileName}" data-fileId="${f.id}">${f.fileNameRoot}</a></td>
+                <td class="fileName"><a href="${Const.BackEndApi.File}/${f.fileName}" target="_blank" data-fileId="${f.id}">${f.fileNameRoot}</a></td>
                 <td class="text-end btnRow"><a href="#" class="btnRemoveFile text-danger">Remove</a></td>
             </tr>
             `;
@@ -54,10 +57,53 @@ function deleteFile(fileId) {
   const postId = Route.getUrlParam(Const.ID_PARAM);
 
   let option = {};
-  option.url = Const.BackEndApi.File + `/${postId}/${fileId}`;
+  option.url = Const.BackEndApi.File.Index + `/${postId}/${fileId}`;
   option.type = Const.HttpMethod.DELETE;
   option.success = function(){
     initEditPostData();
   }
   $.ajax(option);
+}
+
+function doEditPost(){
+  $("#formCreatePost").submit(function (event) {
+    event.preventDefault();
+
+    // Tạo form data
+    let form_data = new FormData();
+
+    let postId = $("#formCreatePost").attr("data-postId");
+    let contentText = $("#contentPostTextArea").val();
+    let file_datas = $("#fileUploadChoose").prop("files");
+
+    form_data.append("id", postId);
+    form_data.append("content", contentText);
+    form_data.append("fileMode", Const.FileMode.POST);
+
+    let totalFileSize = 0;
+
+    for (let fdata of file_datas) {
+      totalFileSize += fdata.size;
+      
+      form_data.append("file", fdata);
+    }
+    if(totalFileSize >= Const.MaxFileSize){
+      let message = Const.Message.FileTooLarge;
+      Swal.fire({
+        icon: "error",
+        title: Const.Message.Oops,
+        text: message,
+      });
+      return;
+    }
+
+    let option = {};
+    option.url = Const.BackEndApi.Post;
+    option.data = form_data;
+    option.type = Const.HttpMethod.PUT;
+    option.processData = false;
+    option.contentType = false;
+    option.cache = false;
+    $.ajax(option);
+  });
 }

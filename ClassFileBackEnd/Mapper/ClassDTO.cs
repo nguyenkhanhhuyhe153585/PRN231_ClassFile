@@ -9,5 +9,7 @@ namespace ClassFileBackEnd.Mapper
         public string? ClassName { get; set; }
 
         public AccountProfileDTO? TeacherAccount { get; set; }
+
+        public DateTime? LastPost { get; set; }
     }
 }

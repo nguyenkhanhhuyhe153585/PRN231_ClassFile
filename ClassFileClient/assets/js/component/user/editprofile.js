@@ -1,10 +1,15 @@
 import * as Const from "../../common/const.js";
 import * as Route from "../../common/routing.js";
+import * as Utils from "../../common/utils.js";
+
+let fileImageResponseName;
 
 export function editProfile() {
+  initEditInfo();
   previewSelectedImage();
   removeImage();
-  initEditInfo();
+  uploadImage();
+  changeImage();
   editInfo();
   editPassword();
 }
@@ -26,10 +31,43 @@ function previewSelectedImage() {
   }
 }
 
+function uploadImage() {
+  let $btnUpload = $("#buttonUploadAvatar");
+  $btnUpload
+    .removeClass("btn-success")
+    .addClass("btn-outline-primary")
+    .html("Upload");
+  $btnUpload.click(async function () {
+    try {
+      let fileUploadResponse = await Utils.fileUpload(
+        "#avatarImgFile",
+        Const.FileMode.AVATAR
+      );
+      if (fileUploadResponse) {
+        $btnUpload
+          .removeClass("btn-outline-primary")
+          .addClass("btn-success")
+          .html("Uploaded")
+          .unbind("click");
+        fileImageResponseName = fileUploadResponse[0].fileName;
+        console.log(fileUploadResponse);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
+
+function changeImage() {
+  $("#avatarImgFile").change(uploadImage);
+}
+
 function removeImage() {
   $("#buttonRemoveAvatar").click(function () {
     $("#imagePreviewAvatar").attr("src", Const.imageHolder);
     $("#avatarImgFile").val(Const.EMPTY_STRING);
+    fileImageResponseName = Const.EMPTY_STRING;
+    uploadImage();
   });
 }
 
@@ -44,13 +82,14 @@ function initEditInfo() {
 
   $.ajax(option);
   function render(data) {
+    console.log(data);
+    $("#imagePreviewAvatar").attr("src", Utils.getUrlImage(Const.FileMode.AVATAR, data.imageAvatar));
+
     $("#inputUsername").attr("placeholder", data.username);
     $("#inputFullName").attr("placeholder", data.fullname);
 
     $("#inputUsername").val(data.username);
     $("#inputFullName").val(data.fullname);
-
-    //TODO: render hiển thị ảnh avatar hiện tại
   }
 }
 
@@ -60,43 +99,45 @@ function editInfo() {
 
     let username = $("#inputUsername").val();
     let fullname = $("#inputFullName").val();
-
+    
     let form = new FormData();
     form.append("username", username);
     form.append("fullname", fullname);
+    if (fileImageResponseName != undefined) {
+      form.append("imageAvatar", fileImageResponseName);;
+    }
 
     let option = {};
     option.url = Const.BackEndApi.Account.Edit;
     option.type = Const.HttpMethod.PUT;
     option.processData = false;
-    option.contentType = false;    
+    option.contentType = false;
     option.data = form;
-    
+
     $.ajax(option);
   });
 }
 
-function editPassword(){
-    $("#formEditPassword").submit(function (event) {
-        event.preventDefault();
-    
-        let oldPassword = $("#inputOldPassword").val();
-        let newPassword = $("#inputNewPassword").val();
-        let cfPassword = $("#inputConfirmPassword").val();
-    
+function editPassword() {
+  $("#formEditPassword").submit(function (event) {
+    event.preventDefault();
 
-        let dataRequest = {
-            oldPassword: oldPassword,
-            newPassword: newPassword,
-            confirmPassword: cfPassword
-        }
-    
-        let option = {};
-        option.url = Const.BackEndApi.Account.EditPassword;
-        option.type = Const.HttpMethod.PUT;
-        option.contentType = Const.HttpDataType.ApplicationJSON;   
-        option.dataType = Const.HttpDataType.JSON;
-        option.data = JSON.stringify(dataRequest);
-        $.ajax(option);
-      });
+    let oldPassword = $("#inputOldPassword").val();
+    let newPassword = $("#inputNewPassword").val();
+    let cfPassword = $("#inputConfirmPassword").val();
+
+    let dataRequest = {
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+      confirmPassword: cfPassword,
+    };
+
+    let option = {};
+    option.url = Const.BackEndApi.Account.EditPassword;
+    option.type = Const.HttpMethod.PUT;
+    option.contentType = Const.HttpDataType.ApplicationJSON;
+    option.dataType = Const.HttpDataType.JSON;
+    option.data = JSON.stringify(dataRequest);
+    $.ajax(option);
+  });
 }

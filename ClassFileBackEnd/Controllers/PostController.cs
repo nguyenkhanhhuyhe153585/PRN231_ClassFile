@@ -16,7 +16,6 @@ namespace ClassFileBackEnd.Controllers
     {
         private readonly ClassfileContext db;
         private readonly IMapper mapper;
-        private readonly string imageFolder = "Resources";
 
         public PostController(ClassfileContext db, IMapper mapper)
         {
@@ -25,22 +24,35 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPostOfClass(int classId)
+        public IActionResult GetPostOfClass(int classId, int page)
         {
             try
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
-                var queryAccount = db.Accounts.Where(a => a.Id == currentUserId)
-                    .Include(a => a.Classes).ThenInclude(c => c.Posts).ThenInclude(p => p.Files)
-                    .Include(a => a.Classes).ThenInclude(c => c.Posts).ThenInclude(p => p.PostedAccount);
-                Class? classGet = queryAccount.Single().Classes.Where(c => c.Id == classId).SingleOrDefault();
-                if (classGet == null)
+                var currentUser = db.Accounts.Find(currentUserId);
+                var queryClassCheckRight = db.Classes.Include(c => c.Accounts).Where(c => c.Id == classId && c.Accounts.Contains(currentUser));
+                if(queryClassCheckRight.Count() == 0)
                 {
-                    return NotFound();
+                    return Unauthorized();
                 }
-                List<Post> posts = classGet.Posts.OrderByDescending(p => p.DateCreated).ToList();
+              
+                var queryClass = queryClassCheckRight.First();
+                var queryPost = db.Posts.Include(p => p.PostedAccount).Include(p => p.Files).Where(p => p.ClassId == classId)
+                    .OrderByDescending(p => p.DateCreated);
+                (IQueryable<Post>, int) pagingResult = Utils.MyQuery<Post>.Paging(queryPost, page);
+                List<Post> posts = pagingResult.Item1.ToList();
+
                 List<PostInClassDTO> postDTO = mapper.Map<List<PostInClassDTO>>(posts);
-                return Ok(postDTO);
+
+                var respone = new PagingResponseDTO<List<PostInClassDTO>>
+                {
+                    Data = postDTO,
+                    PageIndex = page,
+                    TotalPage = pagingResult.Item2,
+                    PageSize = Const.NUMBER_RECORD_PAGE
+                };
+
+                return Ok(respone);
             }
             catch (Exception ex)
             {
@@ -63,51 +75,34 @@ namespace ClassFileBackEnd.Controllers
                 int accountId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 DateTime? created = DateTime.Now;
 
-                Post post = new Post() {
+                Post post = new Post()
+                {
                     ClassId = classId,
                     Title = title,
                     PostedAccountId = accountId,
-                    DateCreated = created 
+                    DateCreated = created
                 };
 
-                db.Posts.Add(post);             
+                db.Posts.Add(post);
                 await db.SaveChangesAsync();
 
-                foreach (var file in form.Files)
-                {
-                    string fileName = file.FileName;
-                    string fileType = Utils.GetFileExtension(fileName);
 
-                    string fileNameWithoutExtension = fileName.Split("." + fileType)[0];
-                    string fileNameForSaving = $"{fileNameWithoutExtension}_{post.Id}_{DateTime.Now.ToString("HHmmssddMMyyyy")}.{fileType}";
+                # region Lưu Files
 
-                    // Lưu file vào tệp của Server
-                    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imageFolder, fileNameForSaving);
-                    Stream fileStream = new FileStream(filePath, FileMode.Create);
-                    await file.CopyToAsync(fileStream);
-                    fileStream.Close();
+                Utils utils = new Utils();
+                await utils.FileUpload(form, post, db);
+                # endregion
 
-                    // Tạo đối tượng file gắn với Post
-                    ClassFileBackEnd.Models.File fileDb = new ClassFileBackEnd.Models.File();
-
-                    fileDb.FileType = Utils.GetMimeType(fileType);
-                    fileDb.FileName = fileNameForSaving;
-                    fileDb.FileNameRoot = fileName;
-                    fileDb.PostId = post.Id;
-
-                    db.Files.Add(fileDb);
-                }
-
-                await db.SaveChangesAsync();
                 await transaction.CommitAsync();
-
                 return Ok();
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
-                responseMsg.Data = ex.StackTrace;
+                ResponseMessageDTO<string> responseMsg = new(ex.Message)
+                {
+                    Data = ex.StackTrace
+                };
                 return BadRequest(responseMsg);
             }
         }
@@ -119,7 +114,7 @@ namespace ClassFileBackEnd.Controllers
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 var queryPost = db.Posts.Where(p => p.Id == postId && p.PostedAccountId == currentUserId)
-                    .Include(p=>p.PostedAccount).Include(p=>p.Files).SingleOrDefault();
+                    .Include(p => p.PostedAccount).Include(p => p.Files).SingleOrDefault();
                 if (queryPost == null)
                 {
                     return NotFound();
@@ -130,6 +125,46 @@ namespace ClassFileBackEnd.Controllers
             }
             catch (Exception ex)
             {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePost(IFormCollection form)
+        {
+            var transaction = db.Database.BeginTransaction();
+            try
+            {
+                string? title = form["content"];
+                int accountId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                DateTime? created = DateTime.Now;
+
+                string? postIdRaw = form["id"];
+                int? postId = int.Parse(postIdRaw);
+
+                Post? postDb = db.Posts.Where(p => p.Id == postId).SingleOrDefault();
+                if (postDb == null) { return NotFound(); }
+
+                postDb.Title = title;
+
+                db.Posts.Update(postDb);
+                await db.SaveChangesAsync();
+
+                # region Lưu Files
+
+                Utils utils = new Utils();
+                await utils.FileUpload(form, postDb, db);
+                #endregion
+
+                await transaction.CommitAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
                 ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
                 responseMsg.Data = ex.StackTrace;
                 return BadRequest(responseMsg);

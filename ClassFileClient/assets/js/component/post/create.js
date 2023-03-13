@@ -1,6 +1,5 @@
 import * as Route from "../../common/routing.js";
 import * as Const from "../../common/const.js";
-import * as Utils from "../../common/utils.js";
 
 export function initCreatePost() {
   let classId = Route.getUrlParam("classId");
@@ -23,8 +22,6 @@ export function initCreatePost() {
 export function createPost() {
   $("#formCreatePost").submit(function (event) {
     event.preventDefault();
-
-    // Tạo form data
     let form_data = new FormData();
 
     let classId = Route.getUrlParam("classId");
@@ -33,6 +30,7 @@ export function createPost() {
 
     form_data.append("classId", classId);
     form_data.append("content", contentText);
+    form_data.append("fileMode", Const.FileMode.POST);
 
     let totalFileSize = 0;
 

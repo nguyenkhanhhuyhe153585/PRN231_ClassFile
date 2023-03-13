@@ -51,8 +51,14 @@ export function goToPage(path) {
   window.location.href = path;
 }
 
-export function back(){
+export function back() {
   window.history.back();
+}
+
+export function setUrlParam(key, value) {
+  const urlObject = new URL(window.location.href);
+  urlObject.searchParams.set(key, value);
+  return urlObject.toString();
 }
 
 export function getUrlParam(key) {
