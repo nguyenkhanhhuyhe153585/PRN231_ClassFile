@@ -1,9 +1,17 @@
-﻿using ClassFileBackEnd.Models;
+﻿using Azure.Core;
+using ClassFileBackEnd.Models;
 
 namespace ClassFileBackEnd.Common
 {
     public class Utils
     {
+        public static string GetDomain(HttpContext context)
+        {
+            string domainName = context.Request.Host.Value;
+            return domainName;
+
+        }
+
         public static class MyQuery<T>
         {
             public static (IQueryable<T>, int)Paging(IQueryable<T> query, int pageNumber)

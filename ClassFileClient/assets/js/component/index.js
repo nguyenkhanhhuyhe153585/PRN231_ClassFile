@@ -1,4 +1,5 @@
 import * as Const from "../common/const.js";
+import * as Utils from "../common/utils.js";
 
 export function loadClass(){
     
@@ -22,7 +23,9 @@ export function loadClass(){
                 <div class="card h-100">
                     <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
                     <div class="card-img-overlay">
-                        <img class="rounded-circle border img-avatar d-inline-block" src="https://via.placeholder.com/300x150" />                        
+                        <img class="rounded-circle border img-avatar d-inline-block" src="${
+                            Utils.getUrlImage(c.teacherAccount.imageAvatar)
+                        }" />                        
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">${c.className}</h5>

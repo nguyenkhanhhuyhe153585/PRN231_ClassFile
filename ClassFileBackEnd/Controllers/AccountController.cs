@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ClassFileBackEnd.Authen;
+using ClassFileBackEnd.Common;
 using ClassFileBackEnd.Mapper;
 using ClassFileBackEnd.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -41,13 +42,13 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpPut("my/edit")]
-        public IActionResult Edit(IFormCollection form)
+        public async Task<IActionResult> Edit(IFormCollection form)
         {
             try
             {
                 string? inputUserName = form["username"];
                 string? inputFullName = form["fullname"];
-                var fileImageAvatar = form.Files.FirstOrDefault();
+                string? imageAvatar = form["imageAvatar"];
 
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account currentUser = db.Accounts.Single(c => c.Id == currentUserId);
@@ -59,6 +60,48 @@ namespace ClassFileBackEnd.Controllers
                 {
                     currentUser.Fullname = inputFullName;
                 }
+
+                //#region Lưu file image Avatar
+                //var fileImageAvatar = form.Files.FirstOrDefault();
+
+                //if (fileImageAvatar != null)
+                //{
+                //    string folderName = Const.ROOT_FOLDER_NAME;
+                //    string subFolder = Const.folederModeMapping["avatar"];
+
+                //    string fileName = fileImageAvatar.FileName;
+                //    string fileType = Utils.GetFileExtension(fileName);
+
+                //    // Triển khai khởi tạo tên file tới khi không có file nào trùng trong Dir
+                //    string fileNameForSaving = "";
+                //    string filePath = "";
+                //    int index = 0;
+                //    string indexString = "";
+                //    do
+                //    {
+                //        if (index != 0)
+                //        {
+                //            indexString = $"({index})_";
+                //        }
+                //        fileNameForSaving = $"{currentUserId}_{indexString}{DateTime.Now.ToString("HHmmssddMMyyyy")}.{fileType}";
+                //        filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, subFolder, fileNameForSaving);
+                //    }
+                //    while (System.IO.File.Exists(filePath));
+
+                //    // Lưu file vào tệp của Server
+                //    Stream fileStream = new FileStream(filePath, FileMode.Create);
+                //    await fileImageAvatar.CopyToAsync(fileStream);
+                //    fileStream.Close();
+                //currentUser.ImageAvatar = fileNameForSaving;
+
+                //}
+                //#endregion
+
+                if (imageAvatar != null && imageAvatar != currentUser.ImageAvatar)
+                {
+                    currentUser.ImageAvatar = imageAvatar;
+                }
+
                 db.Accounts.Update(currentUser);
                 db.SaveChanges();
                 return Ok();
@@ -79,7 +122,7 @@ namespace ClassFileBackEnd.Controllers
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account currentUser = db.Accounts.Single(c => c.Id == currentUserId);
-                if(currentUser.Password != passwordDTO.OldPassword)
+                if (currentUser.Password != passwordDTO.OldPassword)
                 {
                     string message = "Wrong old password";
                     ResponseMessageDTO<string> mess = new ResponseMessageDTO<string>(message);

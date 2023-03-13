@@ -1,6 +1,11 @@
 import * as Const from "./const.js";
 import * as Route from "./routing.js"
 
+/**
+ * 
+ * @param {string} token 
+ * @returns {jsonPayload}
+ */
 export function parseJwt(token) {
   if (token) {
     let base64Url = token.split(".")[1];
@@ -20,6 +25,17 @@ export function parseJwt(token) {
   return null;
 }
 
+
+export function getUrlImage(imageFileName){
+  let imageUrl = (Boolean(imageFileName))? `${Const.BackEndApi.File.AvatarImage}/${imageFileName}` : Const.IMAGE_HOLDER
+  return imageUrl;
+}
+
+/**
+ * Paging sau khi được render sẽ được cho vào bên trong thẻ div
+ * có id paginnation <div id="pagination"></div>
+ * @param {PagingResponseDTO} pagingResponseData 
+ */
 export function pagination(pagingResponseData){
   let pagingResult = "";
     for (let i = 1; i <= pagingResponseData.totalPage; i++) {
@@ -35,9 +51,16 @@ export function pagination(pagingResponseData){
   </nav>`);
 }
 
-// Tạm thời chưa dùng được
-function fileUpload(idFileInputElement, fileMode) {
-  return new Promise((resolve) => {
+/**
+ * Dùng chung cho upload các file ảnh Avatar, Class cover,...
+ * Thêm await trước khi gọi hàm
+ * @async
+ * @param {string} idFileInputElement 
+ * @param {string} fileMode
+ * @returns {Promise<FileDTO>}
+ */
+export function fileUpload(idFileInputElement, fileMode) {
+  return new Promise((resolve, reject) => {
     let form_data = new FormData();
     let file_datas = $(idFileInputElement).prop("files");
     form_data.append("fileMode", fileMode);
@@ -47,6 +70,16 @@ function fileUpload(idFileInputElement, fileMode) {
       totalFileSize += fdata.size;
       form_data.append("file", fdata);
     }
+    if(totalFileSize === 0){
+      let message = Const.Message.NoFileSelect;
+      Swal.fire({
+        icon: "error",
+        title: Const.Message.Oops,
+        text: message,
+      });
+      reject(new Error("rejected!"));
+      return;
+    }
     if (totalFileSize >= Const.MaxFileSize) {
       let message = Const.Message.FileTooLarge;
       Swal.fire({
@@ -54,11 +87,12 @@ function fileUpload(idFileInputElement, fileMode) {
         title: Const.Message.Oops,
         text: message,
       });
+      reject(new Error("rejected!"));
       return;
     }
 
     let option = {};
-    option.url = Const.BackEndApi.File;
+    option.url = Const.BackEndApi.File.Common;
     option.data = form_data;
     option.type = Const.HttpMethod.POST;
     option.processData = false;
@@ -67,7 +101,6 @@ function fileUpload(idFileInputElement, fileMode) {
     option.global = false;
 
     option.error = function (event, xhr, settings) {
-      console.log(xhr.responseJSON);
       let message = xhr.responseJSON?.message;
       Swal.fire({
         icon: "error",

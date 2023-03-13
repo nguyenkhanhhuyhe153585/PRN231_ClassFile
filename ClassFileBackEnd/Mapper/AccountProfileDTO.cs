@@ -10,6 +10,8 @@
 
         public string? ImageAvatar { get; set; }
 
+        public string? ImagaAvatarUrl { get; set; }
+
         public string? AccountType { get; set; }
     }
 }

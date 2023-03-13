@@ -32,7 +32,34 @@ namespace ClassFileBackEnd.Controllers
         {
             try
             {
-                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, fileName);
+                string subFolderName = Const.folederModeMapping["post"];
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, subFolderName, fileName);
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return NotFound();
+                };
+                Byte[] b = System.IO.File.ReadAllBytes(filePath);
+
+                string fileType = Utils.GetFileExtension(fileName);
+                string mimeType = Utils.GetMimeType(fileType);
+                return File(b, mimeType);
+            }
+            catch (Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpGet("avatar/{fileName}")]
+        [AllowAnonymous]
+        public IActionResult GetAvatar(string fileName)
+        {
+            try
+            {
+                string subFolderName = Const.folederModeMapping["avatar"];
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, subFolderName, fileName);
                 if (!System.IO.File.Exists(filePath))
                 {
                     return NotFound();
