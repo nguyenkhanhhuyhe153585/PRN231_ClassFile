@@ -22,11 +22,13 @@ function initClassInfo() {
   $.ajax(option);
 
   function render(data) {
+    console.log(data);
     $("#createPostButton").attr(
       "href",
       `${Const.Path.Post.Create}?classId=${data.id}`
     );
-    $("#classNameCover").html(data.className);
+    $("#classCoverImage").attr("src", Utils.getUrlImage(Const.FileMode.CLASS, data.imageCover));
+    $("#classNameCover").html(data.className + " - " + data.classCode);
     $("head title", window.parent.document).text(data.className);
   }
 }

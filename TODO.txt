@@ -2,5 +2,7 @@
 - Phân trang cho classIndex --- 50% (pending: giơi han lai so trang hien thi)
 - Hiển thị danh sách học viên của lớp học
 - Kích học viên của lớp học ra (TC)
-- Đăng ảnh bìa, ảnh avatar cho lớp, cho người dùng
+- Đăng ảnh bìa, ảnh avatar cho lớp, cho người dùng -- 70%, còn edit class
 - Format lại định dạng ngày giờ
+- Edit class
+- PlaceHolder cho tất cả các trang hiển thị dữ liệu
