@@ -67,6 +67,17 @@ export function getUrlParam(key) {
   return urlParams.get(key);
 }
 
+/**
+ * Kiểm tra role trong token hiện tại có trùng với role truyền vào
+ * @param {String} roleCheck 
+ * @returns {Boolean}
+ */
+export function checkRole(roleCheck){
+  let token = Cookies.getCookie(Const.TOKEN);
+  let jwtPayload = Utils.parseJwt(token);
+  return roleCheck == jwtPayload[Const.Payload.Typ];
+}
+
 export function verifyAuth() {
   let token = Cookies.getCookie("token");
   let isAnonymous = Const.PathRight.Anonymous.includes(getPath());

@@ -1,5 +1,6 @@
 import * as Const from "../../common/const.js";
 import * as Route from "../../common/routing.js";
+import * as Utils from "../../common/utils.js";
 
 export function editPost() {
   initEditPostData();
@@ -8,7 +9,7 @@ export function editPost() {
 
 async function initEditPostData() {
   const postId = Route.getUrlParam(Const.ID_PARAM);
-  // Add postId as attribute for form element;
+  // Add as attribute for form element;
   $("#formCreatePost").attr("data-postId", postId);
 
   let option = {};
@@ -31,7 +32,11 @@ async function initEditPostData() {
             </tr>
             `;
     }
+    $("#classNameTitle").html(data.class.className);
     $("#tableFilePreview").html(result);
+    $("#imageAvatar").attr("src", Utils.getUrlImage(Const.FileMode.AVATAR, data.postedAccount.imageAvatar));
+    $("#postedAccountName").html(data.postedAccount.fullname);
+    $("#postedDatetime").html(Utils.formatDate(data.dateCreated));
   }
 
   $.ajax(option);

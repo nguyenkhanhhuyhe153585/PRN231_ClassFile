@@ -114,7 +114,7 @@ namespace ClassFileBackEnd.Controllers
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 var queryPost = db.Posts.Where(p => p.Id == postId && p.PostedAccountId == currentUserId)
-                    .Include(p => p.PostedAccount).Include(p => p.Files).SingleOrDefault();
+                    .Include(p => p.PostedAccount).Include(p => p.Files).Include(p => p.Class).SingleOrDefault();
                 if (queryPost == null)
                 {
                     return NotFound();

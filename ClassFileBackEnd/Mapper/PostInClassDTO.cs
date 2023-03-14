@@ -17,5 +17,7 @@ namespace ClassFileBackEnd.Mapper
         public DateTime? DateCreated { get; set; }
 
         public virtual List<FileDTO> Files { get; } = new List<FileDTO>();
+
+        public ClassInPostDTO? Class { get; set; }
     }
 }

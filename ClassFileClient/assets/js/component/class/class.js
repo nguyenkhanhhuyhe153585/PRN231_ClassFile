@@ -10,7 +10,6 @@ export function classAction() {
 
 function initClassInfo() {
   let classId = Route.getUrlParam("id");
-
   let option = {};
   option.url = Const.BackEndApi.Classes.Home + `/${classId}`;
   option.type = Const.HttpMethod.GET;
@@ -28,8 +27,31 @@ function initClassInfo() {
       `${Const.Path.Post.Create}?classId=${data.id}`
     );
     $("#classCoverImage").attr("src", Utils.getUrlImage(Const.FileMode.CLASS, data.imageCover));
-    $("#classNameCover").html(data.className + " - " + data.classCode);
+    $("#classNameCover").html(data.className);
     $("head title", window.parent.document).text(data.className);
+    initPanel(data);
+  }
+}
+
+function initPanel(data){
+  if(Route.checkRole(Const.Role.Teacher)){
+    let result = `
+    <div class="row mb-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2">Class Code:</h6>
+                    <h5 class="card-title mb-2" id="classCode">${data.classCode}</h5>
+                    <a href="#" class="card-link mb-2">RegenCode</a>
+                    <p class="card-text mt-3 text-muted">(Provide this code for student can join this
+                        class)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    $("#actionPanel").append(result);
   }
 }
 
@@ -59,7 +81,7 @@ function loadPostInClass() {
     for (let post of dataPosts) {
       result += `
         <div class="row mb-3">
-            <div class="col-lg-8">
+            <div class="col">
                 <div class="card">
                     <div class="card-header">
                         <img src="${Utils.getUrlImage(Const.FileMode.AVATAR, post.postedAccount.imageAvatar)}"
@@ -69,7 +91,7 @@ function loadPostInClass() {
                         </span>
                         <span>|</span>
                         <span class="">
-                            ${post.dateCreated}
+                            ${Utils.formatDate(post.dateCreated )}
                         </span>
                         <div class="dropdown d-inline ms-3">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
