@@ -9,7 +9,6 @@ export function editProfile() {
   previewSelectedImage();
   removeImage();
   uploadImage();
-  changeImage();
   editInfo();
   editPassword();
 }
@@ -56,10 +55,6 @@ function uploadImage() {
       console.log(error);
     }
   });
-}
-
-function changeImage() {
-  $("#avatarImgFile").change(uploadImage);
 }
 
 function removeImage() {

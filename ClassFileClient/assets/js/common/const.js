@@ -28,7 +28,8 @@ export const BackEndApi = {
   Signup: DOMAIN + "api/auth/signup",
   Classes: {
     Home: DOMAIN + "api/class",
-    Create: DOMAIN + "api/class/create"
+    Create: DOMAIN + "api/class/create",
+    Join: DOMAIN + "api/class/join"
   },
   Post: DOMAIN + "api/post",
   File: {
@@ -46,6 +47,7 @@ export const HttpCode = {
   Ok: 200,
   BadRequest: 400,
   UnAuthorized: 401,
+  Forbiden: 403,
 };
 
 export const HttpMethod = {

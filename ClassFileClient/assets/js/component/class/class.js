@@ -26,15 +26,18 @@ function initClassInfo() {
       "href",
       `${Const.Path.Post.Create}?classId=${data.id}`
     );
-    $("#classCoverImage").attr("src", Utils.getUrlImage(Const.FileMode.CLASS, data.imageCover));
+    $("#classCoverImage").attr(
+      "src",
+      Utils.getUrlImage(Const.FileMode.CLASS, data.imageCover)
+    );
     $("#classNameCover").html(data.className);
     $("head title", window.parent.document).text(data.className);
     initPanel(data);
   }
 }
 
-function initPanel(data){
-  if(Route.checkRole(Const.Role.Teacher)){
+function initPanel(data) {
+  if (Route.checkRole(Const.Role.Teacher)) {
     let result = `
     <div class="row mb-3">
         <div class="col">
@@ -42,7 +45,7 @@ function initPanel(data){
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2">Class Code:</h6>
                     <h5 class="card-title mb-2" id="classCode">${data.classCode}</h5>
-                    <a href="#" class="card-link mb-2">RegenCode</a>
+                    <a href="javascript:void(0)" class="card-link mb-2">RegenCode</a>
                     <p class="card-text mt-3 text-muted">(Provide this code for student can join this
                         class)
                     </p>
@@ -75,7 +78,6 @@ function loadPostInClass() {
   $.ajax(option);
 
   function render(data) {
-    const currentUserId = Utils.parseJwt(Cookies.getCookie(Const.TOKEN)).name;
     let dataPosts = data.data;
     let result = "";
     for (let post of dataPosts) {
@@ -84,14 +86,17 @@ function loadPostInClass() {
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <img src="${Utils.getUrlImage(Const.FileMode.AVATAR, post.postedAccount.imageAvatar)}"
+                        <img src="${Utils.getUrlImage(
+                          Const.FileMode.AVATAR,
+                          post.postedAccount.imageAvatar
+                        )}"
                             width="40" height="40" class="rounded-circle nav-item border me-1">
                         <span class="h6">
                             ${post.postedAccount.fullname}
                         </span>
                         <span>|</span>
                         <span class="">
-                            ${Utils.formatDate(post.dateCreated )}
+                            ${Utils.formatDate(post.dateCreated)}
                         </span>
                         <div class="dropdown d-inline ms-3">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
@@ -100,14 +105,13 @@ function loadPostInClass() {
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             ${(function () {
-                              if (post.postedAccount.id == currentUserId) {
+                              if (Utils.checkUser(post.postedAccount.id)) {
                                 return `
                                 <li><a class="dropdown-item" href="${Const.Path.Post.Edit}?id=${post.id}">Edit</a></li>
                                 `;
                               }
+                              return "";
                             })()}
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </div>
                     </div>

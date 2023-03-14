@@ -1,7 +1,13 @@
 import * as Route from "../../common/routing.js";
 import * as Const from "../../common/const.js";
+import * as Utils from "../../common/utils.js";
 
-export function initCreatePost() {
+export function createPost(){
+  initCreatePost();
+  doCreatePost();
+}
+
+function initCreatePost() {
   let classId = Route.getUrlParam("classId");
   let option = {};
   option.url = Const.BackEndApi.Classes.Home + `/${classId}`;
@@ -19,7 +25,7 @@ export function initCreatePost() {
   }
 }
 
-export function createPost() {
+function doCreatePost() {
   $("#formCreatePost").submit(function (event) {
     event.preventDefault();
     let form_data = new FormData();

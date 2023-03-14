@@ -15,28 +15,21 @@ function joinClass() {
         autocapitalize: "off",
       },
       showCancelButton: true,
-      confirmButtonText: "Look up",
+      confirmButtonText: "Join",
       showLoaderOnConfirm: true,
-      preConfirm: async (login) => {
-        try {
-          const response = await fetch(`//api.github.com/users/${login}`);
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return await response.json();
-        } catch (error) {
-          Swal.showValidationMessage(`Request failed: ${error}`);
-        }
+      preConfirm: function (classCode) {
+        $.ajax({
+          url: Const.BackEndApi.Classes.Join,
+          type: Const.HttpMethod.POST,
+          contentType: Const.HttpDataType.ApplicationJSON,
+          dataType: Const.HttpDataType.JSON,
+          data: JSON.stringify({
+            classCode: classCode,
+          }),
+        });
       },
 
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: `${result.value.login}'s avatar`,
-          imageUrl: result.value.avatar_url,
-        });
-      }
+      // allowOutsideClick: () => !Swal.isLoading(),
     });
   });
 }

@@ -28,8 +28,8 @@ namespace ClassFileBackEnd.Controllers
         {
             try
             {
-                int currentUserId = JWTManagerRepository.GetCurrentUserId (HttpContext);
-                Account currentUser = db.Accounts.Single (a => a.Id == currentUserId);             
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account currentUser = db.Accounts.Single(a => a.Id == currentUserId);
                 var queryClassWithLastPost = db.Classes.Include(c => c.Accounts).Include(c => c.Posts).Include(c => c.TeacherAccount)
                     .Where(c => c.Accounts.Contains(currentUser))
                     .Select(c => new ClassDTO
@@ -44,7 +44,7 @@ namespace ClassFileBackEnd.Controllers
                 List<ClassDTO> classDTOs = queryClassWithLastPost.ToList();
                 return Ok(classDTOs);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
                 responseMsg.Data = ex.StackTrace;
@@ -60,13 +60,14 @@ namespace ClassFileBackEnd.Controllers
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account? currentUser = db.Accounts.Find(currentUserId);
                 Class? classFromDB = db.Classes.Where(c => c.Id == id && c.Accounts.Contains(currentUser)).FirstOrDefault();
-                if(classFromDB == null)
+                if (classFromDB == null)
                 {
                     return NotFound();
                 }
                 ClassDTO classDTO = mapper.Map<ClassDTO>(classFromDB);
                 return Ok(classDTO);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
                 responseMsg.Data = ex.StackTrace;
@@ -89,7 +90,38 @@ namespace ClassFileBackEnd.Controllers
 
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+
+        [HttpPost("join")]
+        [Authorize(Roles = Const.Role.STUDENT)]
+        public IActionResult JoinClass([FromBody] ClassCodeDTO classCodeDTO)
+        {
+            try
+            {
+                var queryClass = db.Classes.Where(c => c.ClassCode == classCodeDTO.ClassCode).FirstOrDefault();
+                if (queryClass == null)
+                {
+                    ResponseMessageDTO<string> responseMsg = new("Class Not Found!");
+                    return NotFound(responseMsg);
+                }
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                var currentUser = db.Accounts.Include(a => a.Classes).Single(a => a.Id == currentUserId);
+                if (currentUser.Classes.Contains(queryClass))
+                {
+                    throw new Exception("You have already joined this class");
+                }
+                queryClass.Accounts.Add(currentUser);
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
             {
                 ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
                 responseMsg.Data = ex.StackTrace;

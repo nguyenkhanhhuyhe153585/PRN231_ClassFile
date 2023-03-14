@@ -1,4 +1,5 @@
 import * as Const from "./const.js";
+import { getCookie } from "./cookies.js";
 import * as Route from "./routing.js";
 
 /**
@@ -129,6 +130,37 @@ export function fileUpload(idFileInputElement, fileMode) {
         timer: 1500,
       });
       resolve(response);
+    };
+    $.ajax(option);
+  });
+}
+
+export function checkUser(userId){
+  let token = getCookie(Const.TOKEN);
+  let jwtPayload = parseJwt(token);
+  let currentUserId = jwtPayload[Const.Payload.Name];
+  return userId == currentUserId;
+}
+
+/**
+ * Lấy thông tin người dùng hiện tại và điền vào các thẻ tương ứng trong screen
+ *
+ * @returns {AccountProfileDTO} data
+ */
+export function getCurrentUserInfo() {
+  return new Promise(function (resolve) {
+    let option = {};
+    option.url = Const.BackEndApi.Account.My;
+    option.type = Const.HttpMethod.GET;
+    option.dataType = Const.HttpDataType.JSON;
+
+    option.success = function (data) {
+      $(".userName").html(data.Fullname);
+      $("img.userAvatar").attr(
+        "src",
+        getUrlImage(Const.FileMode.AVATAR, data.imageAvatar)
+      );
+      resolve(data);
     };
     $.ajax(option);
   });
