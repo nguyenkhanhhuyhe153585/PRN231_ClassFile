@@ -24,60 +24,85 @@
         <main>
             <div class="row my-3">
                 <div class="col-12">
-                    <div class="card bg-light text-white">
-                        <img class="card-img img-cover" id="classCoverImage" src="https://via.placeholder.com/400x150.jpg?text=Class+cover"
-                            alt="class image cover">
-                        <div class="card-img-overlay d-flex align-items-end">
-                            <h3 class="card-title" id="classNameCover">Class Name</h3>
+                    <div class="card text-white">
+                        <img class="card-img img-cover" id="classCoverImage"
+                            src="https://via.placeholder.com/400x150.jpg?text=Class+cover" alt="class image cover">
+                        <div class="card-img-overlay d-flex align-items-end bg-black bg-opacity-50">
+                            <h1 class="card-title" id="classNameCover">Class Name</h1>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row mb-3">
-                <div class="col-lg-8">
-                    <a id="createPostButton" class="btn btn-primary" href="../post/create.html">
-                        <span class="h5"><i class="fa-solid fa-plus me-2"></i>Create post</span>
-                    </a>
-                </div>
-            </div>
-            <div>
-                <div id="postContainter" class="mb-5">
+                <div id="actionPanel" class="col-lg-3 container mb-3">
                     <div class="row mb-3">
-                        <div class="col-lg-8">
+                        <div class="col">
                             <div class="card">
-                                <div class="card-header">
-                                    <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
-                                        width="40" height="40" class="rounded-circle nav-item border me-1">
-                                    <span class="h6">
-                                        Nguyen Khanh Huy
-                                    </span>
-                                    <span>|</span>
-                                    <span class="">
-                                        12:12
-                                    </span>
-                                    <div class="dropdown d-inline ms-3">
-                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Option
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
                                 <div class="card-body">
-                                    <p class="card-text">With supporting text below as a natural lead-in to additional
-                                        content.
+                                    <h6 class="card-subtitle mb-2">Class Code:</h6>
+                                    <h5 class="card-title mb-2" id="classCode">[Class Code]</h5>
+                                    <a href="#" class="card-link mb-2">RegenCode</a>
+                                    <p class="card-text mt-3 text-muted">(Provide this code for student can join this
+                                        class)
                                     </p>
-                                    <a href="#" class="btn-link link-primary" download>Tệp đính kèm</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="pagination"></div>
+                <div class="col-lg-9 container">
+                    <div class="row mb-3 justify-content-end">
+                        <div class="col-auto">
+                            <a id="createPostButton" class="btn btn-primary" href="../post/create.html">
+                                <span class="h5"><i class="fa-solid fa-plus me-2"></i>Create post</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="postContainter">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+                                            width="40" height="40" class="rounded-circle nav-item border me-1">
+                                        <span class="h6">
+                                            Nguyen Khanh Huy
+                                        </span>
+                                        <span>|</span>
+                                        <span class="">
+                                            12:12
+                                        </span>
+                                        <div class="dropdown d-inline ms-3">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                Option
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">With supporting text below as a natural lead-in to
+                                            additional
+                                            content.
+                                        </p>
+                                        <a href="#" class="btn-link link-primary" download>Tệp đính kèm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-auto">
+                            <div id="pagination"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>

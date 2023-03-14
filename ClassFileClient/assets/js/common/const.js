@@ -60,6 +60,11 @@ export const HttpDataType = {
   ApplicationJSON: "application/json",
 };
 
+export const Role = {
+  Teacher : "TC",
+  Student: "STD",
+}
+
 export const Message = {
   Success: "Successful",
   Error: "",
@@ -77,6 +82,10 @@ export const FileMode = {
 
 export const IMAGE_HOLDER = "https://via.placeholder.com/300x150";
 
+export const Payload = {
+  Typ: "typ",
+  Name: "name"
+}
 export const PAGE = "page";
 export const TOKEN = "token";
 export const ID_PARAM = "id";

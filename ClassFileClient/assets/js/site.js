@@ -2,7 +2,7 @@ import * as Route from "./common/routing.js";
 import * as Const from "./common/const.js";
 import { ajaxEvent } from "./common/config.js";
 import { login } from "./component/auth/login.js";
-import { loadClass } from "./component/index.js";
+import { index } from "./component/index.js";
 import { signup } from "./component/auth/signup.js";
 import { classAction } from "./component/class/class.js";
 import { createPost, initCreatePost } from "./component/post/create.js";
@@ -23,7 +23,7 @@ function main() {
   if (Route.checkPath(Const.Path.Login)) {
     login();
   } else if (Route.checkPath(Const.Path.Index)) {
-    loadClass();
+    index();
   } else if (Route.checkPath(Const.Path.Signup)) {
     signup();
   } else if (Route.checkPath(Const.Path.Class.Index)) {

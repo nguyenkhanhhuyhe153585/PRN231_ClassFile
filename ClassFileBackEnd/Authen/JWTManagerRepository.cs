@@ -30,7 +30,9 @@ namespace ClassFileBackEnd.Authen
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim(ClaimTypes.Role, user.AccountType.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, user.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Name, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Typ, user.AccountType.ToString())
+
             };
             var tokenKey = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
             var securityKey = new SymmetricSecurityKey(tokenKey);
