@@ -6,7 +6,7 @@
 
         public static IDictionary<string, string> folederModeMapping = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
-            { "avatar", "User" },
+            { "avatar", "user" },
             {"class", "cover" },
             { "post", "attack"}
         };

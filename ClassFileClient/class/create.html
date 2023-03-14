@@ -28,17 +28,34 @@
                         <span class="h1">New class</span>
                     </div>
                     <div>
-                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+                        <img id="accountAvatar" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
                             width="40" height="40" class="rounded-circle nav-item border me-1">
-                        <span class="h6">
+                        <span class="h6" id="accountName">
                             Nguyen Khanh Huy
                         </span>
                     </div>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-12">
+                    <img id="imagePreviewCover" class="img-cover-preview m-3 img-thumbnail"
+                        src="https://via.placeholder.com/300x150" alt="" />
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <form id="formCreateClass">
+                        <div class="mb-3">
+                            <label for="coverImageFile" class="form-label">Select Cover</label>
+                            <div class="input-group">
+                                <input class="form-control" type="file" id="coverImageFile"
+                                    accept="image/png, image/jpeg, image/gif">
+                                <button class="btn btn-outline-danger" type="button" id="buttonRemoveCover"><i
+                                        class="fa-solid fa-trash me-2"></i><span>Remove</span></button>
+                                <button class="btn btn-outline-primary" type="button"
+                                    id="buttonUploadCover"><span>Upload</span></button>
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <label for="inputClassName" class="form-label">Class name</label>
                             <input class="form-control" id="inputClassName" type="text" required/>

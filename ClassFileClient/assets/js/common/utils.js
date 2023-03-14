@@ -103,20 +103,8 @@ export function fileUpload(idFileInputElement, fileMode) {
     option.processData = false;
     option.contentType = false;
     option.cache = false;
-    option.global = false;
-
-    option.error = function (event, xhr, settings) {
-      let message = xhr.responseJSON?.message;
-      Swal.fire({
-        icon: "error",
-        title: Const.Message.Oops,
-        text: message,
-        footer: xhr.status + " - " + xhr.statusText,
-      });
-      if (xhr.status === Const.HttpCode.UnAuthorized) {
-        Route.redirect(Const.Path.Login);
-      }
-    };
+    option.suppressGlobalComplete = true;
+    
     option.success = function (response) {
       Swal.fire({
         icon: "success",

@@ -19,7 +19,10 @@ export function loadClass() {
       result += `
             <div class="col">
                 <div class="card h-100">
-                    <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+                    <img src="${Utils.getUrlImage(
+                      Const.FileMode.CLASS,
+                      c.imageCover
+                    )}" class="card-img-top" alt="...">
                     <div class="card-img-overlay">
                         <img class="rounded-circle border img-avatar d-inline-block" src="${Utils.getUrlImage(
                           Const.FileMode.AVATAR,

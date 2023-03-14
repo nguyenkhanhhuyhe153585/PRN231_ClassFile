@@ -1,21 +1,21 @@
 body {
   display: none;
 }
-
-.rounded-circle.img-avatar-preview {
-  width: 10rem;
-  height: 10rem;
+img {
   object-fit: cover;
+}
+
+.rounded-circle.img-avatar-preview, .img-cover-preview {
+  width: 30rem;
+  height: 15rem;
 }
 
 .rounded-circle.img-avatar {
   width: 5em;
   height: 5em;
-  object-fit: cover;
 }
 
 .img-cover {
   width: 100%;
   height: 30vh;
-  object-fit: cover;
 }

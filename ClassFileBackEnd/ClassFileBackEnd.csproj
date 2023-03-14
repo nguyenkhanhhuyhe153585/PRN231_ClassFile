@@ -23,6 +23,9 @@
     <None Update="Resources\attack\temp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\cover\temp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\temp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

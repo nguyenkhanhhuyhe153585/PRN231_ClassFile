@@ -35,6 +35,9 @@ export function ajaxEvent() {
   });
 
   $(document).ajaxComplete(function (event, xhr, settings) {   
+    if(settings.suppressGlobalComplete){
+      return;
+    }
     if (
       settings.type === Const.HttpMethod.POST ||
       settings.type === Const.HttpMethod.PUT

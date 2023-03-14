@@ -34,10 +34,11 @@ namespace ClassFileBackEnd.Controllers
                     .Where(c => c.Accounts.Contains(currentUser))
                     .Select(c => new ClassDTO
                     {
-                        Id = currentUserId,
+                        Id = c.Id,
                         ClassName = c.ClassName,
                         TeacherAccount = mapper.Map<AccountProfileDTO>(c.TeacherAccount),
                         LastPost = c.Posts.OrderByDescending(p => p.DateCreated).First().DateCreated,
+                        ImageCover = c.ImageCover
                     });
 
                 List<ClassDTO> classDTOs = queryClassWithLastPost.ToList();
@@ -57,17 +58,13 @@ namespace ClassFileBackEnd.Controllers
             try
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
-                Account? currentUser = db.Accounts.Where(a => a.Id== currentUserId).Include(a=>a.Classes).SingleOrDefault();
-                if (currentUser == null)
+                Account? currentUser = db.Accounts.Find(currentUserId);
+                Class? classFromDB = db.Classes.Where(c => c.Id == id && c.Accounts.Contains(currentUser)).FirstOrDefault();
+                if(classFromDB == null)
                 {
                     return NotFound();
                 }
-                Class classGet = currentUser.Classes.SingleOrDefault(c => c.Id == id);
-                if(classGet == null)
-                {
-                    return NotFound();
-                }
-                ClassDTO classDTO = mapper.Map<ClassDTO>(classGet);
+                ClassDTO classDTO = mapper.Map<ClassDTO>(classFromDB);
                 return Ok(classDTO);
             }catch(Exception ex)
             {
