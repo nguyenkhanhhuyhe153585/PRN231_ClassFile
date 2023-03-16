@@ -89,6 +89,8 @@ export function verifyAuth() {
   let payloadData = Utils.parseJwt(token);
   console.log(payloadData);
 
+  // Init Current Info for navbar
+  Utils.getCurrentUserInfo();
   // Show document after excute scripts
   $("body").show();
   return true;

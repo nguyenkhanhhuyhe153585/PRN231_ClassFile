@@ -16,7 +16,6 @@ function main() {
   Route.includeHTML();
   Route.addAuthHeader();
   ajaxEvent();
-  Utils.getCurrentUserInfo();
 
   if (!Route.verifyAuth()) {
     return;
@@ -30,7 +29,7 @@ function main() {
   } else if (Route.checkPath(Const.Path.Signup)) {
     signup();
   } else if (Route.checkPath(Const.Path.Class.Index)) {
-    classAction();
+    // classAction();
   } else if (Route.checkPath(Const.Path.Post.Create)) {
     createPost();
   } else if (Route.checkPath(Const.Path.User.Edit)) {

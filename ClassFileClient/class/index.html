@@ -28,7 +28,20 @@
                         <img class="card-img img-cover" id="classCoverImage"
                             src="https://via.placeholder.com/400x150.jpg?text=Class+cover" alt="class image cover">
                         <div class="card-img-overlay d-flex align-items-end bg-black bg-opacity-50">
-                            <h1 class="card-title" id="classNameCover">Class Name</h1>
+                            <h1 class="card-title" id="classNameCover" aria-hidden="true"></span></h1>
+                            <div class="dropdown ms-auto">
+                                <div id="classMenu">
+                                    <!-- <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Option
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul> -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -36,13 +49,29 @@
 
             <div class="row mb-3">
                 <div id="actionPanel" class="col-lg-3 container mb-3">
-                    
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 placeholder-glow">
+                                        <span class="placeholder col-3"></span>
+                                    </h6>
+                                    <h5 class="card-title mb-2 placeholder-glow" id="classCode"><span class="placeholder col-6"></span></h5>
+                                    <p class="placeholder-glow mb-2"><span class="placeholder col-3 bg-primary"></span></p>
+                                    <p class="card-text mt-3 text-muted placeholder-glow">
+                                        <span class="placeholder col-3"></span>
+                                        <span class="placeholder col-7"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-9 container">
                     <div class="row mb-3 justify-content-end">
                         <div class="col-auto">
-                            <a id="createPostButton" class="btn btn-primary" href="../post/create.html">
-                                <span class="h5"><i class="fa-solid fa-plus me-2"></i>Create post</span>
+                            <a id="createPostButton" class="btn btn-primary placeholder disabled" aria-hidden="true" href="../post/create.html">
+                                
                             </a>
                         </div>
                     </div>
@@ -51,38 +80,75 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-header">
-                                        <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
-                                            width="40" height="40" class="rounded-circle nav-item border me-1">
-                                        <span class="h6">
-                                            Nguyen Khanh Huy
+                                        <img src="..."
+                                             class="img-avatar-post rounded-circle nav-item border me-1"
+                                             aria-hidden="true">
+                                        <span class="h6 placeholder-glow">
+                                            <span class="placeholder col-4"></span>
                                         </span>
                                         <span>|</span>
-                                        <span class="">
-                                            12:12
+                                        <span class="placeholder-glow">
+                                           <span class="placeholder col-2"></span>
                                         </span>
                                         <div class="dropdown d-inline ms-3">
-                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                                id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                Option
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                            </ul>
+                                            
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text">With supporting text below as a natural lead-in to
-                                            additional
-                                            content.
+                                        <p class="card-text placeholder-glow">
+                                            <span class="placeholder col-3"></span>
+                                            <span class="placeholder col-7"></span>
+                                            <span class="placeholder col-2"></span>
+                                            <span class="placeholder col-6"></span>
+                                            <span class="placeholder col-5"></span>
                                         </p>
-                                        <a href="#" class="btn-link link-primary" download>Tệp đính kèm</a>
+                  
+                                        <p class="placeholder-glow">
+                                            <span class="placeholder col-3 bg-primary"></span>
+                                            <span class="placeholder col-3 bg-primary"></span>
+                                            <span class="placeholder col-3 bg-primary"></span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <img src="..."
+                                             class="img-avatar-post rounded-circle nav-item border me-1"
+                                             aria-hidden="true">
+                                        <span class="h6 placeholder-glow">
+                                            <span class="placeholder col-4"></span>
+                                        </span>
+                                        <span>|</span>
+                                        <span class="placeholder-glow">
+                                           <span class="placeholder col-2"></span>
+                                        </span>
+                                        <div class="dropdown d-inline ms-3">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text placeholder-glow">
+                                            <span class="placeholder col-3"></span>
+                                            <span class="placeholder col-7"></span>
+                                            <span class="placeholder col-2"></span>
+                                            <span class="placeholder col-6"></span>
+                                            <span class="placeholder col-5"></span>
+                                        </p>
+                  
+                                        <p class="placeholder-glow">
+                                            <span class="placeholder col-3 bg-primary"></span>
+                                            <span class="placeholder col-3 bg-primary"></span>
+                                            <span class="placeholder col-3 bg-primary"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                     <div class="row justify-content-end">
                         <div class="col-auto">

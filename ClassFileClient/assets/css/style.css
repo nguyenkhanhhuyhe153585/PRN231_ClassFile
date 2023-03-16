@@ -3,6 +3,7 @@ body {
 }
 img {
   object-fit: cover;
+  background-color: darkgray;
 }
 .img-cover-preview {
   width: 30rem;
@@ -18,7 +19,21 @@ img {
   height: 5em;
 }
 
+.img-avatar-post {
+  width: 3rem;
+  height: 3rem;
+}
+
 .img-cover {
   width: 100%;
   height: 30vh;
+}
+
+.img-cover-card {
+  width: 100%;
+  height: 200px;
+}
+
+.btn::before {
+  width: 100px;
 }

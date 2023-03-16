@@ -3,7 +3,20 @@ import * as Utils from "../common/utils.js";
 
 export function index() {
   loadClass();
-  joinClass();
+  initAction();
+}
+
+function initAction() {
+  if (Utils.checkRole(Const.Role.Teacher)) {
+    $("#actionButton").append(
+      `<a class="btn btn-primary my-2" href="/class/create.html"><i class="fa-solid fa-plus me-2"></i>Create a class</a>`
+    );
+  } else if (Utils.checkRole(Const.Role.Student)) {
+    $("#actionButton").append(
+      `<button class="btn btn-primary my-2" id="buttonPopupJoinClass"><i class="fa-solid fa-plus me-2"></i>Join a class</button>`
+    );
+    joinClass();
+  }
 }
 
 function joinClass() {
@@ -51,7 +64,7 @@ function loadClass() {
     for (let c of data) {
       result += `
             <div class="col">
-                <div class="card h-100">
+                <div class="card">
                 <div>
                 <div class="card-img-overlay">
                         <img class="rounded-circle border img-avatar d-inline-block" src="${Utils.getUrlImage(
@@ -62,7 +75,7 @@ function loadClass() {
                     <img src="${Utils.getUrlImage(
                       Const.FileMode.CLASS,
                       c.imageCover
-                    )}" class="card-img-top" alt="...">
+                    )}" class="img-cover-card card-img-top" alt="class cover">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">${c.className}</h5>

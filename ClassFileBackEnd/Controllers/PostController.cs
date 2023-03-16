@@ -39,7 +39,7 @@ namespace ClassFileBackEnd.Controllers
                 var queryClass = queryClassCheckRight.First();
                 var queryPost = db.Posts.Include(p => p.PostedAccount).Include(p => p.Files).Where(p => p.ClassId == classId)
                     .OrderByDescending(p => p.DateCreated);
-                (IQueryable<Post>, int) pagingResult = Utils.MyQuery<Post>.Paging(queryPost, page);
+                (IQueryable<Post>, int, int) pagingResult = Utils.MyQuery<Post>.Paging(queryPost, page);
                 List<Post> posts = pagingResult.Item1.ToList();
 
                 List<PostInClassDTO> postDTO = mapper.Map<List<PostInClassDTO>>(posts);
@@ -47,7 +47,7 @@ namespace ClassFileBackEnd.Controllers
                 var respone = new PagingResponseDTO<List<PostInClassDTO>>
                 {
                     Data = postDTO,
-                    PageIndex = page,
+                    PageIndex = pagingResult.Item3,
                     TotalPage = pagingResult.Item2,
                     PageSize = Const.NUMBER_RECORD_PAGE
                 };
