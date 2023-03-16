@@ -75,6 +75,7 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = Const.Role.TEACHER)]
         public IActionResult CreateClass([FromBody] ClassCreateDTO classCreateDTO)
         {
             try
@@ -90,6 +91,30 @@ namespace ClassFileBackEnd.Controllers
                 return Ok();
             }
             catch(Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpGet("profile/{id:int}")]
+        [Authorize(Roles = Const.Role.TEACHER)]
+        public IActionResult GetClassProfileTeacher(int id)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account? currentUser = db.Accounts.Find(currentUserId);
+                Class? classFromDB = db.Classes.Include(a => a.Accounts).Where(c => c.Id == id && c.Accounts.Contains(currentUser)).FirstOrDefault();
+                if (classFromDB == null)
+                {
+                    return NotFound();
+                }
+                List<AccountProfileDTO> profiles = mapper.Map<List<AccountProfileDTO>>(classFromDB.Accounts);
+                return Ok(profiles);
+            }
+            catch (Exception ex)
             {
                 ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
                 responseMsg.Data = ex.StackTrace;

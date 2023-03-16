@@ -7,6 +7,7 @@ export const Path = {
   Class: {
     Create: "/class/create.html",
     Index: "/class/index.html",
+    Profile: "/class/profile.html"
   },
   Post: {
     Create: "/post/create.html",
@@ -28,7 +29,8 @@ export const BackEndApi = {
   Signup: DOMAIN + "api/auth/signup",
   Classes: {
     Home: DOMAIN + "api/class",
-    Create: DOMAIN + "api/class/create"
+    Create: DOMAIN + "api/class/create",
+    Profile: DOMAIN + "api/class/profile"
   },
   Post: DOMAIN + "api/post",
   File: {
