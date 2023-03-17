@@ -136,5 +136,32 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responseMsg);
             }
         }
+
+       
+        [HttpPost("leave/{classId}")]
+        [Authorize(Roles = Const.Role.STUDENT)]
+        public IActionResult LeaveClass(int classId)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                var currentUser = db.Accounts.Include(a => a.Classes).Where(a => a.Id == currentUserId).SingleOrDefault();
+                var classQuery = db.Classes.Where(c => c.Id == classId && c.Accounts.Contains(currentUser)).FirstOrDefault();
+                if(classQuery == null)
+                {
+                    return NotFound();
+                }
+                
+                currentUser.Classes.Remove(classQuery);
+                db.SaveChanges();
+                return Ok(); 
+            }catch (Exception ex) {
+                ResponseMessageDTO<string> responseMsg = new(ex.Message)
+                {
+                    Data = ex.StackTrace
+                };
+                return BadRequest(responseMsg);
+            }
+        }
     }
 }

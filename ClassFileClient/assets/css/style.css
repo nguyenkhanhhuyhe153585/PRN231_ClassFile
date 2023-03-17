@@ -3,8 +3,10 @@ body {
 }
 img {
   object-fit: cover;
+  overflow: hidden;
   background-color: darkgray;
 }
+
 .img-cover-preview {
   width: 30rem;
   height: 15rem;

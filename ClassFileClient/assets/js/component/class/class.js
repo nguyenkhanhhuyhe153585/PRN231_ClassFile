@@ -9,34 +9,55 @@ export function classAction() {
   deletePost();
 }
 
-function classMenu(data){
-  if(Utils.checkRole(Const.Role.Teacher) && Utils.checkUser(data.id)){
-    $("#classMenu").html(`
-    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        Option
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" href="#">Members</a></li>
+function classMenu(data) {
+  let result = `<li><a class="dropdown-item" href="#">Members</a></li>`;
+  if (Utils.checkRole(Const.Role.Teacher) && Utils.checkUser(data.teacherAccount.id)) {
+    result += `
         <li><a class="dropdown-item" href="#">Edit</a></li>
-        <li><a class="dropdown-item" href="javascript:void(0)">Delete Class</a></li>
-    </ul>
-    `);
+        <li><a class="dropdown-item deleteClass" href="javascript:void(0)" data-classId="${data.id}">Delete Class</a></li>
+    `;
+  } else if(Utils.checkRole(Const.Role.Student)){
+   result += `<li><a class="dropdown-item leaveClass" data-classId="${data.id}">Leave Class</a></li>`;
   }
-  else {
-    $("#classMenu").html(`
+
+  $("#classMenu").html(`
     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        id="dropdownMenuButtonClass" data-bs-toggle="dropdown" aria-expanded="false">
         Option
     </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" href="#">Members</a></li>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonClass">
+        ${result}
     </ul>
-    `);
-  }
+  `);
+  deleteClass();
+  leaveClass();
 }
 
-function deleteClass(){
+function leaveClass(){
+  $("a.leaveClass").click(function () {
+    let classId = $(this).attr("data-classId");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, leave it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: Const.BackEndApi.Classes.Leave + `/${classId}`,
+          type: Const.HttpMethod.POST,
+          contenType: Const.HttpDataType.ApplicationJSON,
+          success: function(){},
+        });
+      }
+    });
+  });
+}
+
+function deleteClass() {
   $("a.deleteClass").click(function () {
     Swal.fire({
       title: "Are you sure?",
@@ -51,7 +72,7 @@ function deleteClass(){
         $.ajax({
           url: Const.BackEndApi.Post,
           type: Const.HttpMethod.DELETE,
-          dataType: Const.HttpDataType.JSON,      
+          dataType: Const.HttpDataType.JSON,
         });
       }
     });
@@ -73,7 +94,7 @@ function deletePost() {
         $.ajax({
           url: Const.BackEndApi.Post,
           type: Const.HttpMethod.DELETE,
-          dataType: Const.HttpDataType.JSON,      
+          dataType: Const.HttpDataType.JSON,
         });
       }
     });
@@ -88,6 +109,8 @@ function initClassInfo() {
   option.dataType = Const.HttpDataType.JSON;
   option.success = function (data) {
     render(data);
+    // thực hiện init class menu
+    classMenu(data);
   };
 
   $.ajax(option);
@@ -109,8 +132,9 @@ function initClassInfo() {
 }
 
 function initPanel(data) {
+  let result = "";
   if (Route.checkRole(Const.Role.Teacher)) {
-    let result = `
+    result += `
     <div class="row mb-3">
         <div class="col">
             <div class="card">
@@ -126,8 +150,26 @@ function initPanel(data) {
         </div>
     </div>
     `;
-    $("#actionPanel").html(result);
   }
+  result += `
+    <div class="row mb-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title mb-2">Class Rule:</h6>
+                    <p class="card-text mt-3 text-muted">You can create a post, upload and download files in here.               
+                    </p>
+                    <p class="card-text mt-3 text-muted">Everyone in this class can see your post and download attachments
+                    </p>
+                    <p class="card-text mt-3 text-muted">(Teacher has all right to kick out any class member)
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+
+  $("#actionPanel").html(result);
 }
 
 /**
@@ -147,8 +189,7 @@ function loadPostInClass() {
     Utils.pagination(data);
     // thực hiện init delete Post;
     deletePost();
-    // thực hiện init class menu
-    classMenu(data);
+    
   };
 
   $.ajax(option);

@@ -75,6 +75,10 @@ export function setUrlParam(key, value) {
   return urlObject.toString();
 }
 
+export function reload(){
+  location.reload();
+}
+
 export function getUrlParam(key) {
   const queryString = location.search;
   const urlParams = new URLSearchParams(queryString);

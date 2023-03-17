@@ -29,7 +29,8 @@ export const BackEndApi = {
   Classes: {
     Home: DOMAIN + "api/class",
     Create: DOMAIN + "api/class/create",
-    Join: DOMAIN + "api/class/join"
+    Join: DOMAIN + "api/class/join",
+    Leave: DOMAIN + "api/class/leave"
   },
   Post: DOMAIN + "api/post",
   File: {
@@ -48,6 +49,7 @@ export const HttpCode = {
   BadRequest: 400,
   UnAuthorized: 401,
   Forbiden: 403,
+  NotFound: 404
 };
 
 export const HttpMethod = {
@@ -82,7 +84,7 @@ export const FileMode = {
   CLASS: "class",
 };
 
-export const IMAGE_HOLDER = "https://via.placeholder.com/300x150";
+export const IMAGE_HOLDER = "https://placehold.co/600x400/dddddd/dddddd?text=image";
 
 export const Payload = {
   Typ: "typ",
@@ -93,5 +95,4 @@ export const TOKEN = "token";
 export const ID_PARAM = "id";
 export const EMPTY_STRING = "";
 export const MaxFileSize = 20971520;
-export const imageHolder =
-  "https://media.istockphoto.com/id/1226328537/vector/image-place-holder-with-a-gray-camera-icon.jpg?s=612x612&w=0&k=20&c=qRydgCNlE44OUSSoz5XadsH7WCkU59-l-dwrvZzhXsI=";
+export const imageHolder = IMAGE_HOLDER;
