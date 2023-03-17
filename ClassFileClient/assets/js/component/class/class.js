@@ -126,7 +126,7 @@ function initPanel(data) {
         </div>
     </div>
     `;
-    $("#actionPanel").append(result);
+    $("#actionPanel").html(result);
   }
 }
 

@@ -54,12 +54,13 @@ function loadClass() {
     (option.dataType = Const.HttpDataType.JSON);
   option.success = function (data) {
     render(data);
-    console.log(data);
+    Utils.pagination(data);
   };
 
   $.ajax(option);
 
   function render(data) {
+    data = data.data;
     let result = "";
     for (let c of data) {
       result += `

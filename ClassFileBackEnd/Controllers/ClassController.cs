@@ -24,15 +24,18 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int page)
         {
             try
             {
+                int totalPage = 0;
+
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account currentUser = db.Accounts.Single(a => a.Id == currentUserId);
                 var queryClassWithLastPost = db.Classes.Include(c => c.Accounts).Include(c => c.Posts).Include(c => c.TeacherAccount)
-                    .Where(c => c.Accounts.Contains(currentUser))
-                    .Select(c => new ClassDTO
+                    .Where(c => c.Accounts.Contains(currentUser));
+                (queryClassWithLastPost, totalPage, page) = Utils.MyQuery<Class>.Paging(queryClassWithLastPost, page);
+                IQueryable<ClassDTO> classDTOQuery  = queryClassWithLastPost.Select(c => new ClassDTO
                     {
                         Id = c.Id,
                         ClassName = c.ClassName,
@@ -41,8 +44,13 @@ namespace ClassFileBackEnd.Controllers
                         ImageCover = c.ImageCover
                     });
 
-                List<ClassDTO> classDTOs = queryClassWithLastPost.ToList();
-                return Ok(classDTOs);
+                List<ClassDTO> classDTOs = classDTOQuery.ToList();
+                PagingResponseDTO<List<ClassDTO>> pagingResponseDTO = new();
+                pagingResponseDTO.Data = classDTOs;
+                pagingResponseDTO.TotalPage = totalPage;
+                pagingResponseDTO.PageIndex = page;
+                pagingResponseDTO.PageSize = Const.NUMBER_RECORD_PAGE;
+                return Ok(pagingResponseDTO);
             }
             catch (Exception ex)
             {

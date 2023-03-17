@@ -2,21 +2,28 @@ import * as Utils from "./utils.js";
 import * as Const from "./const.js";
 import * as Cookies from "./cookies.js";
 export function includeHTML() {
-  $("div[include-html]").each(function () {
-    let each = $(this);
-    let link = each.attr("include-html");
-    $.ajax({
-      url: link,
-      method: "GET",
-      global: false, // disable global ajax events
-      success: function (response) {
-        each.replaceWith(response);
-        each.removeAttr("include-html");
-      },
-      error: function (response) {
-        each.html("Page not found.");
-      },
+  return new Promise(function (resolve) {
+    let $includeHtml = $("div[include-html]");
+    $("div[include-html]").each(function () {
+      let each = $(this);
+      let link = each.attr("include-html");
+      $.ajax({
+        url: link,
+        method: "GET",
+        global: false, // disable global ajax events
+        success: function (response) {
+          each.replaceWith(response);
+          each.removeAttr("include-html");
+          resolve(response);
+        },
+        error: function (response) {
+          each.html("Page not found.");
+        },
+      });
     });
+    if ($includeHtml.length == 0) {
+      resolve();
+    }
   });
 }
 
@@ -55,6 +62,13 @@ export function back() {
   window.history.back();
 }
 
+export function logout() {
+  $(".logoutButton").click(function () {
+    Cookies.deleteCookie(Const.TOKEN);
+    redirect(Const.Path.Login);
+  });
+}
+
 export function setUrlParam(key, value) {
   const urlObject = new URL(window.location.href);
   urlObject.searchParams.set(key, value);
@@ -69,10 +83,10 @@ export function getUrlParam(key) {
 
 /**
  * Kiểm tra role trong token hiện tại có trùng với role truyền vào
- * @param {String} roleCheck 
+ * @param {String} roleCheck
  * @returns {Boolean}
  */
-export function checkRole(roleCheck){
+export function checkRole(roleCheck) {
   let token = Cookies.getCookie(Const.TOKEN);
   let jwtPayload = Utils.parseJwt(token);
   return roleCheck == jwtPayload[Const.Payload.Typ];
@@ -89,8 +103,9 @@ export function verifyAuth() {
   let payloadData = Utils.parseJwt(token);
   console.log(payloadData);
 
-  // Init Current Info for navbar
-  Utils.getCurrentUserInfo();
+  if (!isAnonymous) {
+    Utils.getCurrentUserInfo();
+  }
   // Show document after excute scripts
   $("body").show();
   return true;

@@ -1,6 +1,5 @@
 import * as Route from "./common/routing.js";
 import * as Const from "./common/const.js";
-import * as Utils from "./common/utils.js";
 
 import { ajaxEvent } from "./common/config.js";
 import { login } from "./component/auth/login.js";
@@ -12,10 +11,11 @@ import { editProfile } from "./component/user/editprofile.js";
 import { createClass } from "./component/class/create.js";
 import { editPost } from "./component/post/edit.js";
 
-function main() {
-  Route.includeHTML();
+async function main() {
+  await Route.includeHTML();
   Route.addAuthHeader();
   ajaxEvent();
+  Route.logout();
 
   if (!Route.verifyAuth()) {
     return;
@@ -29,7 +29,7 @@ function main() {
   } else if (Route.checkPath(Const.Path.Signup)) {
     signup();
   } else if (Route.checkPath(Const.Path.Class.Index)) {
-    // classAction();
+    classAction();
   } else if (Route.checkPath(Const.Path.Post.Create)) {
     createPost();
   } else if (Route.checkPath(Const.Path.User.Edit)) {
