@@ -1,5 +1,6 @@
 import * as Const from "../common/const.js";
 import * as Utils from "../common/utils.js";
+import * as Route from "../common/routing.js";
 
 export function index() {
   loadClass();
@@ -13,37 +14,33 @@ function initAction() {
     );
   } else if (Utils.checkRole(Const.Role.Student)) {
     $("#actionButton").append(
-      `<button class="btn btn-primary my-2" id="buttonPopupJoinClass"><i class="fa-solid fa-plus me-2"></i>Join a class</button>`
+      `<button class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#modelClassCode"><i class="fa-solid fa-plus me-2"></i>Join a class</button>`
     );
     joinClass();
   }
 }
 
 function joinClass() {
-  $("#buttonPopupJoinClass").click(function () {
-    Swal.fire({
-      title: "Provide class code",
-      input: "text",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Join",
-      showLoaderOnConfirm: true,
-      preConfirm: function (classCode) {
-        $.ajax({
-          url: Const.BackEndApi.Classes.Join,
-          type: Const.HttpMethod.POST,
-          contentType: Const.HttpDataType.ApplicationJSON,
-          dataType: Const.HttpDataType.JSON,
-          data: JSON.stringify({
-            classCode: classCode,
-          }),
-        });
-      },
-
-      // allowOutsideClick: () => !Swal.isLoading(),
+  $("#buttonJoinClass").click(function () {
+    let classCode = $("#classCode").val();
+    if(classCode == "") return;
+    let option = {};
+    option.url = Const.BackEndApi.Classes.Join;
+    option.type = Const.HttpMethod.POST;
+    option.contentType = Const.HttpDataType.ApplicationJSON;
+    option.suppressGlobalComplete = true;
+    option.data = JSON.stringify({
+      classCode: classCode,
     });
+    option.success = function (response) {
+      Swal.fire({
+        icon: "success",
+        title: Const.Message.Success,
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(Route.reload);
+    };
+    $.ajax(option);
   });
 }
 
@@ -71,7 +68,7 @@ function loadClass() {
                         <img class="rounded-circle border img-avatar d-inline-block" src="${Utils.getUrlImage(
                           Const.FileMode.AVATAR,
                           c.teacherAccount.imageAvatar
-                        )}" />                        
+                        )}" />
                     </div>
                     <img src="${Utils.getUrlImage(
                       Const.FileMode.CLASS,
