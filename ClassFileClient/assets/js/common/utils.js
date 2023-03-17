@@ -1,9 +1,10 @@
 import * as Const from "./const.js";
+import { getCookie } from "./cookies.js";
 import * as Route from "./routing.js";
 
 /**
- *
- * @param {Date} date
+ * Format date dạng string truyền vào thành datetime theo định dạng local
+ * @param {string} dateString
  * @returns {string} Datetime with format
  */
 export function formatDate(dateString) {
@@ -58,12 +59,40 @@ export function getUrlImage(fileMode, imageFileName) {
  * @param {PagingResponseDTO} pagingResponseData
  */
 export function pagination(pagingResponseData) {
+  console.log(pagingResponseData);
   let pagingResult = "";
-  for (let i = 1; i <= pagingResponseData.totalPage; i++) {
-    pagingResult += `<li class="page-item">
+  let gaps = 2;
+  let pageIndex = pagingResponseData.pageIndex;
+
+  pagingResult += `
+  <li class="page-item">
+  <a class="page-link" href="${Route.setUrlParam(Const.PAGE, 1)}">First</a>
+</li>`;
+  for (let i = pageIndex - gaps; i < pageIndex; i++) {
+    if (i > 0)
+      pagingResult += `
+    <li class="page-item">
       <a class="page-link" href="${Route.setUrlParam(Const.PAGE, i)}">${i}</a>
+    </li>`;
+  }
+  pagingResult += `
+     <li class="page-item">
+       <a class="page-link active">${pageIndex}</a>
+     </li>`;
+  for (let i = pageIndex + 1; i <= pageIndex + gaps; i++) {
+    if (i <= pagingResponseData.totalPage)
+      pagingResult += `
+      <li class="page-item">
+        <a class="page-link" href="${Route.setUrlParam(Const.PAGE, i)}">${i}</a>
       </li>`;
   }
+  pagingResult += `
+  <li class="page-item">
+  <a class="page-link" href="${Route.setUrlParam(
+    Const.PAGE,
+    pagingResponseData.totalPage
+  )}">Last</a>
+</li>`;
 
   $("#pagination").html(`<nav aria-label="...">
     <ul class="pagination" id="pagingList">
@@ -129,6 +158,52 @@ export function fileUpload(idFileInputElement, fileMode) {
         timer: 1500,
       });
       resolve(response);
+    };
+    $.ajax(option);
+  });
+}
+/**
+ * Kiểm tra role trong token hiện tại có trùng với role truyền vào
+ * @param {String} roleCheck
+ * @returns {Boolean}
+ */
+export function checkRole(roleCheck) {
+  let token = getCookie(Const.TOKEN);
+  let jwtPayload = parseJwt(token);
+  return roleCheck == jwtPayload[Const.Payload.Typ];
+}
+
+/**
+ * Kiểm tra id người dùng được truyền vào có trùng với id người dùng đang đăng nhập không
+ * @param {int} userId
+ * @returns {boolean}
+ */
+export function checkUser(userId) {
+  let token = getCookie(Const.TOKEN);
+  let jwtPayload = parseJwt(token);
+  let currentUserId = jwtPayload[Const.Payload.Name];
+  return userId == currentUserId;
+}
+
+/**
+ * Lấy thông tin người dùng hiện tại và điền vào các thẻ tương ứng trong screen
+ *
+ * @returns {AccountProfileDTO} data
+ */
+export function getCurrentUserInfo() {
+  return new Promise(function (resolve) {
+    let option = {};
+    option.url = Const.BackEndApi.Account.My;
+    option.type = Const.HttpMethod.GET;
+    option.dataType = Const.HttpDataType.JSON;
+
+    option.success = function (data) {
+      $(".userName").html(data.fullname);
+      $("img.userAvatar").attr(
+        "src",
+        getUrlImage(Const.FileMode.AVATAR, data.imageAvatar)
+      );
+      resolve(data);
     };
     $.ajax(option);
   });

@@ -30,6 +30,8 @@ export function ajaxEvent() {
       // Thực hiện các hành động sau khi báo lỗi
       if (xhr.status === Const.HttpCode.UnAuthorized) {
         Route.redirect(Const.Path.Login);
+      } else if(xhr.status === Const.HttpCode.Forbiden){
+        Route.back();
       }
     });
   });

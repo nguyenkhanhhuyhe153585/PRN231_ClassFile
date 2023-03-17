@@ -3,7 +3,20 @@ import * as Utils from "../common/utils.js";
 
 export function index() {
   loadClass();
-  joinClass();
+  initAction();
+}
+
+function initAction() {
+  if (Utils.checkRole(Const.Role.Teacher)) {
+    $("#actionButton").append(
+      `<a class="btn btn-primary my-2" href="/class/create.html"><i class="fa-solid fa-plus me-2"></i>Create a class</a>`
+    );
+  } else if (Utils.checkRole(Const.Role.Student)) {
+    $("#actionButton").append(
+      `<button class="btn btn-primary my-2" id="buttonPopupJoinClass"><i class="fa-solid fa-plus me-2"></i>Join a class</button>`
+    );
+    joinClass();
+  }
 }
 
 function joinClass() {
@@ -15,28 +28,21 @@ function joinClass() {
         autocapitalize: "off",
       },
       showCancelButton: true,
-      confirmButtonText: "Look up",
+      confirmButtonText: "Join",
       showLoaderOnConfirm: true,
-      preConfirm: async (login) => {
-        try {
-          const response = await fetch(`//api.github.com/users/${login}`);
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return await response.json();
-        } catch (error) {
-          Swal.showValidationMessage(`Request failed: ${error}`);
-        }
+      preConfirm: function (classCode) {
+        $.ajax({
+          url: Const.BackEndApi.Classes.Join,
+          type: Const.HttpMethod.POST,
+          contentType: Const.HttpDataType.ApplicationJSON,
+          dataType: Const.HttpDataType.JSON,
+          data: JSON.stringify({
+            classCode: classCode,
+          }),
+        });
       },
 
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: `${result.value.login}'s avatar`,
-          imageUrl: result.value.avatar_url,
-        });
-      }
+      // allowOutsideClick: () => !Swal.isLoading(),
     });
   });
 }
@@ -48,17 +54,18 @@ function loadClass() {
     (option.dataType = Const.HttpDataType.JSON);
   option.success = function (data) {
     render(data);
-    console.log(data);
+    Utils.pagination(data);
   };
 
   $.ajax(option);
 
   function render(data) {
+    data = data.data;
     let result = "";
     for (let c of data) {
       result += `
             <div class="col">
-                <div class="card h-100">
+                <div class="card">
                 <div>
                 <div class="card-img-overlay">
                         <img class="rounded-circle border img-avatar d-inline-block" src="${Utils.getUrlImage(
@@ -69,7 +76,7 @@ function loadClass() {
                     <img src="${Utils.getUrlImage(
                       Const.FileMode.CLASS,
                       c.imageCover
-                    )}" class="card-img-top" alt="...">
+                    )}" class="img-cover-card card-img-top" alt="class cover">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">${c.className}</h5>

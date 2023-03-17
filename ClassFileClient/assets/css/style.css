@@ -3,10 +3,14 @@ body {
 }
 img {
   object-fit: cover;
+  background-color: darkgray;
 }
-
-.rounded-circle.img-avatar-preview, .img-cover-preview {
+.img-cover-preview {
   width: 30rem;
+  height: 15rem;
+}
+.rounded-circle.img-avatar-preview {
+  width: 15rem;
   height: 15rem;
 }
 
@@ -15,7 +19,21 @@ img {
   height: 5em;
 }
 
+.img-avatar-post {
+  width: 3rem;
+  height: 3rem;
+}
+
 .img-cover {
   width: 100%;
   height: 30vh;
+}
+
+.img-cover-card {
+  width: 100%;
+  height: 200px;
+}
+
+.btn::before {
+  width: 100px;
 }
