@@ -1,7 +1,10 @@
 # Các tính năng cần làm tiếp:
-- Phân trang cho classIndex --- 50% (pending: giơi han lai so trang hien thi)
 - Hiển thị danh sách học viên của lớp học
-- Kích học viên của lớp học ra (TC)
-- Đăng ảnh bìa, ảnh avatar cho lớp, cho người dùng -- 70%, còn edit class
+- Delete class, delete post
+- Regen code
 - Edit class
+- Kích học viên của lớp học ra (TC) - (Phân role nữa)
+
+
+- Đăng ảnh bìa, ảnh avatar cho lớp, cho người dùng -- 70%, còn edit class
 - PlaceHolder cho tất cả các trang hiển thị dữ liệu

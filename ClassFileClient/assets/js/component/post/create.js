@@ -62,10 +62,7 @@ function doCreatePost() {
     option.processData = false;
     option.contentType = false;
     option.cache = false;
-    option.success = function (response) {
-      history.back();
-    };
-
+    
     $.ajax(option);
   });
 }

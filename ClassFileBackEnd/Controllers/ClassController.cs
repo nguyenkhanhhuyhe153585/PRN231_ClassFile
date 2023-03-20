@@ -42,7 +42,7 @@ namespace ClassFileBackEnd.Controllers
                         TeacherAccount = mapper.Map<AccountProfileDTO>(c.TeacherAccount),
                         LastPost = c.Posts.OrderByDescending(p => p.DateCreated).First().DateCreated,
                         ImageCover = c.ImageCover
-                    });
+                    }).OrderByDescending(cd=> cd.LastPost);
 
                 List<ClassDTO> classDTOs = classDTOQuery.ToList();
                 PagingResponseDTO<List<ClassDTO>> pagingResponseDTO = new();

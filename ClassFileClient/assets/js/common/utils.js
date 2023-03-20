@@ -63,7 +63,9 @@ export function pagination(pagingResponseData) {
   let pagingResult = "";
   let gaps = 2;
   let pageIndex = pagingResponseData.pageIndex;
-
+  if(pagingResponseData.totalPage<=1){
+    return;
+  }
   pagingResult += `
   <li class="page-item">
   <a class="page-link" href="${Route.setUrlParam(Const.PAGE, 1)}">First</a>
