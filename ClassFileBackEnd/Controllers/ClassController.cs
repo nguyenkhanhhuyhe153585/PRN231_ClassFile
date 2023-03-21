@@ -107,7 +107,6 @@ namespace ClassFileBackEnd.Controllers
             }
         }
 
-
         [HttpPost("join")]
         [Authorize(Roles = Const.Role.STUDENT)]
         public IActionResult JoinClass([FromBody] ClassCodeDTO classCodeDTO)
@@ -137,7 +136,6 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responseMsg);
             }
         }
-
        
         [HttpPost("leave/{classId}")]
         [Authorize(Roles = Const.Role.STUDENT)]
@@ -165,9 +163,41 @@ namespace ClassFileBackEnd.Controllers
             }
         }
 
-        [HttpGet("profile/{id:int}")]
+        [HttpGet("member/teacher/{id:int}")]
         [Authorize(Roles = Const.Role.TEACHER)]
         public IActionResult GetClassProfileTeacher(int id)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account? currentUser = db.Accounts.Find(currentUserId);
+                if (currentUser == null)
+                {
+                    return NotFound("This user is not found");
+                }
+                Class? classFromDB = db.Classes
+                    .Include(a => a.Accounts)
+                    .Where(c => c.Id == id && c.Accounts.Contains(currentUser))
+                    .FirstOrDefault();
+                if (classFromDB == null)
+                {
+                    return NotFound("This class is not found");
+                }
+                classFromDB.Accounts.Remove(currentUser);
+                List<AccountProfileDTO> profiles = mapper.Map<List<AccountProfileDTO>>(classFromDB.Accounts.ToList());
+                return Ok(profiles);
+            }
+            catch (Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpDelete("member/teacher/{id:int}")]
+        [Authorize(Roles = Const.Role.TEACHER)]
+        public IActionResult DeleteStudentFromClass(int id, [FromBody] DeletedStudentDTO deletedStudentDTO)
         {
             try
             {
@@ -177,18 +207,46 @@ namespace ClassFileBackEnd.Controllers
                     .Include(a => a.Accounts)
                     .Where(c => c.Id == id && c.Accounts.Contains(currentUser))
                     .FirstOrDefault();
+                Account? find = classFromDB.Accounts.Where(f => f.Id == deletedStudentDTO.Id && f != currentUser).FirstOrDefault();
+                if (find == null)
+                {
+                    return NotFound("No result found");
+                }
+                classFromDB.Accounts.Remove(find);
+                db.Classes.Update(classFromDB);
+                db.SaveChanges();
+                return Ok(new ResponseMessageDTO<string>($"{find.Username} is successfully removed from class"));
+            }
+            catch(Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpGet("member/student/{id:int}")]
+        [Authorize(Roles = Const.Role.STUDENT)]
+        public IActionResult GetClassProfileStudent(int id)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account? currentUser = db.Accounts.Find(currentUserId);
+                if (currentUser == null)
+                {
+                    return NotFound("This user is not found");
+                }
+                Class? classFromDB = db.Classes
+                    .Include(a => a.Accounts)
+                    .Where(c => c.Id == id && c.Accounts.Contains(currentUser))
+                    .FirstOrDefault();
                 if (classFromDB == null)
                 {
-                    return NotFound();
+                    return NotFound("This class is not found");
                 }
-                List<AccountProfileDTO> profiles = mapper.Map<List<AccountProfileDTO>>(classFromDB.Accounts);
-                foreach (AccountProfileDTO profile in profiles)
-                {
-                    if (profile.AccountType == Const.Role.TEACHER)
-                    {
-                        profiles.Remove(profile);
-                    }
-                }
+                classFromDB.Accounts.Remove(classFromDB.Accounts.Where(a => a.AccountType == Const.Role.TEACHER).FirstOrDefault());
+                List<AccountProfileDTO> profiles = mapper.Map<List<AccountProfileDTO>>(classFromDB.Accounts.ToList());
                 return Ok(profiles);
             }
             catch (Exception ex)

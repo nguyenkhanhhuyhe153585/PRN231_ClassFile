@@ -91,7 +91,7 @@ function doCreateClass() {
     let token = Cookies.getCookie("token");
     let payloadData = Utils.parseJwt(token);
     let teacherId = payloadData["name"];
-    let teacherType = payloadData["role"];
+    let teacherType = payloadData["typ"];
     let className = $("#inputClassName").val();
     // let classCode = $("#inputClassCode").val();
 

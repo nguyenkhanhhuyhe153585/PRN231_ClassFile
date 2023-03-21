@@ -10,7 +10,7 @@ import { createPost } from "./component/post/create.js";
 import { editProfile } from "./component/user/editprofile.js";
 import { createClass } from "./component/class/create.js";
 import { editPost } from "./component/post/edit.js";
-import { classProfile } from "./component/class/profile.js";
+import { classMember } from "./component/class/member.js";
 
 async function main() {
   await Route.includeHTML();
@@ -39,8 +39,8 @@ async function main() {
     createClass();
   } else if (Route.checkPath(Const.Path.Post.Edit)) {
     editPost();
-  } else if (Route.checkPath(Const.Path.Class.Profile)) {
-    classProfile();
+  } else if (Route.checkPath(Const.Path.Class.Member)) {
+    classMember();
   }
 }
 
