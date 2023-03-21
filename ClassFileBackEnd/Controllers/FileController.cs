@@ -78,7 +78,6 @@ namespace ClassFileBackEnd.Controllers
             }
         }
 
-        // Chưa dùng được Upload!!!
         [HttpPost]
         public async Task<IActionResult> Upload(IFormCollection form)
         {
@@ -117,15 +116,6 @@ namespace ClassFileBackEnd.Controllers
                     Stream fileStream = new FileStream(filePath, FileMode.Create);
                     await file.CopyToAsync(fileStream);
                     fileStream.Close();
-
-                    // Lưu file vào entity File trong db
-                    //ClassFileBackEnd.Models.File fileDb = new ClassFileBackEnd.Models.File();
-                    //fileDb.FileType = Utils.GetMimeType(fileType);
-                    //fileDb.FileName = fileNameForSaving;
-                    //fileDb.FileNameRoot = fileName;
-
-                    //db.Files.Add(fileDb);
-                    //db.SaveChanges();
 
                     FileDTO fileRes = new FileDTO()
                     {

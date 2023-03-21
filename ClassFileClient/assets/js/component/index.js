@@ -1,43 +1,46 @@
 import * as Const from "../common/const.js";
 import * as Utils from "../common/utils.js";
+import * as Route from "../common/routing.js";
 
 export function index() {
   loadClass();
-  joinClass();
+  initAction();
+}
+
+function initAction() {
+  if (Utils.checkRole(Const.Role.Teacher)) {
+    $("#actionButton").append(
+      `<a class="btn btn-primary my-2" href="/class/create.html"><i class="fa-solid fa-plus me-2"></i>Create a class</a>`
+    );
+  } else if (Utils.checkRole(Const.Role.Student)) {
+    $("#actionButton").append(
+      `<button class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#modelClassCode"><i class="fa-solid fa-plus me-2"></i>Join a class</button>`
+    );
+    joinClass();
+  }
 }
 
 function joinClass() {
-  $("#buttonPopupJoinClass").click(function () {
-    Swal.fire({
-      title: "Provide class code",
-      input: "text",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Look up",
-      showLoaderOnConfirm: true,
-      preConfirm: async (login) => {
-        try {
-          const response = await fetch(`//api.github.com/users/${login}`);
-          if (!response.ok) {
-            throw new Error(response.statusText);
-          }
-          return await response.json();
-        } catch (error) {
-          Swal.showValidationMessage(`Request failed: ${error}`);
-        }
-      },
-
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: `${result.value.login}'s avatar`,
-          imageUrl: result.value.avatar_url,
-        });
-      }
+  $("#buttonJoinClass").click(function () {
+    let classCode = $("#classCode").val();
+    if(classCode == "") return;
+    let option = {};
+    option.url = Const.BackEndApi.Classes.Join;
+    option.type = Const.HttpMethod.POST;
+    option.contentType = Const.HttpDataType.ApplicationJSON;
+    option.suppressGlobalComplete = true;
+    option.data = JSON.stringify({
+      classCode: classCode,
     });
+    option.success = function (response) {
+      Swal.fire({
+        icon: "success",
+        title: Const.Message.Success,
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(Route.reload);
+    };
+    $.ajax(option);
   });
 }
 
@@ -48,28 +51,29 @@ function loadClass() {
     (option.dataType = Const.HttpDataType.JSON);
   option.success = function (data) {
     render(data);
-    console.log(data);
+    Utils.pagination(data);
   };
 
   $.ajax(option);
 
   function render(data) {
+    data = data.data;
     let result = "";
     for (let c of data) {
       result += `
             <div class="col">
-                <div class="card h-100">
+                <div class="card">
                 <div>
                 <div class="card-img-overlay">
                         <img class="rounded-circle border img-avatar d-inline-block" src="${Utils.getUrlImage(
                           Const.FileMode.AVATAR,
                           c.teacherAccount.imageAvatar
-                        )}" />                        
+                        )}" />
                     </div>
                     <img src="${Utils.getUrlImage(
                       Const.FileMode.CLASS,
                       c.imageCover
-                    )}" class="card-img-top" alt="...">
+                    )}" class="img-cover-card card-img-top" alt="class cover">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">${c.className}</h5>

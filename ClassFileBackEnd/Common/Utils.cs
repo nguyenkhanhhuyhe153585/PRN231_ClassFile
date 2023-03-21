@@ -14,7 +14,7 @@ namespace ClassFileBackEnd.Common
 
         public static class MyQuery<T>
         {
-            public static (IQueryable<T>, int)Paging(IQueryable<T> query, int pageNumber)
+            public static (IQueryable<T>, int, int)Paging(IQueryable<T> query, int pageNumber)
             {
                 pageNumber = PageIndexNormalize(pageNumber);
                 int totalPage = 0;
@@ -25,7 +25,7 @@ namespace ClassFileBackEnd.Common
                 IQueryable<T> queryResult = query.Skip(Const.NUMBER_RECORD_PAGE * (pageNumber - 1))
                     .Take(Const.NUMBER_RECORD_PAGE);
 
-                return (queryResult, totalPage);
+                return (queryResult, totalPage, pageNumber);
             }
         }
 
