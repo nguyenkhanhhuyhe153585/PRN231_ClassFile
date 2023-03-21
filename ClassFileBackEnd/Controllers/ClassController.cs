@@ -106,12 +106,22 @@ namespace ClassFileBackEnd.Controllers
             {
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account? currentUser = db.Accounts.Find(currentUserId);
-                Class? classFromDB = db.Classes.Include(a => a.Accounts).Where(c => c.Id == id && c.Accounts.Contains(currentUser)).FirstOrDefault();
+                Class? classFromDB = db.Classes
+                    .Include(a => a.Accounts)
+                    .Where(c => c.Id == id && c.Accounts.Contains(currentUser))
+                    .FirstOrDefault();
                 if (classFromDB == null)
                 {
                     return NotFound();
                 }
                 List<AccountProfileDTO> profiles = mapper.Map<List<AccountProfileDTO>>(classFromDB.Accounts);
+                foreach (AccountProfileDTO profile in profiles)
+                {
+                    if (profile.AccountType == Const.Role.TEACHER)
+                    {
+                        profiles.Remove(profile);
+                    }
+                }
                 return Ok(profiles);
             }
             catch (Exception ex)

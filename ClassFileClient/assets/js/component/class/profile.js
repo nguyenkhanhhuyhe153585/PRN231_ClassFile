@@ -24,7 +24,7 @@ function loadListStudent() {
         let profileTeacher = 
         `<div class="row mb-4">
             <table>
-                <thead>
+                <thead class="py-4">
                     <tr>
                         <th>
                             <span class="h1">Teacher</span>
@@ -33,9 +33,9 @@ function loadListStudent() {
                         <th></th>
                     </tr>
                 </thead>
-                <tbody class="mt-2 d-lg-table-cell">
-                    <tr style="border-top: 1px solid;">
-                        <td style="width: 40px;">
+                <tbody>
+                    <tr style="border-top: 2px solid;">
+                        <td style="width: 40px;" class="pt-2">
                             <img id="accountAvatar" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
                             width="40" height="40" class="rounded-circle nav-item border me-1">
                         </td>
@@ -53,7 +53,7 @@ function loadListStudent() {
         `<div class="row">
             <table>
                 <thead>
-                    <tr style="border-bottom: 1px solid;">
+                    <tr style="border-bottom: 2px solid;">
                         <th>
                             <span class="h1">Students</span>
                         </th>
@@ -66,42 +66,46 @@ function loadListStudent() {
         </div>`;
         $("#classProfile").html(profileTeacher);
         $("#classProfile").append(profileStudents);
-        for (let index = 1; index < data.length; index++) {
-            const element = data[index];
+        for (let e of data) {
             $("#r1").append(
-                `<tr>
-                    <td style="width: 40px;">
+                `<tr style="border-top: 1px solid";>
+                    <td style="width: 40px;" class="py-2">
                         <img id="accAva" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
                         width="40" height="40" class="rounded-circle nav-item border me-1">
                     </td>
-                    <td>
+                    <td class="py-2">
                         <span class="h6">
-                            ${element.fullname}
+                            ${e.fullname}
                         </span>
                     </td>
-                    <td class="d-flex justify-content-end">
-                        <img id="deleteStudent" src="https://cdn-icons-png.flaticon.com/512/10015/10015394.png"
-                        width="40" height="40" class="rounded-circle nav-item border ms-auto">
+                    <td class="d-flex justify-content-end py-2">
+                        <button class="deleteStudent" data-studentId="${e.id}">
+                            <i class="fa-solid fa-user-minus"></i>
+                        </button>
                     </td>
                 </tr>`);
-            $("#deleteStudent").click(function (){
-                console.log("da xoa");
-                // let opt = {};
-                // opt.url = Const.BackEndApi.Classes.Create;
-                // opt.method = Const.HttpMethod.POST;
-                // opt.contentType = Const.HttpDataType.ApplicationJSON;
-                // opt.dataType = Const.HttpDataType.JSON;
-                // opt.data = JSON.stringify({
-                // classname: className,
-                // accountprofile: {
-                //     id: teacherId,
-                //     accounttype: teacherType,
-                // },
-                // imageCover: fileImageResponseName
-                // });
-                // $.ajax(opt);
-            });
+
+            $(".deleteStudent").click(function() {
+                console.log($(this).attr("data-studentId"));
+            })
         }
+        // $("#deleteStudent").click(function (){
+        //     console.log("da xoa" + element.fullname);
+        //     // let opt = {};
+        //     // opt.url = Const.BackEndApi.Classes.Create;
+        //     // opt.method = Const.HttpMethod.POST;
+        //     // opt.contentType = Const.HttpDataType.ApplicationJSON;
+        //     // opt.dataType = Const.HttpDataType.JSON;
+        //     // opt.data = JSON.stringify({
+        //     // classname: className,
+        //     // accountprofile: {
+        //     //     id: teacherId,
+        //     //     accounttype: teacherType,
+        //     // },
+        //     // imageCover: fileImageResponseName
+        //     // });
+        //     // $.ajax(opt);
+        // });
     }
 
     
