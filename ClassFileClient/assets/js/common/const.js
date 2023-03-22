@@ -34,8 +34,11 @@ export const BackEndApi = {
     Leave: DOMAIN + "api/class/leave",
     Member: {
       Teacher: DOMAIN + "api/class/member/teacher",
-      Student: DOMAIN + "api/class/member/student"
-    }
+      Student: DOMAIN + "api/class/member/student",
+      TeacherOfClass: DOMAIN + "api/class/member"
+    },
+    Delete: DOMAIN + "api/class/delete",
+    Regen: DOMAIN + "api/class/regen"
     
   },
   Post: DOMAIN + "api/post",

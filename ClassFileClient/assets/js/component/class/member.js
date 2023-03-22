@@ -11,15 +11,24 @@ function distinguishRoles() {
     let token = Cookies.getCookie("token");
     let payloadData = Utils.parseJwt(token);
     let type = payloadData["typ"];
-
-    if (type === Const.Role.Teacher) {
-        loadListStudentForTeacher();
-    } else if (type === Const.Role.Student) {
-        loadListStudentForStudent();
-    }
+    let id = Route.getUrlParam("id");
+    
+    let option = {};
+    option.url = Const.BackEndApi.Classes.Member.TeacherOfClass + `/${id}`;
+    option.type = Const.HttpMethod.GET;
+    option.dataType = Const.HttpDataType.JSON;
+    option.success = function (data) {
+        if (type === Const.Role.Teacher) {
+            loadListStudentForTeacher(data.fullname);
+        } else if (type === Const.Role.Student) {
+            loadListStudentForStudent(data.fullname);
+        }
+    };
+    
+    $.ajax(option);
 }
 
-function loadListStudentForTeacher() {
+function loadListStudentForTeacher(teacherName) {
     let classId = Route.getUrlParam("id");
     let option = {};
     option.url = Const.BackEndApi.Classes.Member.Teacher + `/${classId}`;
@@ -53,7 +62,7 @@ function loadListStudentForTeacher() {
                         </td>
                         <td>
                             <span class="h6" id="teacherName">
-                                ${data[0].fullname}
+                                ${teacherName}
                             </span>
                         </td>
                         <td></td>
@@ -76,8 +85,8 @@ function loadListStudentForTeacher() {
                 <tbody id="r1"></tbody>
             </table>
         </div>`;
-        $("#classProfile").html(profileTeacher);
-        $("#classProfile").append(profileStudents);
+        $("#classMember").html(profileTeacher);
+        $("#classMember").append(profileStudents);
         for (let e of data) {
             $("#r1").append(
                 `<tr style="border-top: 1px solid";>
@@ -122,7 +131,7 @@ function loadListStudentForTeacher() {
     }
 }
 
-function loadListStudentForStudent() {
+function loadListStudentForStudent(teacherName) {
     let classId = Route.getUrlParam("id");
     let option = {};
     option.url = Const.BackEndApi.Classes.Member.Student + `/${classId}`;
@@ -156,7 +165,7 @@ function loadListStudentForStudent() {
                         </td>
                         <td>
                             <span class="h6" id="teacherName">
-                                ${data[0].fullname}
+                                ${teacherName}
                             </span>
                         </td>
                         <td></td>
@@ -179,8 +188,8 @@ function loadListStudentForStudent() {
                 <tbody id="r1"></tbody>
             </table>
         </div>`;
-        $("#classProfile").html(profileTeacher);
-        $("#classProfile").append(profileStudents);
+        $("#classMember").html(profileTeacher);
+        $("#classMember").append(profileStudents);
         for (let e of data) {
             $("#r1").append(
                 `<tr style="border-top: 1px solid";>

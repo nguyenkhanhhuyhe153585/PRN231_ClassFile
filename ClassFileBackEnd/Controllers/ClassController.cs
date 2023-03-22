@@ -165,7 +165,7 @@ namespace ClassFileBackEnd.Controllers
 
         [HttpGet("member/teacher/{id:int}")]
         [Authorize(Roles = Const.Role.TEACHER)]
-        public IActionResult GetClassProfileTeacher(int id)
+        public IActionResult GetClassMemberTeacher(int id)
         {
             try
             {
@@ -227,7 +227,7 @@ namespace ClassFileBackEnd.Controllers
 
         [HttpGet("member/student/{id:int}")]
         [Authorize(Roles = Const.Role.STUDENT)]
-        public IActionResult GetClassProfileStudent(int id)
+        public IActionResult GetClassMemberStudent(int id)
         {
             try
             {
@@ -250,6 +250,118 @@ namespace ClassFileBackEnd.Controllers
                 return Ok(profiles);
             }
             catch (Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpGet("member/{id:int}")]
+        public IActionResult GetTeacherOfClass(int id)
+        {
+            try
+            {
+                List<Class> classes = db.Classes.ToList();
+                Account? teacher = null;
+                if (classes.Count <= 0)
+                {
+                    return NotFound();
+                }
+                foreach(Class c in classes)
+                {
+                    if (c.Id == id)
+                    {
+                        teacher = db.Accounts.Find(c.TeacherAccountId);
+                    }
+                }
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+                return Ok(mapper.Map<AccountProfileDTO>(teacher));
+            }
+            catch (Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpDelete("delete/{id:int}")]
+        [Authorize(Roles = Const.Role.TEACHER)]
+        public IActionResult DeleteClass(int id)
+        {
+            try
+            {
+                Class? currentClass = db.Classes.Find(id);
+                if (currentClass == null)
+                {
+                    return NotFound("This class is not exist");
+                }
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account? creator = db.Accounts.Include(a => a.Classes)
+                    .Where(a => a.Classes.Contains(currentClass) && a.Id == currentUserId)
+                    .FirstOrDefault();
+                if (creator == null)
+                {
+                    return Unauthorized("This user don't have permission to delete this class");
+                }
+                List<Account> accounts = db.Accounts.Include(a => a.Classes).ToList();
+                foreach(Account account in accounts)
+                {
+                    if (account.Classes.Contains(currentClass))
+                    {
+                        account.Classes.Remove(currentClass);
+                    }
+                }
+                db.Accounts.UpdateRange(accounts);
+                db.Classes.Remove(currentClass);
+                db.SaveChanges();
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
+
+        [HttpPut("regen/{id:int}")]
+        [Authorize(Roles = Const.Role.TEACHER)]
+        public IActionResult RegenClassCode(int id)
+        {
+            try
+            {
+                Class? currentClass = db.Classes.Find(id);
+                if (currentClass == null)
+                {
+                    return NotFound("Class not found");
+                }
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account? creator = db.Accounts.Include(a => a.Classes)
+                    .Where(a => a.Classes.Contains(currentClass) && a.Id == currentUserId)
+                    .FirstOrDefault();
+                if (creator == null)
+                {
+                    return Unauthorized("This user don't have permission to modify this class");
+                }
+                Class c = null;
+                string newClassCode = null;
+                do
+                {
+                    newClassCode = Utils.RandomClassCode();
+                    c = db.Classes.Where(cl => cl.ClassCode == newClassCode).FirstOrDefault();
+                }
+                while (c != null);
+                currentClass.ClassCode = newClassCode;
+                db.Classes.Update(currentClass);
+                db.SaveChanges();
+                return Ok(new ClassCodeDTO { ClassCode = newClassCode});
+            }
+            catch(Exception ex)
             {
                 ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
                 responseMsg.Data = ex.StackTrace;

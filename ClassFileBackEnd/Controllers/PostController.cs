@@ -175,5 +175,30 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responseMsg);
             }
         }
+
+        [HttpDelete("{postId:int}")]
+        public IActionResult DeletePost(int postId)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Post? currentPost = db.Posts.Where(p => p.Id == postId && p.PostedAccountId == currentUserId).FirstOrDefault();
+                if (currentPost == null)
+                {
+                    return NotFound("Cannot find this post");
+                }
+                List<Models.File> files = db.Files.Where(f => f.PostId == postId).ToList();
+                db.Files.RemoveRange(files);
+                db.Posts.Remove(currentPost);
+                db.SaveChanges();
+                return Ok("Post deleted");
+            }
+            catch (Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
     }
 }
