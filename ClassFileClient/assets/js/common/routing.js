@@ -96,17 +96,34 @@ export function checkRole(roleCheck) {
   return roleCheck == jwtPayload[Const.Payload.Typ];
 }
 
+function checkPathRight(){
+  let authorize = false;
+  if(Const.PathRight.Anonymous.includes(getPath())){
+    authorize = true;
+  }
+  else if(checkRole(Const.Role.Student)){
+   if( Const.PathRight.Student.includes(getPath())){
+      authorize = true;
+    }
+  }else if(checkRole(Const.Role.Teacher)){
+    if( Const.PathRight.Teacher.includes(getPath())){
+      authorize = true;
+    }
+  }
+  return authorize;
+}
+
 export function verifyAuth() {
   let token = Cookies.getCookie("token");
   let isAnonymous = Const.PathRight.Anonymous.includes(getPath());
-  if (!token && !isAnonymous) {
+  let isAuthorize = checkPathRight();
+  if (token.length === 0 || !isAuthorize) {
     redirect(Const.Path.Login);
     // return for block other action
     return false;
   }
   let payloadData = Utils.parseJwt(token);
   console.log(payloadData);
-
   if (!isAnonymous) {
     Utils.getCurrentUserInfo();
   }
