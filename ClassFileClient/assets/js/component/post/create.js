@@ -65,4 +65,11 @@ function doCreatePost() {
     
     $.ajax(option);
   });
+
+  $("#cancelPost").click(function(event) {
+    event.preventDefault();
+    let opt = {};
+    opt.success = Route.back;
+    $.ajax(opt);
+  });
 }

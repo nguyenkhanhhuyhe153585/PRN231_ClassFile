@@ -111,4 +111,11 @@ function doEditPost(){
     option.cache = false;
     $.ajax(option);
   });
+
+  $("#cancelEditPost").click(function(event) {
+    event.preventDefault();
+    let opt = {};
+    opt.success = Route.back;
+    $.ajax(opt);
+  });
 }
