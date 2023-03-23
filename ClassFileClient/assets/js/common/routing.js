@@ -117,7 +117,7 @@ export function verifyAuth() {
   let token = Cookies.getCookie("token");
   let isAnonymous = Const.PathRight.Anonymous.includes(getPath());
   let isAuthorize = checkPathRight();
-  if (token.length === 0 || !isAuthorize) {
+  if (!isAuthorize) {
     redirect(Const.Path.Login);
     // return for block other action
     return false;
