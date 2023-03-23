@@ -8,7 +8,7 @@ export const Path = {
     Create: "/class/create.html",
     Index: "/class/index.html",
     Member: "/class/member.html",
-    Edit: "/class/edit.html"
+    Edit: "/class/edit.html",
   },
   Post: {
     Create: "/post/create.html",
@@ -21,8 +21,24 @@ export const Path = {
 
 export const PathRight = {
   Anonymous: [Path.Login, Path.Signup],
-  Student: [],
-  Teacher: [],
+  Student: [
+    Path.Index,
+    Path.Class.Index,
+    Path.Class.Member,
+    Path.Post.Create,
+    Path.Post.Edit,
+    Path.User.Edit
+  ],
+  Teacher: [
+    Path.Index,
+    Path.Class.Index,
+    Path.Class.Create,
+    Path.Class.Edit,
+    Path.Class.Member,
+    Path.Post.Create,
+    Path.Post.Edit,
+    Path.User.Edit
+  ],
 };
 
 export const BackEndApi = {
@@ -36,17 +52,16 @@ export const BackEndApi = {
     Member: {
       Teacher: DOMAIN + "api/class/member/teacher",
       Student: DOMAIN + "api/class/member/student",
-      TeacherOfClass: DOMAIN + "api/class/member"
+      TeacherOfClass: DOMAIN + "api/class/member",
     },
     Delete: DOMAIN + "api/class/delete",
     Regen: DOMAIN + "api/class/regen",
     Edit: DOMAIN + "api/class/edit",
-    
   },
   Post: DOMAIN + "api/post",
   File: {
     Index: DOMAIN + "api/file",
-    Attack: DOMAIN + "api/file"
+    Attack: DOMAIN + "api/file",
   },
   Account: {
     My: DOMAIN + "api/account/my",
@@ -60,7 +75,7 @@ export const HttpCode = {
   BadRequest: 400,
   UnAuthorized: 401,
   Forbiden: 403,
-  NotFound: 404
+  NotFound: 404,
 };
 
 export const HttpMethod = {
@@ -76,9 +91,9 @@ export const HttpDataType = {
 };
 
 export const Role = {
-  Teacher : "TC",
+  Teacher: "TC",
   Student: "STD",
-}
+};
 
 export const Message = {
   Success: "Successful",
@@ -87,6 +102,7 @@ export const Message = {
   Process: "Processing",
   FileTooLarge: "File size can not over 20MB.",
   NoFileSelect: "There is no file was selected!",
+  ServerNotConnect: "Can not connect to server",
 };
 
 export const FileMode = {
@@ -95,12 +111,13 @@ export const FileMode = {
   CLASS: "class",
 };
 
-export const IMAGE_HOLDER = "https://placehold.co/600x400/dddddd/dddddd?text=image";
+export const IMAGE_HOLDER =
+  "https://placehold.co/600x400/dddddd/dddddd?text=image";
 
 export const Payload = {
   Typ: "typ",
-  Name: "name"
-}
+  Name: "name",
+};
 export const PAGE = "page";
 export const TOKEN = "token";
 export const ID_PARAM = "id";

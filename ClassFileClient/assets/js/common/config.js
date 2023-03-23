@@ -1,6 +1,12 @@
 import * as Route from "./routing.js";
 import * as Const from "./const.js";
 
+// Đăng ký sự kiện cho button cancel(back)
+$("button.cancelButton").click(function(event) {
+  event.preventDefault();
+  Route.back();   
+});
+
 // Đăng ký sự kiện Ajax
 export function ajaxEvent() {
   $(document).ajaxSend(function (event, xhr, settings) {
@@ -39,10 +45,15 @@ export function ajaxEvent() {
 
   $(document).ajaxError(function (event, xhr, settings) {
     console.log(xhr.responseJSON);
+    let message = "";
     if (xhr.status === Const.HttpCode.UnAuthorized) {
       Route.redirect(Const.Path.Login);
     }
-    let message = xhr.responseJSON?.message;
+    if (xhr.status === 0) {
+      message = Const.Message.ServerNotConnect;
+    } else {
+      message = xhr.responseJSON?.message;
+    }
     Swal.fire({
       icon: "error",
       title: Const.Message.Oops,

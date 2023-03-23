@@ -52,7 +52,6 @@ function initDeleteFile() {
       .children()
       .attr("data-fileId");
     if (fileId) {
-      console.log(fileId);
       deleteFile(fileId);
     }
   });

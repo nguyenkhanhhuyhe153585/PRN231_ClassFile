@@ -50,8 +50,7 @@ function leaveClass(){
         $.ajax({
           url: Const.BackEndApi.Classes.Leave + `/${classId}`,
           type: Const.HttpMethod.POST,
-          contenType: Const.HttpDataType.ApplicationJSON,
-          success: function(){},
+          contenType: Const.HttpDataType.ApplicationJSON
         });
       }
     });
