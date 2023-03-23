@@ -1,6 +1,12 @@
 import * as Route from "./routing.js";
 import * as Const from "./const.js";
 
+// Đăng ký sự kiện cho button cancel(back)
+$("button.cancelButton").click(function(event) {
+  event.preventDefault();
+  Route.back();   
+});
+
 // Đăng ký sự kiện Ajax
 export function ajaxEvent() {
   $(document).ajaxSend(function (event, xhr, settings) {
