@@ -1,6 +1,7 @@
 import * as Const from "../../common/const.js";
 import * as Cookies from "../../common/cookies.js";
 import * as Utils from "../../common/utils.js";
+import * as Route from "../../common/routing.js";
 
 export function createClass() {
   initCreateClass();
@@ -99,7 +100,7 @@ function doCreateClass() {
     opt.url = Const.BackEndApi.Classes.Create;
     opt.method = Const.HttpMethod.POST;
     opt.contentType = Const.HttpDataType.ApplicationJSON;
-    opt.dataType = Const.HttpDataType.JSON;
+    opt.suppressGlobalComplete = true;
     opt.data = JSON.stringify({
       classname: className,
       accountprofile: {
@@ -108,6 +109,21 @@ function doCreateClass() {
       },
       imageCover: fileImageResponseName
     });
+    opt.success = function() {
+      Swal.fire({
+        icon: "success",
+        title: Const.Message.Success,
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(Route.back);
+    }
+    $.ajax(opt);
+  });
+
+  $("#cancelCreate").click(function(event) {
+    event.preventDefault();
+    let opt = {};
+    opt.success = Route.back;
     $.ajax(opt);
   });
 }
