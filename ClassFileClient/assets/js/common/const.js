@@ -76,6 +76,7 @@ export const Message = {
   Process: "Processing",
   FileTooLarge: "File size can not over 20MB.",
   NoFileSelect: "There is no file was selected!",
+  ServerNotConnect: "Can not connect to server",
 };
 
 export const FileMode = {
