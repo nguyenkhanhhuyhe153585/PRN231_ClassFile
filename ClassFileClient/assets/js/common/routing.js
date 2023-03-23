@@ -58,8 +58,8 @@ export function goToPage(path) {
   window.location.href = path;
 }
 
-export function back() {
-  window.history.back();
+export async function back() {
+  window.location = document.referrer;
 }
 
 export function logout() {

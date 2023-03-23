@@ -1,7 +1,7 @@
 import * as Const from "../../common/const.js";
 import * as Route from "../../common/routing.js";
 import * as Utils from "../../common/utils.js";
-import * as Cookies from "../../common/cookies.js";
+// import * as Cookies from "../../common/cookies.js";
 
 export function classAction() {
   initClassInfo();
@@ -14,7 +14,7 @@ function classMenu(data) {
   let result = `<li><a class="dropdown-item" href="member.html?id=${data.id}">Members</a></li>`;
   if (Utils.checkRole(Const.Role.Teacher) && Utils.checkUser(data.teacherAccount.id)) {
     result += `
-        <li><a class="dropdown-item" href="#">Edit</a></li>
+        <li><a class="dropdown-item" href="edit.html?id=${data.id}">Edit</a></li>
         <li><a class="dropdown-item deleteClass" href="javascript:void(0)" data-classId="${data.id}">Delete Class</a></li>
     `;
   } else if(Utils.checkRole(Const.Role.Student)){

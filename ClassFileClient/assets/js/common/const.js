@@ -7,7 +7,8 @@ export const Path = {
   Class: {
     Create: "/class/create.html",
     Index: "/class/index.html",
-    Member: "/class/member.html"
+    Member: "/class/member.html",
+    Edit: "/class/edit.html"
   },
   Post: {
     Create: "/post/create.html",
@@ -38,7 +39,8 @@ export const BackEndApi = {
       TeacherOfClass: DOMAIN + "api/class/member"
     },
     Delete: DOMAIN + "api/class/delete",
-    Regen: DOMAIN + "api/class/regen"
+    Regen: DOMAIN + "api/class/regen",
+    Edit: DOMAIN + "api/class/edit",
     
   },
   Post: DOMAIN + "api/post",

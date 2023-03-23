@@ -366,5 +366,32 @@ namespace ClassFileBackEnd.Controllers
                 return BadRequest(responseMsg);
             }
         }
+
+        [HttpPut("edit/{id:int}")]
+        [Authorize(Roles = Const.Role.TEACHER)]
+        public IActionResult EditClass(int id, [FromBody] ClassEditDTO classEditDTO)
+        {
+            try
+            {
+                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                Account? currentUser = db.Accounts.Find(currentUserId);
+                Class? classFromDB = db.Classes.Where(c => c.Id == id && c.Accounts.Contains(currentUser)).FirstOrDefault();
+                if (classFromDB == null)
+                {
+                    return NotFound();
+                }
+                classFromDB.ClassName = classEditDTO.ClassName;
+                classFromDB.ImageCover = classEditDTO.ImageCover;
+                db.Classes.Update(classFromDB);
+                db.SaveChanges();
+                return Ok(classEditDTO);
+            }
+            catch(Exception ex)
+            {
+                ResponseMessageDTO<string> responseMsg = new ResponseMessageDTO<string>(ex.Message);
+                responseMsg.Data = ex.StackTrace;
+                return BadRequest(responseMsg);
+            }
+        }
     }
 }

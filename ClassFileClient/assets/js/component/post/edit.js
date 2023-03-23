@@ -63,7 +63,14 @@ function deleteFile(fileId) {
   let option = {};
   option.url = Const.BackEndApi.File.Index + `/${postId}/${fileId}`;
   option.type = Const.HttpMethod.DELETE;
+  option.suppressGlobalComplete = true;
   option.success = function(){
+    Swal.fire({
+      icon: "success",
+      title: Const.Message.Success,
+      showConfirmButton: false,
+      timer: 1500,
+    });
     initEditPostData();
   }
   $.ajax(option);
@@ -109,5 +116,12 @@ function doEditPost(){
     option.contentType = false;
     option.cache = false;
     $.ajax(option);
+  });
+
+  $("#cancelEditPost").click(function(event) {
+    event.preventDefault();
+    let opt = {};
+    opt.success = Route.back;
+    $.ajax(opt);
   });
 }
