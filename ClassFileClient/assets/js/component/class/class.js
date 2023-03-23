@@ -7,10 +7,11 @@ export function classAction() {
   initClassInfo();
   loadPostInClass();
   deletePost();
+  
 }
 
 function classMenu(data) {
-  let result = `<li><a class="dropdown-item" href="#">Members</a></li>`;
+  let result = `<li><a class="dropdown-item" href="member.html?id=${data.id}">Members</a></li>`;
   if (Utils.checkRole(Const.Role.Teacher) && Utils.checkUser(data.teacherAccount.id)) {
     result += `
         <li><a class="dropdown-item" href="#">Edit</a></li>
@@ -58,6 +59,7 @@ function leaveClass(){
 
 function deleteClass() {
   $("a.deleteClass").click(function () {
+    let classId = $(this).attr("data-classId");
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -69,9 +71,8 @@ function deleteClass() {
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: Const.BackEndApi.Post,
+          url: Const.BackEndApi.Classes.Delete + `/${classId}`,
           type: Const.HttpMethod.DELETE,
-          dataType: Const.HttpDataType.JSON,
         });
       }
     });
@@ -80,6 +81,7 @@ function deleteClass() {
 
 function deletePost() {
   $("a.deletePost").click(function () {
+    let postId = $(this).attr("data-postId");
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -91,9 +93,17 @@ function deletePost() {
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: Const.BackEndApi.Post,
+          url: Const.BackEndApi.Post + `/${postId}`,
           type: Const.HttpMethod.DELETE,
-          dataType: Const.HttpDataType.JSON,
+          suppressGlobalComplete: true,
+          success: function() {
+            Swal.fire({
+              icon: "success",
+              title: Const.Message.Success,
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(Route.reload);
+          }
         });
       }
     });
@@ -140,7 +150,7 @@ function initPanel(data) {
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2">Class Code:</h6>
                     <h5 class="card-title mb-2" id="classCode">${data.classCode}</h5>
-                    <a href="javascript:void(0)" class="card-link mb-2">RegenCode</a>
+                    <a href="javascript:void(0)" class="card-link mb-2 regen" data-classId=${data.id}>RegenCode</a>
                     <p class="card-text mt-3 text-muted">(Provide this code for student can join this
                         class)
                     </p>
@@ -169,6 +179,7 @@ function initPanel(data) {
     `;
 
   $("#actionPanel").html(result);
+  regenCode();
 }
 
 /**
@@ -225,7 +236,7 @@ function loadPostInClass() {
                               </button>
                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                   <li><a class="dropdown-item" href="${Const.Path.Post.Edit}?id=${post.id}">Edit</a></li>
-                                  <li><a class="dropdown-item deletePost" href="javascript:void(0)">Delete</a></li>
+                                  <li><a class="dropdown-item deletePost" href="javascript:void(0)" data-postId=${post.id}>Delete</a></li>
                               </ul>
                               </div>
                                   `;
@@ -258,3 +269,26 @@ function loadPostInClass() {
     $("#postContainter").html(result);
   }
 }
+
+function regenCode() {
+  $(".regen").click(function () {
+    let classId = $(this).attr("data-classId");
+
+    let option = {};
+    option.url = Const.BackEndApi.Classes.Regen + `/${classId}`;
+    option.type = Const.HttpMethod.PUT;
+    option.dataType = Const.HttpDataType.JSON;
+    option.suppressGlobalComplete = true;
+    option.success = function() {
+      Swal.fire({
+        icon: "success",
+        title: Const.Message.Success,
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(Route.reload);
+    }
+  
+    $.ajax(option);
+  })
+}
+

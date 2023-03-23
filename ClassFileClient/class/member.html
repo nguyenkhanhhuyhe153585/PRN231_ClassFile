@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class member</title>
+
+    <link rel="stylesheet" href="../assets/libs/bootstrap-5.2.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+
+    <script src="../assets/libs/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/libs/jquery/jquery-3.6.3.js"></script>
+    <script type="module" src="../assets/js/site.js"></script>
+</head>
+
+<body style="display: none;">
+    <div include-html="../fragments/navbar.html" id="navbar">
+    </div>
+    <div class="container my-4">
+        <main id="classMember">
+            <div class="row mb-4">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="h1">Teacher</span>
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img id="accountAvatar" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+                                width="40" height="40" class="rounded-circle nav-item border me-1">
+                            </td>
+                            <td>
+                                <span class="h6" id="teacherName">
+                                    Hi
+                                </span>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <table>
+                    <thead>
+                        <tr style="border-bottom: 2px solid;">
+                            <th>
+                                <span class="h1">Students</span>
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="r1">
+                        <tr style="border-top: 1px solid";>
+                            <td style="width: 40px;" class="py-2">
+                                <img id="accAva" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
+                                width="40" height="40" class="rounded-circle nav-item border me-1">
+                            </td>
+                            <td class="py-2">
+                                <span class="h6">
+                                    Hi
+                                </span>
+                            </td>
+                            <td class="d-flex justify-content-end py-2">
+                                <button class="deleteStudent">
+                                    <i class="fa-solid fa-user-minus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

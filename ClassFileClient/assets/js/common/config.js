@@ -6,7 +6,8 @@ export function ajaxEvent() {
   $(document).ajaxSend(function (event, xhr, settings) {
     if (
       settings.type === Const.HttpMethod.POST ||
-      settings.type === Const.HttpMethod.PUT
+      settings.type === Const.HttpMethod.PUT  ||
+      settings.type === Const.HttpMethod.DELETE
     )
       Swal.fire({
         title: Const.Message.Process,
@@ -24,7 +25,8 @@ export function ajaxEvent() {
     }
     if (
       settings.type === Const.HttpMethod.POST ||
-      settings.type === Const.HttpMethod.PUT
+      settings.type === Const.HttpMethod.PUT ||
+      settings.type === Const.HttpMethod.DELETE
     ) {
       Swal.fire({
         icon: "success",

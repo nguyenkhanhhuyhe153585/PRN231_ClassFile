@@ -155,6 +155,25 @@ namespace ClassFileBackEnd.Controllers
             }
         }
 
+        //[HttpGet("{id:int}")]
+        //public IActionResult GetUserById(int id)
+        //{
+        //    try
+        //    {
+        //        Account? account = db.Accounts.Find(id);
+        //        if (account == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        return Ok(mapper.Map<AccountProfileDTO>(account));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ResponseMessageDTO<string> mess = new ResponseMessageDTO<string>(ex.Message)
+        //        { Data = ex.StackTrace };
+        //        return BadRequest(mess);
+        //    }
+        //}
 
     }
 }
