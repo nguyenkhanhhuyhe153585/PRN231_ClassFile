@@ -7,6 +7,7 @@ export const Path = {
   Class: {
     Create: "/class/create.html",
     Index: "/class/index.html",
+    Member: "/class/member.html"
   },
   Post: {
     Create: "/post/create.html",
@@ -30,7 +31,15 @@ export const BackEndApi = {
     Home: DOMAIN + "api/class",
     Create: DOMAIN + "api/class/create",
     Join: DOMAIN + "api/class/join",
-    Leave: DOMAIN + "api/class/leave"
+    Leave: DOMAIN + "api/class/leave",
+    Member: {
+      Teacher: DOMAIN + "api/class/member/teacher",
+      Student: DOMAIN + "api/class/member/student",
+      TeacherOfClass: DOMAIN + "api/class/member"
+    },
+    Delete: DOMAIN + "api/class/delete",
+    Regen: DOMAIN + "api/class/regen"
+    
   },
   Post: DOMAIN + "api/post",
   File: {
