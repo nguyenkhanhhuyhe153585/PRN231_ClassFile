@@ -68,18 +68,23 @@ namespace ClassFileBackEnd.Controllers
             var transaction = db.Database.BeginTransaction();
             try
             {
+                int currentAccountId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                var currentAccount = db.Accounts.Find(currentAccountId);
                 string? classIdRaw = form["classId"];
                 int? classId = int.Parse(classIdRaw);
-
+                var classFromDb = db.Classes.Include(c => c.Accounts).Where(c => c.Accounts.Contains(currentAccount) && c.Id == classId).SingleOrDefault();
+                if(classFromDb == null)
+                {
+                    return Unauthorized();
+                }
                 string? title = form["content"];
-                int accountId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 DateTime? created = DateTime.Now;
 
                 Post post = new Post()
                 {
                     ClassId = classId,
                     Title = title,
-                    PostedAccountId = accountId,
+                    PostedAccountId = currentAccountId,
                     DateCreated = created
                 };
 
