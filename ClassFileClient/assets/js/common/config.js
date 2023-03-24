@@ -1,18 +1,36 @@
 import * as Route from "./routing.js";
 import * as Const from "./const.js";
 
+export function config() {
+  summerNoteConfig();
+  cancelButton();
+  ajaxEvent();
+}
+
+//Đăng ký cho summerNote
+function summerNoteConfig() {
+  if ($("textarea.summerNote").length){
+    $("textarea.summerNote").summernote({
+      lang: "vi-VN",
+      height: 200,
+    });
+  }
+}
+
 // Đăng ký sự kiện cho button cancel(back)
-$("button.cancelButton").click(function(event) {
-  event.preventDefault();
-  Route.back();   
-});
+function cancelButton() {
+  $("button.cancelButton").click(function (event) {
+    event.preventDefault();
+    Route.back();
+  });
+}
 
 // Đăng ký sự kiện Ajax
-export function ajaxEvent() {
+function ajaxEvent() {
   $(document).ajaxSend(function (event, xhr, settings) {
     if (
       settings.type === Const.HttpMethod.POST ||
-      settings.type === Const.HttpMethod.PUT  ||
+      settings.type === Const.HttpMethod.PUT ||
       settings.type === Const.HttpMethod.DELETE
     )
       Swal.fire({

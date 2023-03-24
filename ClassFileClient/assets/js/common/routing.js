@@ -1,6 +1,7 @@
 import * as Utils from "./utils.js";
 import * as Const from "./const.js";
 import * as Cookies from "./cookies.js";
+
 export function includeHTML() {
   return new Promise(function (resolve) {
     let $includeHtml = $("div[include-html]");
@@ -93,9 +94,16 @@ export function getUrlParam(key) {
 export function checkRole(roleCheck) {
   let token = Cookies.getCookie(Const.TOKEN);
   let jwtPayload = Utils.parseJwt(token);
+  if(!jwtPayload){
+    return false;
+  }
   return roleCheck == jwtPayload[Const.Payload.Typ];
 }
 
+/**
+ * Kiểm tra có được quyền truy cập url hiện tại
+ * @returns {Boolean} isAuthorize
+ */
 function checkPathRight(){
   let authorize = false;
   if(Const.PathRight.Anonymous.includes(getPath())){
