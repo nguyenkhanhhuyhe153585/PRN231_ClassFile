@@ -43,3 +43,12 @@ img {
 .btn::before {
   width: 100px;
 }
+
+/* Summer note custom style */
+.note-editor.note-frame.fullscreen {
+  background-color: white;
+}
+
+.note-modal-content .note-modal-footer{
+  height: 4rem;
+}
