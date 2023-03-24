@@ -19,16 +19,16 @@ function distinguishRoles() {
     option.dataType = Const.HttpDataType.JSON;
     option.success = function (data) {
         if (type === Const.Role.Teacher) {
-            loadListStudentForTeacher(data.fullname);
+            loadListStudentForTeacher(data);
         } else if (type === Const.Role.Student) {
-            loadListStudentForStudent(data.fullname);
+            loadListStudentForStudent(data);
         }
     };
     
     $.ajax(option);
 }
 
-function loadListStudentForTeacher(teacherName) {
+function loadListStudentForTeacher(teacher) {
     let classId = Route.getUrlParam("id");
     let option = {};
     option.url = Const.BackEndApi.Classes.Member.Teacher + `/${classId}`;
@@ -55,14 +55,14 @@ function loadListStudentForTeacher(teacherName) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-top: 2px solid;">
+                    <tr style="border-top: 2px solid gray;">
                         <td style="width: 40px;" class="pt-2">
                             <img id="accountAvatar" src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg"
                             width="40" height="40" class="rounded-circle nav-item border me-1">
                         </td>
                         <td>
                             <span class="h6" id="teacherName">
-                                ${teacherName}
+                                ${teacher.fullname}
                             </span>
                         </td>
                         <td></td>
@@ -74,7 +74,7 @@ function loadListStudentForTeacher(teacherName) {
         `<div class="row">
             <table>
                 <thead>
-                    <tr style="border-bottom: 2px solid;">
+                    <tr style="border-bottom: 2px solid gray;">
                         <th>
                             <span class="h1">Students</span>
                         </th>
@@ -86,6 +86,10 @@ function loadListStudentForTeacher(teacherName) {
             </table>
         </div>`;
         $("#classMember").html(profileTeacher);
+        $("#accountAvatar").attr(
+            "src",
+            Utils.getUrlImage(Const.FileMode.AVATAR, teacher.imageAvatar)
+        );
         $("#classMember").append(profileStudents);
         for (let e of data) {
             $("#r1").append(
@@ -105,6 +109,10 @@ function loadListStudentForTeacher(teacherName) {
                         </button>
                     </td>
                 </tr>`);
+                $("#accAva").attr(
+                    "src",
+                    Utils.getUrlImage(Const.FileMode.AVATAR, e.imageAvatar)
+                );
         }
 
         $(".deleteStudent").click(function (){
@@ -131,7 +139,7 @@ function loadListStudentForTeacher(teacherName) {
     }
 }
 
-function loadListStudentForStudent(teacherName) {
+function loadListStudentForStudent(teacher) {
     let classId = Route.getUrlParam("id");
     let option = {};
     option.url = Const.BackEndApi.Classes.Member.Student + `/${classId}`;
@@ -165,7 +173,7 @@ function loadListStudentForStudent(teacherName) {
                         </td>
                         <td>
                             <span class="h6" id="teacherName">
-                                ${teacherName}
+                                ${teacher.fullname}
                             </span>
                         </td>
                         <td></td>
@@ -189,6 +197,10 @@ function loadListStudentForStudent(teacherName) {
             </table>
         </div>`;
         $("#classMember").html(profileTeacher);
+        $("#accountAvatar").attr(
+            "src",
+            Utils.getUrlImage(Const.FileMode.AVATAR, teacher.imageAvatar)
+        );
         $("#classMember").append(profileStudents);
         for (let e of data) {
             $("#r1").append(
@@ -205,6 +217,10 @@ function loadListStudentForStudent(teacherName) {
                     <td class="d-flex justify-content-end py-2">
                     </td>
                 </tr>`);
+                $("#accAva").attr(
+                    "src",
+                    Utils.getUrlImage(Const.FileMode.AVATAR, e.imageAvatar)
+                );
         }
     }
 }
