@@ -1,7 +1,7 @@
 import * as Route from "./common/routing.js";
 import * as Const from "./common/const.js";
 
-import { ajaxEvent } from "./common/config.js";
+import { config } from "./common/config.js";
 import { login } from "./component/auth/login.js";
 import { index } from "./component/index.js";
 import { signup } from "./component/auth/signup.js";
@@ -16,7 +16,7 @@ import { editClass } from "./component/class/edit.js";
 async function main() {
   await Route.includeHTML();
   Route.addAuthHeader();
-  ajaxEvent();
+  config();
   Route.logout();
 
   if (!Route.verifyAuth()) {

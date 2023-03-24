@@ -100,6 +100,10 @@ export function checkRole(roleCheck) {
   return roleCheck == jwtPayload[Const.Payload.Typ];
 }
 
+/**
+ * Kiểm tra có được quyền truy cập url hiện tại
+ * @returns {Boolean} isAuthorize
+ */
 function checkPathRight(){
   let authorize = false;
   if(Const.PathRight.Anonymous.includes(getPath())){

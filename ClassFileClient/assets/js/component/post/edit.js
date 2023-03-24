@@ -21,7 +21,7 @@ async function initEditPostData() {
   };
 
   async function render(data) {
-    $("#contentPostTextArea").val(data.title);
+    $("textarea.summerNote#contentPostTextArea").summernote("code", data.title);
     console.log(data);
     let result = "";
     for (let f of data.files) {
