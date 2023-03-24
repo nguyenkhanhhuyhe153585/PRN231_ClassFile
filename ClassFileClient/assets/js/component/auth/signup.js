@@ -19,7 +19,7 @@ export function signup() {
         opt.url = CONST.BackEndApi.Signup;
         opt.method = CONST.HttpMethod.POST;
         opt.contentType = CONST.HttpDataType.ApplicationJSON;
-        opt.dataTpe = CONST.HttpDataType.JSON;
+        opt.suppressGlobalComplete = true;
         opt.data = JSON.stringify({
             fullname: fullName,
             username: userName,
@@ -27,15 +27,23 @@ export function signup() {
             password2: password2,
             accounttype: accountType
         });
-        opt.complete = function(xhr) {
-            let data = xhr.responseJSON;
-            if (xhr.status === CONST.HttpCode.Ok) {
-                Route.redirect(CONST.Path.Login);
-            }
-            else if(xhr.status === CONST.HttpCode.UnAuthorized){
-                $("#textLoginError").html(data.message);
-            }
-        };
+        // opt.complete = function(xhr) {
+        //     let data = xhr.responseJSON;
+        //     if (xhr.status === CONST.HttpCode.Ok) {
+        //         Route.redirect(CONST.Path.Login);
+        //     }
+        //     else if(xhr.status === CONST.HttpCode.UnAuthorized){
+        //         $("#textLoginError").html(data.message);
+        //     }
+        // };
+        opt.success = function() {
+            Swal.fire({
+                icon: "success",
+                title: CONST.Message.Success,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(Route.redirect(CONST.Path.Login));
+        }
 
         $.ajax(opt);
     }
