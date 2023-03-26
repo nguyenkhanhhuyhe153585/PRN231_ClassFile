@@ -52,3 +52,7 @@ img {
 .note-modal-content .note-modal-footer{
   height: 4rem;
 }
+
+.card-body img.note-float-left{
+  width: -webkit-fill-available;
+}
