@@ -171,7 +171,8 @@ namespace ClassFileBackEnd.Controllers
                 Account? currentUser = db.Accounts.Find(currentUserId);
                 if (currentUser == null)
                 {
-                    return NotFound("This user is not found");
+                    ResponseMessageDTO<string> message = new("This user is not found");
+                    return NotFound(message);
                 }
                 Class? classFromDB = db.Classes
                     .Include(a => a.Accounts)
@@ -179,7 +180,8 @@ namespace ClassFileBackEnd.Controllers
                     .FirstOrDefault();
                 if (classFromDB == null)
                 {
-                    return NotFound("This class is not found");
+                    ResponseMessageDTO<string> message = new("This class is not found");
+                    return NotFound(message);
                 }
                 classFromDB.Accounts.Remove(currentUser);
                 List<AccountProfileDTO> profiles = mapper.Map<List<AccountProfileDTO>>(classFromDB.Accounts.ToList());
@@ -208,7 +210,8 @@ namespace ClassFileBackEnd.Controllers
                 Account? find = classFromDB.Accounts.Where(f => f.Id == deletedStudentDTO.Id && f != currentUser).FirstOrDefault();
                 if (find == null)
                 {
-                    return NotFound("No result found");
+                    ResponseMessageDTO<string> message = new("No result found");
+                    return NotFound(message);
                 }
                 classFromDB.Accounts.Remove(find);
                 db.Classes.Update(classFromDB);
@@ -233,7 +236,8 @@ namespace ClassFileBackEnd.Controllers
                 Account? currentUser = db.Accounts.Find(currentUserId);
                 if (currentUser == null)
                 {
-                    return NotFound("This user is not found");
+                    ResponseMessageDTO<string> message = new("This user is not found");
+                    return NotFound(message);
                 }
                 Class? classFromDB = db.Classes
                     .Include(a => a.Accounts)
@@ -241,7 +245,8 @@ namespace ClassFileBackEnd.Controllers
                     .FirstOrDefault();
                 if (classFromDB == null)
                 {
-                    return NotFound("This class is not found");
+                    ResponseMessageDTO<string> message =  new("This class is not found");
+                    return NotFound(message);
                 }
                 classFromDB.Accounts.Remove(classFromDB.Accounts.Where(a => a.AccountType == Const.Role.TEACHER).FirstOrDefault());
                 List<AccountProfileDTO> profiles = mapper.Map<List<AccountProfileDTO>>(classFromDB.Accounts.ToList());
@@ -296,7 +301,8 @@ namespace ClassFileBackEnd.Controllers
                 Class? currentClass = db.Classes.Find(id);
                 if (currentClass == null)
                 {
-                    return NotFound("This class is not exist");
+                    ResponseMessageDTO<string> message = new("This class is not found");
+                    return NotFound(message);
                 }
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account? creator = db.Accounts.Include(a => a.Classes)
@@ -304,7 +310,8 @@ namespace ClassFileBackEnd.Controllers
                     .FirstOrDefault();
                 if (creator == null)
                 {
-                    return Unauthorized("This user don't have permission to delete this class");
+                    ResponseMessageDTO<string> message = new("This user don't have permission to delete this class");
+                    return Unauthorized(message);
                 }
                 List<Account> accounts = db.Accounts.Include(a => a.Classes).ToList();
                 foreach(Account account in accounts)
@@ -336,7 +343,8 @@ namespace ClassFileBackEnd.Controllers
                 Class? currentClass = db.Classes.Find(id);
                 if (currentClass == null)
                 {
-                    return NotFound("Class not found");
+                    ResponseMessageDTO<string> message = new("This class is not found");
+                    return NotFound(message);
                 }
                 int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
                 Account? creator = db.Accounts.Include(a => a.Classes)
@@ -344,7 +352,8 @@ namespace ClassFileBackEnd.Controllers
                     .FirstOrDefault();
                 if (creator == null)
                 {
-                    return Unauthorized("This user don't have permission to modify this class");
+                    ResponseMessageDTO<string> message = new("This user don't have permission to modify this class");
+                    return Unauthorized(message);
                 }
                 Class c = null;
                 string newClassCode = null;

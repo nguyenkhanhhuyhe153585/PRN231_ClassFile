@@ -7,18 +7,20 @@ export function classAction() {
   initClassInfo();
   loadPostInClass();
   deletePost();
-  
 }
 
 function classMenu(data) {
   let result = `<li><a class="dropdown-item" href="member.html?id=${data.id}">Members</a></li>`;
-  if (Utils.checkRole(Const.Role.Teacher) && Utils.checkUser(data.teacherAccount.id)) {
+  if (
+    Utils.checkRole(Const.Role.Teacher) &&
+    Utils.checkUser(data.teacherAccount.id)
+  ) {
     result += `
         <li><a class="dropdown-item" href="edit.html?id=${data.id}">Edit</a></li>
         <li><a class="dropdown-item deleteClass" href="javascript:void(0)" data-classId="${data.id}">Delete Class</a></li>
     `;
-  } else if(Utils.checkRole(Const.Role.Student)){
-   result += `<li><a class="dropdown-item leaveClass" data-classId="${data.id}">Leave Class</a></li>`;
+  } else if (Utils.checkRole(Const.Role.Student)) {
+    result += `<li><a class="dropdown-item leaveClass" data-classId="${data.id}">Leave Class</a></li>`;
   }
 
   $("#classMenu").html(`
@@ -34,7 +36,7 @@ function classMenu(data) {
   leaveClass();
 }
 
-function leaveClass(){
+function leaveClass() {
   $("a.leaveClass").click(function () {
     let classId = $(this).attr("data-classId");
     Swal.fire({
@@ -50,7 +52,7 @@ function leaveClass(){
         $.ajax({
           url: Const.BackEndApi.Classes.Leave + `/${classId}`,
           type: Const.HttpMethod.POST,
-          contenType: Const.HttpDataType.ApplicationJSON
+          contenType: Const.HttpDataType.ApplicationJSON,
         });
       }
     });
@@ -96,14 +98,14 @@ function deletePost() {
           url: Const.BackEndApi.Post + `/${postId}`,
           type: Const.HttpMethod.DELETE,
           suppressGlobalComplete: true,
-          success: function() {
+          success: function () {
             Swal.fire({
               icon: "success",
               title: Const.Message.Success,
               showConfirmButton: false,
               timer: 1500,
             }).then(Route.reload);
-          }
+          },
         });
       }
     });
@@ -199,7 +201,6 @@ function loadPostInClass() {
     Utils.pagination(data);
     // thực hiện init delete Post;
     deletePost();
-    
   };
 
   $.ajax(option);
@@ -227,7 +228,10 @@ function loadPostInClass() {
                           </span>
                           
                               ${(function () {
-                                if (Utils.checkUser(post.postedAccount.id)) {
+                                if (
+                                  Utils.checkUser(post.postedAccount.id) ||
+                                  Utils.checkRole(Const.Role.Teacher)
+                                ) {
                                   return `
                                   <div class="dropdown d-inline ms-3">
                               <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
@@ -235,8 +239,16 @@ function loadPostInClass() {
                                   Option
                               </button>
                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <li><a class="dropdown-item" href="${Const.Path.Post.Edit}?id=${post.id}">Edit</a></li>
-                                  <li><a class="dropdown-item deletePost" href="javascript:void(0)" data-postId=${post.id}>Delete</a></li>
+                              ${(function () {
+                                if (Utils.checkUser(post.postedAccount.id)) {
+                                  return `<li><a class="dropdown-item" href="${Const.Path.Post.Edit}?id=${post.id}">Edit</a></li>`;
+                                }else {
+                                  return Const.EMPTY_STRING;
+                                }
+                              })()}                        
+                                  <li><a class="dropdown-item deletePost" href="javascript:void(0)" data-postId=${
+                                    post.id
+                                  }>Delete</a></li>
                               </ul>
                               </div>
                                   `;
@@ -279,16 +291,15 @@ function regenCode() {
     option.type = Const.HttpMethod.PUT;
     option.dataType = Const.HttpDataType.JSON;
     option.suppressGlobalComplete = true;
-    option.success = function() {
+    option.success = function () {
       Swal.fire({
         icon: "success",
         title: Const.Message.Success,
         showConfirmButton: false,
         timer: 1500,
       }).then(Route.reload);
-    }
-  
-    $.ajax(option);
-  })
-}
+    };
 
+    $.ajax(option);
+  });
+}
