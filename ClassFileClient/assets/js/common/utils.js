@@ -132,8 +132,8 @@ export function fileUpload(idFileInputElement, fileMode) {
       reject(new Error("rejected!"));
       return;
     }
-    if (totalFileSize >= Const.MaxFileSize) {
-      let message = Const.Message.FileTooLarge;
+    if (totalFileSize >= Const.MaxImageSize) {
+      let message = Const.Message.ImageTooLarge;
       Swal.fire({
         icon: "error",
         title: Const.Message.Oops,

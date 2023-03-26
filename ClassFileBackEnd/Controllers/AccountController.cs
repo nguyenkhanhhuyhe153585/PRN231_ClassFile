@@ -61,42 +61,6 @@ namespace ClassFileBackEnd.Controllers
                     currentUser.Fullname = inputFullName;
                 }
 
-                //#region Lưu file image Avatar
-                //var fileImageAvatar = form.Files.FirstOrDefault();
-
-                //if (fileImageAvatar != null)
-                //{
-                //    string folderName = Const.ROOT_FOLDER_NAME;
-                //    string subFolder = Const.folederModeMapping["avatar"];
-
-                //    string fileName = fileImageAvatar.FileName;
-                //    string fileType = Utils.GetFileExtension(fileName);
-
-                //    // Triển khai khởi tạo tên file tới khi không có file nào trùng trong Dir
-                //    string fileNameForSaving = "";
-                //    string filePath = "";
-                //    int index = 0;
-                //    string indexString = "";
-                //    do
-                //    {
-                //        if (index != 0)
-                //        {
-                //            indexString = $"({index})_";
-                //        }
-                //        fileNameForSaving = $"{currentUserId}_{indexString}{DateTime.Now.ToString("HHmmssddMMyyyy")}.{fileType}";
-                //        filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, folderName, subFolder, fileNameForSaving);
-                //    }
-                //    while (System.IO.File.Exists(filePath));
-
-                //    // Lưu file vào tệp của Server
-                //    Stream fileStream = new FileStream(filePath, FileMode.Create);
-                //    await fileImageAvatar.CopyToAsync(fileStream);
-                //    fileStream.Close();
-                //currentUser.ImageAvatar = fileNameForSaving;
-
-                //}
-                //#endregion
-
                 if (imageAvatar != null && imageAvatar != currentUser.ImageAvatar)
                 {
                     currentUser.ImageAvatar = imageAvatar;
@@ -154,26 +118,6 @@ namespace ClassFileBackEnd.Controllers
 
             }
         }
-
-        //[HttpGet("{id:int}")]
-        //public IActionResult GetUserById(int id)
-        //{
-        //    try
-        //    {
-        //        Account? account = db.Accounts.Find(id);
-        //        if (account == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return Ok(mapper.Map<AccountProfileDTO>(account));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ResponseMessageDTO<string> mess = new ResponseMessageDTO<string>(ex.Message)
-        //        { Data = ex.StackTrace };
-        //        return BadRequest(mess);
-        //    }
-        //}
 
     }
 }

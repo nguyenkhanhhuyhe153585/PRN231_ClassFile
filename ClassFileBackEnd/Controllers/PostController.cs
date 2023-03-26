@@ -6,6 +6,7 @@ using ClassFileBackEnd.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ClassFileBackEnd.Controllers
 {
@@ -63,6 +64,7 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpPost]
+        [RequestFormLimits(MultipartBodyLengthLimit = 104857600)]
         public async Task<IActionResult> CreatePost(IFormCollection form)
         {
             var transaction = db.Database.BeginTransaction();
@@ -137,6 +139,7 @@ namespace ClassFileBackEnd.Controllers
         }
 
         [HttpPut]
+        [RequestFormLimits(MultipartBodyLengthLimit = 104857600)]
         public async Task<IActionResult> UpdatePost(IFormCollection form)
         {
             var transaction = db.Database.BeginTransaction();
@@ -186,11 +189,19 @@ namespace ClassFileBackEnd.Controllers
         {
             try
             {
-                int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
-                Post? currentPost = db.Posts.Where(p => p.Id == postId && p.PostedAccountId == currentUserId).FirstOrDefault();
+                Post? currentPost = null;
+                if (JWTManagerRepository.GetClaim(JwtRegisteredClaimNames.Typ, HttpContext) == Const.Role.TEACHER)
+                {
+                    currentPost = db.Posts.Where(p => p.Id == postId).SingleOrDefault();
+                } else
+                {
+                    int currentUserId = JWTManagerRepository.GetCurrentUserId(HttpContext);
+                    currentPost = db.Posts.Where(p => p.Id == postId && p.PostedAccountId == currentUserId).FirstOrDefault();
+                }
                 if (currentPost == null)
                 {
-                    return NotFound("Cannot find this post");
+                    ResponseMessageDTO<string> message = new("Cannot find this post");
+                    return NotFound(message);
                 }
                 List<Models.File> files = db.Files.Where(f => f.PostId == postId).ToList();
                 db.Files.RemoveRange(files);

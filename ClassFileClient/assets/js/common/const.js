@@ -100,7 +100,8 @@ export const Message = {
   Error: "",
   Oops: "Oops...",
   Process: "Processing",
-  FileTooLarge: "File size can not over 20MB.",
+  FileTooLarge: "File size can not over 100MB.",
+  ImageTooLarge: "File size can not over 20MB.",
   NoFileSelect: "There is no file was selected!",
   ServerNotConnect: "Can not connect to server",
 };
@@ -122,5 +123,6 @@ export const PAGE = "page";
 export const TOKEN = "token";
 export const ID_PARAM = "id";
 export const EMPTY_STRING = "";
-export const MaxFileSize = 20971520;
+export const MaxFileSize = 104857600;
+export const MaxImageSize = 20971520;
 export const imageHolder = IMAGE_HOLDER;
