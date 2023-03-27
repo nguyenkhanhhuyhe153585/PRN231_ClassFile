@@ -122,7 +122,7 @@ function doEditClass() {
       opt.data = JSON.stringify({
         id: classId,
         classname: className,
-        imageCover: Boolean(fileImageResponseName) ? fileImageResponseName : fileImageEdit
+        imageCover:  fileImageResponseName
       });
       opt.success = function() {
         Swal.fire({

@@ -130,7 +130,6 @@ function editPassword() {
     option.url = Const.BackEndApi.Account.EditPassword;
     option.type = Const.HttpMethod.PUT;
     option.contentType = Const.HttpDataType.ApplicationJSON;
-    option.dataType = Const.HttpDataType.JSON;
     option.data = JSON.stringify(dataRequest);
     $.ajax(option);
   });

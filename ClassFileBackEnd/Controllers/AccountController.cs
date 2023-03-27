@@ -54,6 +54,13 @@ namespace ClassFileBackEnd.Controllers
                 Account currentUser = db.Accounts.Single(c => c.Id == currentUserId);
                 if (inputUserName != null && inputUserName != currentUser.Username)
                 {
+                    Account? accountWithUserName = db.Accounts.SingleOrDefault(c => c.Username == inputUserName);
+                    if (accountWithUserName != null && !accountWithUserName.Equals(currentUser))
+                    {
+                        string message = $"This username: {inputUserName} is exist!";
+                        ResponseMessageDTO<string> mess = new(message);
+                        return BadRequest(mess);
+                    }
                     currentUser.Username = inputUserName;
                 }
                 if (inputFullName != null && inputFullName != currentUser.Fullname)
