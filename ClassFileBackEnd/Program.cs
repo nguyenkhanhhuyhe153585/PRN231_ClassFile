@@ -3,6 +3,7 @@ using ClassFileBackEnd.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,10 +30,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-builder.Services.AddDbContext<ClassfileContext>(opt => opt.UseSqlServer(
-    builder.Configuration.GetConnectionString("DB")
-    )
+builder.Services.AddDbContext<ClassfileContext>(opt => {
+    var mongoClient = new MongoClient(builder.Configuration.GetConnectionString("DB"));
+    opt.UseMongoDB(mongoClient,"ClassFile");
+    }
 );
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

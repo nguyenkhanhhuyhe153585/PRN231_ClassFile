@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace ClassFileBackEnd.Models;
+
+
 
 public partial class ClassfileContext : DbContext
 {
@@ -23,15 +28,14 @@ public partial class ClassfileContext : DbContext
 
     public virtual DbSet<Post> Posts { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=(local); database=Classfile; uid=sa; pwd=sa; TrustServerCertificate=True");
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.ToTable("account");
+            entity.ToCollection("account");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AccountType)
@@ -57,9 +61,9 @@ public partial class ClassfileContext : DbContext
 
         modelBuilder.Entity<Class>(entity =>
         {
-            entity.ToTable("class");
+            entity.ToCollection("class");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.ClassCode)
                 .HasMaxLength(10)
                 .IsUnicode(false)
@@ -93,15 +97,15 @@ public partial class ClassfileContext : DbContext
                         j.HasKey("ClassId", "AccountId").HasName("PK_student_class");
                         j.ToTable("account_class");
                         j.IndexerProperty<int>("ClassId").HasColumnName("class_id");
-                        j.IndexerProperty<int>("AccountId").HasColumnName("account_id");
+                        j.IndexerProperty<ObjectId?>("AccountId").HasColumnName("account_id");
                     });
         });
 
         modelBuilder.Entity<File>(entity =>
         {
-            entity.ToTable("file");
+            entity.ToCollection("file");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.FileName)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -123,9 +127,9 @@ public partial class ClassfileContext : DbContext
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.ToTable("post");
+            entity.ToCollection("post");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.ClassId).HasColumnName("class_id");
             entity.Property(e => e.DateCreated)
                 .HasColumnType("datetime")
